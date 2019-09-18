@@ -10,20 +10,20 @@
 class Rules
 {
   public:
-	Rules();			   //Constructeur
-	Rules(std::string rule); // autre constructeur avec un parametre
-	int parseRule(std::string rule, std::vector<char> values, std::vector<char> type);
-	void printValues();
-	void printFacts();
-	std::vector<char> m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
-	std::vector<char> m_conditionType; // multiple choice : A N O X
-
-  private:
-	// condition : and, not, or, xor;
+		Rules();			   //Constructeur
+		Rules(std::string rule); // autre constructeur avec un parametre
+		void parseRule(std::string rule, std::vector<char> values, std::vector<char> type);
+		void printValues();
+		void printFacts();
+		std::vector<char> m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
+		std::vector<char> m_conditionType; // multiple choice : A N O X
 		std::vector<char> m_condition;			// toute les variable a true (peut augmenter pendant l'analyse)
 		std::vector<char> m_conclusionType; // multiple choice : I O
 		std::vector<char> m_conculsion;			// toute les variable a true (peut augmenter pendant l'analyse)
 		char impORif;
+
+  private:
+	// condition : and, not, or, xor;
 
 		// resultats: implies, ifAndOnlyIf;
 

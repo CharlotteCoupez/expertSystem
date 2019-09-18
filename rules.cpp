@@ -35,8 +35,9 @@ Rules::Rules(string rule)
 	}
 }
 
-int Rules::parseRule(string rule, std::vector<char> values, std::vector<char> type)
+void Rules::parseRule(string rule, std::vector<char> values, std::vector<char> type)
 {
+		std::cout << "parseRule " << std::endl;
 
 }
 

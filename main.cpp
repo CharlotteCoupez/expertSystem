@@ -1,5 +1,5 @@
 #include <iostream>
-#include "expertSystem.h"
+#include "ExpertSystem.h"
 #include <string>
 
 using namespace std;
