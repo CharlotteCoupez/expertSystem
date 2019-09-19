@@ -5,6 +5,7 @@
 #include <string>
 #include <vector>
 #include <fstream>
+#include <algorithm>
 // #include "expertSystem.h"
 
 class Rules
@@ -15,16 +16,15 @@ class Rules
 		void parseRule(std::string rule, std::vector<char> values, std::vector<char> type);
 		void printValues();
 		void printFacts();
-		std::vector<char> m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
+		std::vector<int> m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
 		std::vector<char> m_conditionType; // multiple choice : A N O X
-		std::vector<char> m_condition;			// toute les variable a true (peut augmenter pendant l'analyse)
+		std::vector<int> m_condition;			// toute les variable a true (peut augmenter pendant l'analyse)
 		std::vector<char> m_conclusionType; // multiple choice : I O
-		std::vector<char> m_conculsion;			// toute les variable a true (peut augmenter pendant l'analyse)
-		char impORif;
+		std::vector<int> m_conculsion;			// toute les variable a true (peut augmenter pendant l'analyse)
+		char	impORif;
+		int		id;
 
   private:
-	// condition : and, not, or, xor;
-
 		// resultats: implies, ifAndOnlyIf;
 
 };

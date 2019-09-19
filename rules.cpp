@@ -1,16 +1,28 @@
 #include <iostream>
 #include "Rules.h"
 #include <stdlib.h>
+#include <cctype>
 
 using namespace std;
 
 Rules::Rules(string rule)
 {
+	//ruleing rule = deleteSpace(rule);
+	// std::cout << "rule : " << rule << std::endl;
+	rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end());
+	// std::cout << "rule : " << rule << std::endl;
+
 	impORif = 0;
 	int i = 0;
-	while (i < rule.size() && rule[i] != '=' && rule[i] != '<')
+	while (i < rule.size() && rule[i] != '=' && rule[i] != '<' && rule[i] != '#')
 	{
-		if (isupper(rule[i]))
+		if (rule[i] == '!')
+		{
+			i++;
+			m_condition.push_back(rule[i] * -1);
+
+		}
+		else if (isupper(rule[i]))
 		{
 			m_condition.push_back(rule[i]);
 			m_facts.push_back(rule[i]);
@@ -24,7 +36,13 @@ Rules::Rules(string rule)
 	impORif = rule[i];
 	while (i < rule.size() && rule[i] != '#')
 	{
-		if (isupper(rule[i]))
+		if (rule[i] == '!')
+		{
+			i++;
+			m_conculsion.push_back(rule[i] * -1);
+
+		}
+		else if (isupper(rule[i]))
 		{
 			m_conculsion.push_back(rule[i]);
 			m_facts.push_back(rule[i]);
@@ -43,6 +61,7 @@ void Rules::parseRule(string rule, std::vector<char> values, std::vector<char> t
 
 void Rules::printValues()
 {
+	std::cout << "ID : " << id << std::endl;
 	for (int i = 0; i < m_condition.size(); i++)
 	{
 		std::cout << "m_condition[i] : " << m_condition[i] << std::endl;
