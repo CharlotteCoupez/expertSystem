@@ -10,11 +10,11 @@ using namespace std;
 faire une fonction filtrage (premiere regle quon va parcourir)
 on selectionne les regles qui aboutissent au but que lon recherche
 si dans les regle selectionnnees on a des condition nonverifiee (a false)
-celle ci deviennent aussi des conditions a rechercher 
+celle ci deviennent aussi des conditions a rechercher
 
 on sarrete quand on a tout verifies
 
-We basically go through the rules in the knowledge base looking for conclusions which match the query and if we find them, 
+We basically go through the rules in the knowledge base looking for conclusions which match the query and if we find them,
 donc quand on trouve toute les regle avec nos queries en conclusion on y joute de nouvelles queries qui sont dans les conditions de nos regles (si elle ne sont pas set a true on cherche si elle peuvent etre set a true avec toute les autres regle)
 */
 
@@ -46,12 +46,12 @@ void ExpertSystem::createFacts()
 	{
 		std::vector<char>::iterator toFind;
 		toFind = find (m_initialFacts.begin(), m_initialFacts.end(), char(*itr));
-		std::cout << "result find a: " << char(*toFind) << std::endl;
+		// std::cout << "result find a: " << char(*toFind) << std::endl;
 		if (char(*toFind) == char(*itr))
 		{
-			std::cout << "FIND THIS FACT in ININTIAL FACT" << std::endl;
+			std::cout << "FIND THIS FACT in ININTIAL FACT :" << char(*toFind) << std::endl;
 		}
-		cout << char(*itr) << std::endl;
+		// cout << char(*itr) << std::endl;
 	}
 		std::vector<char>::iterator itrQ;
 		for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
