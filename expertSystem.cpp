@@ -31,12 +31,18 @@ int ExpertSystem::backwardChaining(int querie)
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
 			std::cout << "QUERIE IN CONCLUSON : " << char(querie) << std::endl;
 			result = checkConditions(*itL);
-			if (result == 0)
+			if (result == -1)
 			{
 				printTrueFacts();
 				std::cout << "11QUERIE HAVE A Solution : " << char(querie) << std::endl;
 				return 1;
 				//condition remplie on a l'état de notre querie
+			}
+			else if (result == -2)
+			{
+				//false no solution a cause de xor
+				std::cout << "querie imposible xor : " << char(querie) << std::endl;
+				return -1;
 			}
 			else
 			{
@@ -52,6 +58,9 @@ int ExpertSystem::backwardChaining(int querie)
 	std::set<int>::iterator checkResult;
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	printTrueFacts();
+	std::cout << "checkResult : " << char(*checkResult) << std::endl;
+	std::cout << "querie : " << char(querie) << std::endl;
+
 	if (*checkResult == querie)
 		std::cout << "QUERIE HAVE A Solution : " << char(querie) << std::endl;
 	else
