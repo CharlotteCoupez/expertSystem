@@ -12,7 +12,7 @@ int ExpertSystem::checkConditions(Rules rule)
         result = checkOneCondition(rule.m_condition[0], 0, 0);
         if (result == 0)
         {
-            m_trueFacts.push_back(rule.m_conculsion[0]);
+            m_trueFacts.insert(rule.m_conculsion[0]);
         }
         else
         {
@@ -24,18 +24,19 @@ int ExpertSystem::checkConditions(Rules rule)
     {
         cout << "checkConditions rule->m_condition[i]" << rule.m_condition[i] <<  std::endl;
         result = checkOneCondition(rule.m_condition[i], rule.m_condition[i + 1], rule.m_conditionType[i]);
-        if (result == 0)
+        if (result != 0)
         {
-
-            m_trueFacts.push_back(rule.m_conculsion[0]);
+            return result;
         }
     }
+    m_trueFacts.insert(rule.m_conculsion[0]);
+    return 0;
 }
 
 int ExpertSystem::checkOneCondition(char a, char b, char condition)
 {
-    std::vector<int>::iterator retA;
-    std::vector<int>::iterator retB;
+    std::set<int>::iterator retB;
+    std::set<int>::iterator retA;
 
     retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
     if (condition == 0)
@@ -62,9 +63,11 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
         else if (*retA != a)
         {
            cout << "lancer une nouvelle querie pour A" << std::endl;
+           return a;
         }
         else if (*retB != b)
         {
+            return b;
             cout << "lancer une nouvelle querie pour B" << std::endl;
         }
     }

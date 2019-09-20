@@ -14,9 +14,9 @@ If there is an error in the input, for example a contradiction in the facts, or 
 error, the program must inform the user of the problem.
 */
 
-void ExpertSystem::backwardChaining(int querie)
+int ExpertSystem::backwardChaining(int querie)
 {
-	std::cout << "in analyse queri querie" << querie << std::endl;
+	std::cout << "in analyse queri querie" << char(querie) << std::endl;
 	std::list<Rules>::iterator itL;
 	int result;
 
@@ -35,12 +35,13 @@ void ExpertSystem::backwardChaining(int querie)
 			{
 				printTrueFacts();
 				std::cout << "11QUERIE HAVE A Solution : " << char(querie) << std::endl;
-				return;
+				return 1;
 				//condition remplie on a l'état de notre querie
 			}
 			else
 			{
-				backwardChaining(result);
+				if (backwardChaining(result) == -1)
+					return -1;
 				std::cout << "sortir backward: " << char(querie) << std::endl;
 				itL = m_listRules.begin();
 			}
@@ -48,13 +49,16 @@ void ExpertSystem::backwardChaining(int querie)
 		else
 			itL++;
 	}
-	std::vector<int>::iterator checkResult;
+	std::set<int>::iterator checkResult;
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	printTrueFacts();
 	if (*checkResult == querie)
 		std::cout << "QUERIE HAVE A Solution : " << char(querie) << std::endl;
 	else
+	{
 		std::cout << "QUERIE have NO Solution it is false : " << char(querie) << std::endl;
+		return -1;
+	}
 
 	// querie fals or undeermineds
 	// si cest jmais passe par une conclusion dire que ya rien qui permet de dire ce quest cette querie
@@ -66,15 +70,20 @@ void ExpertSystem::analyseQuerie()
 	std::vector<int>::iterator itrQ;
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
+		std::cout << "1analyseQuerie" << std::endl;
+
 		backwardChaining(*itrQ);
+		std::cout << "2221analyseQueri " << std::endl;
 	}
 }
 
 void ExpertSystem::printTrueFacts()
 {
-	for (int i = 0; i < m_trueFacts.size(); i++)
+	std::set<int>::iterator truef;
+
+	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
 	{
-		std::cout << "m_trueFacts[i] : " << char(m_trueFacts[i]) << std::endl;
+		std::cout << "m_trueFacts[i] : " << char(*truef) << std::endl;
 	}
 }
 
@@ -100,7 +109,7 @@ void ExpertSystem::getInitialeFacts(string ligne)
 	while (isupper(ligne[i]))
 	{
 		m_initialFacts.push_back(ligne[i]);
-		m_trueFacts.push_back(ligne[i]);
+		m_trueFacts.insert(ligne[i]);
 		i++;
 	}
 }
