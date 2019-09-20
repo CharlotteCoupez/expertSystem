@@ -6,7 +6,7 @@ E => J
 C => E # C implies E
 A + B => C
 D + G => A
-K + L +M => B
+K + L +M=> B
 O ^ P => M
 A + B + C => D # A and B and C implies D
 #A | B => C # A or B implies C
@@ -19,7 +19,7 @@ A + B + C => D # A and B and C implies D
 #!A + !B <=> C # A and B if and only if C
 #A + B <=> !C # A and B if and only if not C
 
-=DGKLOP # Initial facts : A, B and G are true. All others are false.
+=DGKL # Initial facts : A, B and G are true. All others are false.
 
 # If no facts are initially true, then a simple "=" followed
 # by a newline is used

@@ -57,6 +57,7 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
         }
         else
         {
+            // return une des deux queries a chercher mais laquelle comment choisir?
             return a;
         }
 
@@ -102,6 +103,8 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
             // les deux existes donc cette solution ne pourra jamais etre true
             return -2;
         }
+        else
+            return -2;
     }
     return false;
 }

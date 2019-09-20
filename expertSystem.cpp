@@ -34,7 +34,7 @@ int ExpertSystem::backwardChaining(int querie)
 			if (result == -1)
 			{
 				printTrueFacts();
-				std::cout << "11QUERIE HAVE A Solution : " << char(querie) << std::endl;
+				std::cout << "QUERIE HAVE A Solution : " << char(querie) << std::endl;
 				return 1;
 				//condition remplie on a l'état de notre querie
 			}
@@ -79,10 +79,10 @@ void ExpertSystem::analyseQuerie()
 	std::vector<int>::iterator itrQ;
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
-		std::cout << "1analyseQuerie" << std::endl;
+		std::cout << "1 - analyseQuerie" << std::endl;
 
 		backwardChaining(*itrQ);
-		std::cout << "2221analyseQueri " << std::endl;
+		std::cout << "2 - analyseQueri " << std::endl;
 	}
 }
 
