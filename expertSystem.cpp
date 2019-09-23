@@ -16,9 +16,10 @@ error, the program must inform the user of the problem.
 
 int ExpertSystem::backwardChaining(int querie)
 {
-	std::cout << "in analyse queri querie" << char(querie) << std::endl;
-	std::list<Rules>::iterator itL;
-	int result;
+	std::cout << "backwardChaining querie : " << char(querie) << std::endl;
+	std::list<Rules>::iterator	itL;
+	int							result;
+	int							ret;
 
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
@@ -46,14 +47,22 @@ int ExpertSystem::backwardChaining(int querie)
 			}
 			else
 			{
-				if (backwardChaining(result) == -1)
-					return -1;
+				ret = backwardChaining(result);
 				std::cout << "sortir backward: " << char(querie) << std::endl;
-				itL = m_listRules.begin();
+				if (ret == -2)
+					return -1;
+				else if (ret == 1)
+					itL = m_listRules.begin();
+				else
+					itL++;
 			}
 		}
 		else
+		{
+			std::cout << "on tourne " << char(querie) << std::endl;
+
 			itL++;
+		}
 	}
 	std::set<int>::iterator checkResult;
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
@@ -66,7 +75,7 @@ int ExpertSystem::backwardChaining(int querie)
 	else
 	{
 		std::cout << "QUERIE have NO Solution it is false : " << char(querie) << std::endl;
-		return -1;
+		// return -1;
 	}
 
 	// querie fals or undeermineds
@@ -75,46 +84,30 @@ int ExpertSystem::backwardChaining(int querie)
 
 void ExpertSystem::analyseQuerie()
 {
-	// analyse QUERIE BY QUERIE
-	std::vector<int>::iterator itrQ;
+	std::vector<int>::iterator	itrQ;
+
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
-		std::cout << "1 - analyseQuerie" << std::endl;
-
 		backwardChaining(*itrQ);
-		std::cout << "2 - analyseQueri " << std::endl;
-	}
-}
-
-void ExpertSystem::printTrueFacts()
-{
-	std::set<int>::iterator truef;
-
-	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
-	{
-		std::cout << "m_trueFacts[i] : " << char(*truef) << std::endl;
 	}
 }
 
 void ExpertSystem::createBaseRules(string ligne, int ruleId)
 {
-	// std::cout << "parseRules --" << ligne << std::endl;
-	Rules rule(ligne);
+	Rules	rule(ligne);
 	for (int i = 0; i < rule.m_facts.size(); i++)
 	{
 		m_allFacts.insert(rule.m_facts[i]);
 	}
 	rule.id = ruleId;
-	//std::cout << "typeid(rule).name()" << typeid(rule).name() << std::endl;
-
 	m_listRules.push_back(rule);
 }
 
 void ExpertSystem::getInitialeFacts(string ligne)
 {
-	// std::cout << "parseInitialFacts " << ligne << std::endl;
-	int i = 1;
+	int	i;
 
+	i = 1;
 	while (isupper(ligne[i]))
 	{
 		m_initialFacts.push_back(ligne[i]);
@@ -125,9 +118,9 @@ void ExpertSystem::getInitialeFacts(string ligne)
 
 void ExpertSystem::getQueries(string ligne)
 {
-	// std::cout << "getQueries " << ligne << std::endl;
-	int i = 1;
+	int	i;
 
+	i = 1;
 	while (isupper(ligne[i]))
 	{
 		m_queries.push_back(ligne[i]);
@@ -137,13 +130,13 @@ void ExpertSystem::getQueries(string ligne)
 
 ExpertSystem::ExpertSystem(string argv)
 {
-	// std::cout << "file : " << argv << std::endl;
-	ifstream monFichier(argv.c_str());
-	int idRule = 1;
+	int		idRule;
+	string	ligne;
 
+	idRule = 1;
+	ifstream monFichier(argv.c_str());
 	if (monFichier)
 	{
-		string ligne;
 		while (getline(monFichier,  ligne))
 		{
 			if (ligne[0] == '=')
@@ -158,9 +151,21 @@ ExpertSystem::ExpertSystem(string argv)
 		}
 	}
 	else
-	{
 		std::cout << "No such a file" << std::endl;
+	if (m_queries.size() > 0)
+		analyseQuerie();
+}
+
+void ExpertSystem::printTrueFacts()
+{
+	std::set<int>::iterator	truef;
+
+	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
+	{
+		std::cout << "m_trueFacts[i] : " << char(*truef) << std::endl;
 	}
+}
+
 	// for (int i = 0; i < m_queries.size(); i++)
 	// {
 	// 	std::cout << "m_queries[i] : " << m_queries[i] << std::endl;
@@ -169,5 +174,3 @@ ExpertSystem::ExpertSystem(string argv)
 	// {
 	// 	std::cout << "m_facts[i] : " << m_facts[i] << std::endl;
 	// }
-	analyseQuerie();
-}

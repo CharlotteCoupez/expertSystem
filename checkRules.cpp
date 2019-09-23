@@ -25,7 +25,7 @@ int ExpertSystem::checkConditions(Rules rule)
     {
         cout << "checkConditions rule->m_condition[i]" << rule.m_condition[i] <<  std::endl;
         result = checkOneCondition(rule.m_condition[i], rule.m_condition[i + 1], rule.m_conditionType[i]);
-        cout << "apres check one and or xor result " << result << std::endl;
+        cout << "apres check one and or xor result " << char(result) << std::endl;
 
         if (result == -2)
         {
@@ -72,13 +72,13 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
         }
         else if (*retA != a)
         {
-           cout << "lancer une nouvelle querie pour A" << std::endl;
+           cout << "lancer une nouvelle querie pour : " << a << std::endl;
            return a;
         }
         else if (*retB != b)
         {
             return b;
-            cout << "lancer une nouvelle querie pour B" << std::endl;
+            cout << "lancer une nouvelle querie pour : " << b << std::endl;
         }
     }
     else if (condition == '|')  // OR
@@ -88,6 +88,7 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
             cout << "retA == a || retB == b" << std::endl;
             return true;
          }
+         // trouver un moyen pour renvoyer 2 queries
     }
     else if (condition == '^') // XOR
     {
@@ -97,7 +98,7 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
             cout << "condition remplie retA == a ^ retB == b" << std::endl;
             return -1;
         }
-        if (*retA == a && *retB == b)
+        else if (*retA == a && *retB == b)
         {
             cout << "XO R NO POSSIBLE LES DEUX EXISTE" << std::endl;
             // les deux existes donc cette solution ne pourra jamais etre true
@@ -105,6 +106,9 @@ int ExpertSystem::checkOneCondition(char a, char b, char condition)
         }
         else
             return -2;
+        // pour ce else chercher a prouver les deux si au bout de la recherche
+        // on en a 1 sur deux cest ok sinon cest mort
+
     }
-    return false;
+    return -1;
 }

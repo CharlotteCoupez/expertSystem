@@ -6,7 +6,7 @@ E => J
 C => E # C implies E
 A + B => C
 D + G => A
-K + L +M=> B
+K + L => B
 O ^ P => M
 A + B + C => D # A and B and C implies D
 #A | B => C # A or B implies C
@@ -25,3 +25,12 @@ A + B + C => D # A and B and C implies D
 # by a newline is used
 
 ?J #GVX # Queries : What are G, V and X ?
+
+
+
+# EXEMPLE DE TEST
+#A | (B + C) => D
+#E => A | B
+#F => C
+#=EF
+#?D #should be true
