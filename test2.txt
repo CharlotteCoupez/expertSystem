@@ -1,6 +1,24 @@
-D + E => C
-A + B => C
+#D + E => C
+#A + B => C
+#
+#=AB
+#
+#?C
 
-=AB
+
+#A + B => C
+#D | E | G => A
+#F => G
+#H => D
+
+
+#=BDF
+#?C
+
+A + B => C
+D + F => A
+#G + H + I + J => D
+
+=DFB
 
 ?C
