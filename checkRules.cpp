@@ -12,28 +12,15 @@ int ExpertSystem::checkConditions(Rules rule)
     {
         return oneCondition(rule.m_condition[0], rule);
     }
-    for (int i = 0; i < rule.m_condition.size() -1; i++)
+    result = severalConditions(rule.m_condition, rule.m_conditionType);
+    if (result == -2)
     {
-        cout << "checkConditions rule->m_condition[i]" << char(rule.m_condition[i]) <<  std::endl;
-
-        if (i == 0)
-            result = checkOneCondition(rule.m_condition[i], rule.m_condition[i + 1], rule.m_conditionType[i]);
-        else
-            result = checkOneCondition(true, rule.m_condition[i + 1], rule.m_conditionType[i]);
-        cout << "apres check one result " << result << std::endl;
-        cout << "apres check one char(result) " << char(result) << std::endl;
-        if (result == -2)
-        {
-            cout << "sortie -2 xor" << std::endl;
-            return -2;
-        }
-        else if (result != -1 && result != -3)
-        {
-            return result;
-        }
-        cout << "result" << result << std::endl;
-        cout << "rule.m_condition[i]" << char(rule.m_condition[i]) << std::endl;
-        cout << "rule.m_condition[i + 1]" << char(rule.m_condition[i + 1]) << std::endl;
+        cout << "sortie -2 xor" << std::endl;
+        return -2;
+    }
+    else if (result != -1 && result != -3)
+    {
+        return result;
     }
     if (result == -1)
     {
@@ -49,29 +36,81 @@ int ExpertSystem::checkConditions(Rules rule)
 
 }
 
-int ExpertSystem::checkOneCondition(int a, int b, char condition)
+void test(std::vector<int> m_condition)
 {
-    int                     ret;
+	std::cout << "--m_condition.size() : " << m_condition.size() << std::endl;
+
+    for (int i = 0; i < m_condition.size(); i++)
+	{
+		std::cout << "-----char(m_conditionType[i] : " << char(m_condition[i]) << std::endl;
+		std::cout << "---------m_conditionType[i] : " << m_condition[i] << std::endl;
+	}
+
+}
+int ExpertSystem::severalConditions(std::vector<int> m_condition, std::vector<char> m_conditionType)
+{
+    int result;
+    int firstArg;
     std::set<int>::iterator retB;
     std::set<int>::iterator retA;
     bool                    boolA;
     bool                    boolB;
+
+    result = 0;
+    for (int i = 0; i < m_condition.size() -1; i++)
+    {
+        //if (m_condition[i] == 40 || m_condition[i + 1] == 40) // si on a une parenthese ?
+        //{
+        //    cout << "P------ARENTHESE" <<  std::endl;
+        //    std::vector<int> fooo = std::vector<int>(m_condition.begin() + i, m_condition.end());
+        //    test(fooo);
+        //    // while (m_condition[i] != 40 || m_condition[i] !=41)
+        //    //     i++;
+        //}
+        retA = find(m_trueFacts.begin(), m_trueFacts.end(), m_condition[i]);
+        retB = find(m_trueFacts.begin(), m_trueFacts.end(), m_condition[i + 1]);
+
+        cout << "RESULT AVANT " << result << std::endl;
+        cout << "RESULT AVANT CHAR " << char(result) << std::endl;
+        cout << "m_conditionType[i]" << m_conditionType[i] << std::endl;
+        cout << "iiiiii" << i << std::endl;
+        
+        if (result == -1 && m_conditionType[i - 1] == '|')
+            boolA = true;
+        else
+            boolA = m_condition[i] == *retA;
+        boolB = m_condition[i + 1] == *retB;
+
+        cout << "checkConditions rule->m_condition[i]" << char(m_condition[i]) <<  std::endl;
+        cout << "checkConditions rule->m_condition[i +1]" << char(m_condition[i +1]) <<  std::endl;
+        cout << "boolA" << boolA <<  std::endl;
+        cout << "boolB" << boolB <<  std::endl;
+        cout << "P------m_conditionType[i]" << m_conditionType[i] << std::endl;
+
+        result = checkTheCondition( m_condition[i], m_condition[i + 1], boolA, boolB, m_conditionType[i]);
+
+        cout << "RESULT APRES " << result << std::endl;
+        cout << "RESULT APRES CHAR " << char(result) << std::endl;
+
+        if (result == -2)
+        {
+            cout << "AA sortie -2 xor" << std::endl;
+            return -2;
+        }
+        else if (result != -1 && result != -3)
+        {
+            return result;
+        }
+    }
+    cout << "SORTIE DE BOUCLE RESULT" << result << std::endl;
+    if (result == -3)
+        return -2;
+    return -1;
+}
+
+int ExpertSystem::checkTheCondition(int a, int b, bool boolA, bool boolB, char condition)
+{
     cout << "condition in check ONE" << condition << std::endl;
-
-    if (a != true)
-    {
-         retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
-         boolA = a == *retA;
-    }
-    else
-    {
-        boolA == true;
-    }
-    retB = find(m_trueFacts.begin(), m_trueFacts.end(), b);
-    boolB = b == *retB;
-    cout << "boolA" << boolA << std::endl;
-    cout << "boolB" << boolB << std::endl;
-
     if (condition == '+')
     {
         return andCondition(a, b, boolA, boolB);
@@ -85,6 +124,19 @@ int ExpertSystem::checkOneCondition(int a, int b, char condition)
         return xOrCondition(a, b, boolA, boolB);
     }
     return -1;
+}
+
+int ExpertSystem::oneCondition(int a, Rules rule)
+{
+    std::set<int>::iterator retA;
+
+    retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
+    if (*retA == a)
+    {
+        m_trueFacts.insert(rule.m_conculsion[0]);
+        return -1;
+    }
+    return a;
 }
 
 int ExpertSystem::xOrCondition(int a, int b, bool boolA, bool boolB)
@@ -122,7 +174,7 @@ int ExpertSystem::orCondition(int a, int b, bool boolA, bool boolB)
     cout << "BACKCHAIN IN CHECK RULE" << std::endl;
     ret = backwardChaining(a);
     cout << "BACKCHAIN IN CHECK RULE A ret : " << ret << std::endl;
-    if (ret == -1) // on sait que la solution est false on cherche pas plus
+    if (ret == -1) 
     {
         // on chercher si b existe
         cout << "IN CHECK RULE pour B" << std::endl;
@@ -145,25 +197,13 @@ int ExpertSystem::andCondition(int a, int b, bool boolA, bool boolB)
     }
     else if (!boolA)
     {
-        cout << "lancer une nouvelle querie pour : " << char(a) << std::endl;
+        cout << "AND lancer une nouvelle querie pour : " << char(a) << std::endl;
         return a;
     }
-    else if (!boolB)
+    else
     {
         return b;
-        cout << "lancer une nouvelle querie pour : " << char(b) << std::endl;
+        cout << "AND lancer une nouvelle querie pour : " << char(b) << std::endl;
     }
 }
 
-int ExpertSystem::oneCondition(int a, Rules rule)
-{
-    std::set<int>::iterator retA;
-
-    retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
-    if (*retA == a)
-    {
-        m_trueFacts.insert(rule.m_conculsion[0]);
-        return -1;
-    }
-    return a;
-}

@@ -34,7 +34,6 @@ int ExpertSystem::backwardChaining(int querie)
 			result = checkConditions(*itL);
 			if (result == -1)
 			{
-				printTrueFacts();
 				std::cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
 				return 1;
 				//condition remplie on a l'état de notre querie
@@ -71,7 +70,6 @@ int ExpertSystem::backwardChaining(int querie)
 	}
 	std::set<int>::iterator checkResult;
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
-	printTrueFacts();
 	std::cout << "checkResult : " << char(*checkResult) << std::endl;
 	std::cout << "querie : " << char(querie) << std::endl;
 
@@ -82,7 +80,7 @@ int ExpertSystem::backwardChaining(int querie)
 	}
 	else
 	{
-		std::cout << "QUERIE have NO Solution it is false : " << char(querie) << std::endl;
+		std::cout << "QUERIE have NO Solution for : " << char(querie) << std::endl;
 		return -1;
 	}
 
@@ -98,17 +96,21 @@ void ExpertSystem::analyseQuerie()
 	{
 		backwardChaining(*itrQ);
 	}
+	printTrueFacts();
 }
 
 void ExpertSystem::createBaseRules(string ligne, int ruleId)
 {
 	Rules	rule(ligne);
-	for (int i = 0; i < rule.m_facts.size(); i++)
+	if (rule.status == 1)
 	{
-		m_allFacts.insert(rule.m_facts[i]);
+		for (int i = 0; i < rule.m_facts.size(); i++)
+		{
+			m_allFacts.insert(rule.m_facts[i]);
+		}
+		rule.id = ruleId;
+		m_listRules.push_back(rule);
 	}
-	rule.id = ruleId;
-	m_listRules.push_back(rule);
 }
 
 void ExpertSystem::getInitialeFacts(string ligne)
@@ -151,7 +153,7 @@ ExpertSystem::ExpertSystem(string argv)
 				getInitialeFacts(ligne);
 			else if (ligne[0] == '?')
 				getQueries(ligne);
-			else if (isupper(ligne[0]) || ligne[0] == '!')
+			else if (isupper(ligne[0]) || ligne[0] == '!' || ligne[0] == '(')
 			{
 				createBaseRules(ligne, idRule);
 				idRule++;
@@ -160,6 +162,7 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
+	
 	if (m_queries.size() > 0)
 		analyseQuerie();
 }

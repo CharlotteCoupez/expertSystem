@@ -16,13 +16,17 @@ class Rules
 		void parseRule(std::string rule, std::vector<char> values, std::vector<char> type);
 		void printValues();
 		void printFacts();
-		std::vector<int> m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
-		std::vector<char> m_conditionType; // multiple choice : A N O X
-		std::vector<int> m_condition;			// toute les variable a true (peut augmenter pendant l'analyse)
-		std::vector<char> m_conclusionType; // multiple choice : I O
-		std::vector<int> m_conculsion;			// toute les variable a true (peut augmenter pendant l'analyse)
-		char	impORif;
-		int		id;
+		int getNumber(string rule, int type, int i);
+		int getImpORif(string rule, int i);
+		int getOperator(string rule, int type, int i);
+		std::vector<int>	m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
+		std::vector<char>	m_conditionType; // multiple choice : A N O X
+		std::vector<int>	m_condition;			// toute les variable a true (peut augmenter pendant l'analyse)
+		std::vector<char>	m_conclusionType; // multiple choice : I O
+		std::vector<int>	m_conclusion;			// toute les variable a true (peut augmenter pendant l'analyse)
+		char				impORif;
+		int					id;
+		int					status; // pour savoir i la regle et au norme ou nn 
 
   private:
 		// resultats: implies, ifAndOnlyIf;

@@ -6,14 +6,21 @@
 #?C
 
 
-A + B => C
-D | E | G + K => A
-F => G
-H => D
+A => B
+B <=> D
+A | C => D
+
+=C
 
 
-=BDK
-?C
+?D
+
+#A + B => C
+#D | E | O | F | G + K => A
+#
+#
+#=BDKP
+#?C
 
 #A + B => C
 #D + F => A
