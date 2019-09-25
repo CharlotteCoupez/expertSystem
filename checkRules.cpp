@@ -16,7 +16,10 @@ int ExpertSystem::checkConditions(Rules rule)
     {
         cout << "checkConditions rule->m_condition[i]" << char(rule.m_condition[i]) <<  std::endl;
 
-        result = checkOneCondition(rule.m_condition[i], rule.m_condition[i + 1], rule.m_conditionType[i]);
+        if (i == 0)
+            result = checkOneCondition(rule.m_condition[i], rule.m_condition[i + 1], rule.m_conditionType[i]);
+        else
+            result = checkOneCondition(true, rule.m_condition[i + 1], rule.m_conditionType[i]);
         cout << "apres check one result " << result << std::endl;
         cout << "apres check one char(result) " << char(result) << std::endl;
         if (result == -2)
@@ -55,9 +58,16 @@ int ExpertSystem::checkOneCondition(int a, int b, char condition)
     bool                    boolB;
     cout << "condition in check ONE" << condition << std::endl;
 
-    retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
+    if (a != true)
+    {
+         retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
+         boolA = a == *retA;
+    }
+    else
+    {
+        boolA == true;
+    }
     retB = find(m_trueFacts.begin(), m_trueFacts.end(), b);
-    boolA = a == *retA;
     boolB = b == *retB;
     cout << "boolA" << boolA << std::endl;
     cout << "boolB" << boolB << std::endl;

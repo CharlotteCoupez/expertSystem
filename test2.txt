@@ -6,19 +6,19 @@
 #?C
 
 
-#A + B => C
-#D | E | G => A
-#F => G
-#H => D
-
-
-#=BDF
-#?C
-
 A + B => C
-D + F => A
+D | E | G + K => A
+F => G
+H => D
+
+
+=BDK
+?C
+
+#A + B => C
+#D + F => A
 #G + H + I + J => D
 
-=DFB
-
-?C
+#=DFB
+#
+#?C
