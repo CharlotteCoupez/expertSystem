@@ -26,7 +26,7 @@ int ExpertSystem::backwardChaining(int querie)
 		std::cout << "mliste id " << itL->id << std::endl;
 		std::vector<int>::iterator	factInConclusion;
 
-		factInConclusion = find(itL->m_conculsion.begin(), itL->m_conculsion.end(), querie);
+		factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), querie);
 		if (*factInConclusion == querie)
 		{
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
@@ -34,14 +34,14 @@ int ExpertSystem::backwardChaining(int querie)
 			result = checkConditions(*itL);
 			if (result == -1)
 			{
-				std::cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
+				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
 				return 1;
 				//condition remplie on a l'état de notre querie
 			}
 			else if (result == -2)
 			{
 				//false no solution a cause de xor
-				std::cout << "querie imposible xor : " << char(querie) << std::endl;
+				cout << "querie imposible xor : " << char(querie) << std::endl;
 				return -1;
 			}
 			else if (result == -3)
@@ -52,7 +52,7 @@ int ExpertSystem::backwardChaining(int querie)
 			else // notre retour est une nouvelle querie on recursive:)
 			{
 				ret = backwardChaining(result);
-				std::cout << "sortir backward: " << char(querie) << std::endl;
+				cout << "sortir backward: " << char(querie) << std::endl;
 				if (ret == -2)
 					return -1; // on sait que la solution est false on cherche pas plus
 				else if (ret == 1)
@@ -163,8 +163,8 @@ ExpertSystem::ExpertSystem(string argv)
 	else
 		std::cout << "No such a file" << std::endl;
 	
-	if (m_queries.size() > 0)
-		analyseQuerie();
+	//if (m_queries.size() > 0)
+	//	analyseQuerie();
 }
 
 void ExpertSystem::printTrueFacts()

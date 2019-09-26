@@ -10,13 +10,13 @@ int main(int argc, char **argv)
 	{
 		ExpertSystem newFile(argv[1]);
 		// if open argv ok sinon Wrong input
-		//if (newFile.m_listRules.size() > 0)
-		//{
-		//	for (std::list<Rules>::iterator it = newFile.m_listRules.begin(); it != newFile.m_listRules.end(); it++)
-		//	{
-		//		it->printValues();
-		//	}
-		//}
+		if (newFile.m_listRules.size() > 0)
+		{
+			for (std::list<Rules>::iterator it = newFile.m_listRules.begin(); it != newFile.m_listRules.end(); it++)
+			{
+				it->printValues();
+			}
+		}
 
 		std::cout << "annalyser starting" << std::endl;
 	}

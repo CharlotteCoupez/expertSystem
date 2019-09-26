@@ -24,7 +24,7 @@ int ExpertSystem::checkConditions(Rules rule)
     }
     if (result == -1)
     {
-        m_trueFacts.insert(rule.m_conculsion[0]);
+        m_trueFacts.insert(rule.m_conclusion[0]);
         return -1;
     }
     else
@@ -42,7 +42,7 @@ void test(std::vector<int> m_condition)
 
     for (int i = 0; i < m_condition.size(); i++)
 	{
-		std::cout << "-----char(m_conditionType[i] : " << char(m_condition[i]) << std::endl;
+		cout << "-----char(m_conditionType[i] : " << char(m_condition[i]) << std::endl;
 		std::cout << "---------m_conditionType[i] : " << m_condition[i] << std::endl;
 	}
 
@@ -133,7 +133,7 @@ int ExpertSystem::oneCondition(int a, Rules rule)
     retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
     if (*retA == a)
     {
-        m_trueFacts.insert(rule.m_conculsion[0]);
+        m_trueFacts.insert(rule.m_conclusion[0]);
         return -1;
     }
     return a;

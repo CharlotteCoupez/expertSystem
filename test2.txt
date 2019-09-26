@@ -8,15 +8,30 @@
 
 A => B
 B <=> D
-A | C => D
+A | C + E => D
+(ACE+|)
+CE+A|
+A + C | E => D
+AC+E|
+AC+ E |
+EAC+|
 
+A ^ C | F + E => D
+FE+C|A^
+
+AC+
+
+A + (C + (D|E))
+DE|C+A+
+A + CE
 =C
 
 
-?D
+?
 
 #A + B => C
 #D | E | O | F | G + K => A
+GK+F|O|E|D|
 #
 #
 #=BDKP
@@ -29,3 +44,65 @@ A | C => D
 #=DFB
 #
 #?C
+
+Prenons maintenant l'exemple de l'expression 3 * 4 + 2 que l'on convertit 
+en 3 4 2 + * qui s'évalue en 3 6 * = 18 alors que le résultat devrait être 14. 
+La notation postfixée correcte devrait être 3 4 * 2 + qui devient 12 2 +. 
+Pour obtenir l'expression postfixée correcte, il faut ajouter une règle à notre 
+raisonnement : lorsque l'on extrait un opérateur de l'expression infixée, examiner 
+le sommet de la pile. Si la pile est vide, il suffit de placer l'opérateur sur la pile. 
+Si la pile n'est pas vide, alors 
+si l'opérateur qui se trouve au sommet de la pile est 
+prioritaire, 
+placer celui-ci en sortie dans l'expression postfixée et pousser l'opérateur
+ non prioritaire sur la pile.Dans le cas contraire, si l'opérateur au sommet de la pile 
+ n'est pas prioritaire, pousser le nouvel opérateur sur la pile au-dessus 
+ de celui qui s'y trouve déjà.
+
+
+
+
+Recommençons avec l'expression 3 * 4 + 2. Lorsque l'on arrive à l'opérateur +, 
+la pile contient l'opérateur *. Comme l'opérateur + n'est pas prioritaire, 
+on enlève * de la pile pour le placer en sortie et on pousse + sur la pile. 
+On continue ensuite avec 2 que l'on place en sortie et on dépile le dernier opérateur 
+de la pile, ce qui donne 3 4 * 2 +.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
