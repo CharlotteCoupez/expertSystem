@@ -22,7 +22,7 @@ int Rules::notationPolonaise(string rule, int i)
 	// m_polonaise.erase(m_polonaise.begin(), m_polonaise.end());
 	while (i < rule.size() && rule[i] !='<' && rule[i] != '=' && rule[i] != '#')
 	{
-		cout << "hello rule[i] :" << rule[i] << std::endl;
+		// cout << "hello rule[i] :" << rule[i] << std::endl;
 		len = m_polonaiseTmp.size();
 		if (rule[i] == '!')
 			m_polonaise.push_back(rule[i]);
@@ -61,7 +61,7 @@ int Rules::notationPolonaise(string rule, int i)
 					while (m_polonaiseTmp[len -1] == '+')
 					{
 						m_polonaise.push_back(m_polonaiseTmp[len - 1]);
-						m_polonaiseTmp.erase(m_polonaiseTmp.begin() + (len -1), m_polonaiseTmp.end());
+						m_polonaiseTmp.erase(m_polonaiseTmp.begin() + (len - 1), m_polonaiseTmp.end());
 						len--;
 					}
 					m_polonaiseTmp.push_back(rule[i]);
@@ -69,7 +69,7 @@ int Rules::notationPolonaise(string rule, int i)
 				}
 				else if (rule[i] == '^')
 				{
-					cout << "IIIm_polonaiseTmp[len -1]" << m_polonaiseTmp[len -1] << std::endl;
+					// cout << "IIIm_polonaiseTmp[len -1]" << m_polonaiseTmp[len -1] << std::endl;
 					while (m_polonaiseTmp[len -1] == '|' || m_polonaiseTmp[len -1] == '+')
 					{
 						m_polonaise.push_back(m_polonaiseTmp[len - 1]);
@@ -81,14 +81,14 @@ int Rules::notationPolonaise(string rule, int i)
 				}
 			}
 		}
-		for (int i = 0; i < m_polonaise.size(); i++)
-		{
-			std::cout << "m_polonaise : " << m_polonaise[i] << std::endl;
-		}
-		for (int i = 0; i < m_polonaiseTmp.size(); i++)
-		{
-			std::cout << "m_polonaiseTmp : " << m_polonaiseTmp[i] << std::endl;
-		}
+		// for (int i = 0; i < m_polonaise.size(); i++)
+		// {
+		// 	std::cout << "m_polonaise : " << m_polonaise[i] << std::endl;
+		// }
+		// for (int i = 0; i < m_polonaiseTmp.size(); i++)
+		// {
+		// 	std::cout << "m_polonaiseTmp : " << m_polonaiseTmp[i] << std::endl;
+		// }
 		i++;
 	}
 	while (m_polonaiseTmp.size() > 0)
@@ -119,7 +119,7 @@ Rules::Rules(string rule)
 	impORif = 0;
 	status = 0;
 	rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end());
-	i = notationPolonaise(rule, i); // (que pour condition) voir si ca marche pour conclusion
+	i = notationPolonaise(rule, i);
 	putInCondition();
 	if ( (i = getImpORif(rule, i)) < 0)
 		return;

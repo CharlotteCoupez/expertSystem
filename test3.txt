@@ -4,12 +4,15 @@
 #S DP| S^^
 #SD|PS|^
 
-((A | B) ^ C + !D) + D
-^+
-#AB|CD+^D+
+((A | B) ^ C + E) + D => F
+
+=AED
+?F
+
+# A B | C E + ^ D +
+
 #S + !D + P | F
-|
-|
+
 # SDP++F|
 #  S DP+ |F ^
 
@@ -17,3 +20,8 @@
 #S T F ^ |
 
 #1 + (5*2) +1
+
+
+#A|B|C + D|E|F
+
+#ABCD+E||||

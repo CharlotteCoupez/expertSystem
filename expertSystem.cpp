@@ -30,10 +30,13 @@ int ExpertSystem::backwardChaining(int querie)
 		if (*factInConclusion == querie)
 		{
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
-			std::cout << "QUERIE IN CONCLUSON : " << char(querie) << std::endl;
-			result = checkConditions(*itL);
+			std::cout << "QUERIE IN CONCLUSON c : " << char(querie) << std::endl;
+			std::cout << "QUERIE IN CONCLUSON : " << querie << std::endl;
+			//result = checkConditions(*itL);
 			// if (in condition pour if and onlyif)
-				// result = ruleChecking(itL->m_condition, itL->m_conclusion)
+		
+			result = ruleChecking(itL->m_condition, itL->m_conclusion);
+			
 			// else 
 				// result = ruleChecking(itL->m_conclusion, itL->m_condition)
 			if (result == -1)
@@ -167,8 +170,8 @@ ExpertSystem::ExpertSystem(string argv)
 	else
 		std::cout << "No such a file" << std::endl;
 	
-	//if (m_queries.size() > 0)
-	//	analyseQuerie();
+	if (m_queries.size() > 0)
+		analyseQuerie();
 }
 
 void ExpertSystem::printTrueFacts()
