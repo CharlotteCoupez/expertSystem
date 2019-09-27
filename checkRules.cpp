@@ -36,17 +36,7 @@ int ExpertSystem::checkConditions(Rules rule)
 
 }
 
-void test(std::vector<int> m_condition)
-{
-	std::cout << "--m_condition.size() : " << m_condition.size() << std::endl;
 
-    for (int i = 0; i < m_condition.size(); i++)
-	{
-		cout << "-----char(m_conditionType[i] : " << char(m_condition[i]) << std::endl;
-		std::cout << "---------m_conditionType[i] : " << m_condition[i] << std::endl;
-	}
-
-}
 int ExpertSystem::severalConditions(std::vector<int> m_condition, std::vector<char> m_conditionType)
 {
     int result;
@@ -126,19 +116,6 @@ int ExpertSystem::checkTheCondition(int a, int b, bool boolA, bool boolB, char c
     return -1;
 }
 
-int ExpertSystem::oneCondition(int a, Rules rule)
-{
-    std::set<int>::iterator retA;
-
-    retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
-    if (*retA == a)
-    {
-        m_trueFacts.insert(rule.m_conclusion[0]);
-        return -1;
-    }
-    return a;
-}
-
 int ExpertSystem::xOrCondition(int a, int b, bool boolA, bool boolB)
 {
     // cout <<"HELLLO XOR" << std::endl;
@@ -207,3 +184,27 @@ int ExpertSystem::andCondition(int a, int b, bool boolA, bool boolB)
     }
 }
 
+int ExpertSystem::oneCondition(int a, Rules rule)
+{
+    std::set<int>::iterator retA;
+
+    retA = find(m_trueFacts.begin(), m_trueFacts.end(), a);
+    if (*retA == a)
+    {
+        m_trueFacts.insert(rule.m_conclusion[0]);
+        return -1;
+    }
+    return a;
+}
+
+void test(std::vector<int> m_condition)
+{
+	std::cout << "--m_condition.size() : " << m_condition.size() << std::endl;
+
+    for (int i = 0; i < m_condition.size(); i++)
+	{
+		cout << "-----char(m_conditionType[i] : " << char(m_condition[i]) << std::endl;
+		std::cout << "---------m_conditionType[i] : " << m_condition[i] << std::endl;
+	}
+
+}

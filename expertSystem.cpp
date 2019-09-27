@@ -32,6 +32,10 @@ int ExpertSystem::backwardChaining(int querie)
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
 			std::cout << "QUERIE IN CONCLUSON : " << char(querie) << std::endl;
 			result = checkConditions(*itL);
+			// if (in condition pour if and onlyif)
+				// result = ruleChecking(itL->m_condition, itL->m_conclusion)
+			// else 
+				// result = ruleChecking(itL->m_conclusion, itL->m_condition)
 			if (result == -1)
 			{
 				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;

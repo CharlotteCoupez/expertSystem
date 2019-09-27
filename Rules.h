@@ -16,11 +16,10 @@ class Rules
 		void parseRule(std::string rule, std::vector<char> values, std::vector<char> type);
 		void printValues();
 		void printFacts();
-		int getNumber(std::string rule, int type, int i);
 		int getImpORif(std::string rule, int i);
-		int getOperator(std::string rule, int type, int i);
 		int notationPolonaise(std::string rule, int type);
-		
+		void putInCondition();
+		void putInConclusion();
 		std::vector<int>	m_facts;			// toute les variable a true (peut augmenter pendant l'analyse)
 		std::vector<char>	m_conditionType; // multiple choice : A N O X
 		std::vector<int>	m_condition;			// toute les variable a true (peut augmenter pendant l'analyse)
