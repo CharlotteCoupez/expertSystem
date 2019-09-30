@@ -84,10 +84,19 @@ int ExpertSystem::backwardChaining(int querie)
 void ExpertSystem::analyseQuerie()
 {
 	std::vector<int>::iterator	itrQ;
+	std::set<int>::iterator		querie;
 
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
-		backwardChaining(*itrQ);
+		querie = find(m_trueFacts.begin(), m_trueFacts.end(), *itrQ);
+		cout << "START QUERING"<< std::endl;
+		if (*querie != *itrQ)
+			backwardChaining(*itrQ);
+		else
+		{
+			cout << "querie True :) : " << char(*querie) << std::endl;
+		}
+
 	}
 	printTrueFacts();
 }
