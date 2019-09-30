@@ -25,7 +25,7 @@ A + B + D => C
 
 #=DGKLBACE # Initial facts : A, B and G are true. All others are false.
 
-=AB
+=ABD
 ?E
 # If no facts are initially true, then a simple "=" followed
 # by a newline is used

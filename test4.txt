@@ -1,0 +1,13 @@
+
+
+
+A => B
+I | D => A
+C ^ J ^ G + L => D
+E + F => J
+H ^ K => G
+
+
+=EHKL
+
+?B

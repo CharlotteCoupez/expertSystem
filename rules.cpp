@@ -13,7 +13,7 @@ int Rules::getImpORif(string rule, int i)
 		return i + 2;
 	else if (i < (rule.size() + 2) && rule[i] == '<' && rule[i + 1] == '=' && rule[i + 2] == '>')
 		return i + 3;
-	return -1; //systaxe error sur la rule 
+	return -1; //systaxe error sur la rule
 }
 
 int Rules::notationPolonaise(string rule, int i)
@@ -45,7 +45,7 @@ int Rules::notationPolonaise(string rule, int i)
 
 		}
 		else if(rule[i] == '+' || rule[i] == '|' || rule[i] == '^')
-		{	
+		{
 			if (len == 0)
 				m_polonaiseTmp.push_back(rule[i]);
 			else
@@ -65,7 +65,7 @@ int Rules::notationPolonaise(string rule, int i)
 						len--;
 					}
 					m_polonaiseTmp.push_back(rule[i]);
-					
+
 				}
 				else if (rule[i] == '^')
 				{
@@ -77,7 +77,7 @@ int Rules::notationPolonaise(string rule, int i)
 						len--;
 					}
 					m_polonaiseTmp.push_back(rule[i]);
-					
+
 				}
 			}
 		}
@@ -100,14 +100,14 @@ int Rules::notationPolonaise(string rule, int i)
 		m_polonaiseTmp.erase(m_polonaiseTmp.begin()+ (len -1), m_polonaiseTmp.end());
 		len = m_polonaiseTmp.size();
 	}
-	for (int j = 0; j < m_polonaise.size(); j++)
-	{
-		std::cout << "-------final m_polonaise : " << m_polonaise[j] << std::endl;
-	}
-	for (int j = 0; j < m_polonaiseTmp.size(); j++)
-	{
-		std::cout << "--------final m_polonaiseTmp : " << m_polonaiseTmp[j] << std::endl;
-	}
+	// for (int j = 0; j < m_polonaise.size(); j++)
+	// {
+	// 	std::cout << "-------final m_polonaise : " << m_polonaise[j] << std::endl;
+	// }
+	// for (int j = 0; j < m_polonaiseTmp.size(); j++)
+	// {
+	// 	std::cout << "--------final m_polonaiseTmp : " << m_polonaiseTmp[j] << std::endl;
+	// }
 	return i;
 }
 
@@ -123,7 +123,7 @@ Rules::Rules(string rule)
 	putInCondition();
 	if ( (i = getImpORif(rule, i)) < 0)
 		return;
-		
+
 	notationPolonaise(rule, i);
 	putInConclusion();
 	for (int i = 0; i < m_polonaise.size(); i++)

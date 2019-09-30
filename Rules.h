@@ -28,7 +28,7 @@ class Rules
 		std::vector<char>	m_polonaiseTmp;			// toute les variable a true (peut augmenter pendant l'analyse)
 		char				impORif;
 		int					id;
-		int					status; // pour savoir i la regle et au norme ou nn 
+		int					status; // pour savoir i la regle et au norme ou nn
 
   private:
 		// resultats: implies, ifAndOnlyIf;

@@ -1,5 +1,7 @@
 #include "ExpertSystem.h"
 #include <iostream>
+#include <stdio.h>
+#include <cstring>
 
 using namespace std;
 /* règles des retours :
@@ -15,10 +17,10 @@ int ExpertSystem::ruleChecking(vector<int> condition, vector<int> conclusion) //
 {
 	int ret;
 	if (condition.size() == 1)
-		return oneCondition2(condition, conclusion);
+		return oneCondition(condition, conclusion);
 	else
 	{
-		ret = severalConditions2(condition);
+		ret = severalConditions(condition);
 		if (ret == -1)
 		{
 			int i = 0;
@@ -32,53 +34,60 @@ int ExpertSystem::ruleChecking(vector<int> condition, vector<int> conclusion) //
 
 		return ret;
 	}
-		
+
 }
 
-int ExpertSystem::severalConditions2(vector<int> condition)
+int ExpertSystem::severalConditions(vector<int> condition)
 {
-	int		 ret = 0;
-	vector<bool> tmpResult(false);
-	cout << "severalConditions2  : " << condition.size() << std::endl;
+	int		 	ret = 0;
+	const char	str [] = "+|^";
+	const char	*rstr;
 
 	for (int i = 0; i < condition.size(); i++)
 	{
-		const char str [] = "+|^";
-		const char *rstr;
 		rstr = strchr(str, condition[i]);
-		printf("rstr %s \n", rstr);
-		cout << " condition[i]) : " << char(condition[i]) << std::endl;
-
 		if (rstr != NULL)
 		{
-			cout << "INININNININstrchr(  : " << char(condition[i]) << std::endl;
+			for (int j = 0; j < condition.size(); j++)
+			{
+				std::cout << "condition1 : " << char(condition[j]) << std::endl;
+				std::cout << "condition1 : " << condition[j] << std::endl;
+			}
+			std::cout << "fin " << std::endl;
 
-			ret = getResult(condition, tmpResult, i);
+			ret = getResult(condition, i);
 			if (isupper(char(ret)))
-				return ret; // On relance la recherche avec une nouvelle querie 
+				return ret; // On relance la recherche avec une nouvelle querie
 			else if (ret == -2)
 				return -2; // IMPOSSIBLE XOR FALSE AVEC LES 2 CONDITIONS QUI EXISTE..
+			else if (ret == -3)
+			{
+				cout << "ret -3" << std::endl;
+				if (checkNextOperator(condition, i + 1) != 1)
+					return -2;
+				else
+				{
+					condition.insert(condition.begin() + (i + 1), 0);
+					condition.erase(condition.begin() + (i - 2), condition.begin() + (i + 1));
+					if (condition.size() > 1)
+						i = 0;
+				}
+			}
 			else if (ret == -1)
 			{
+				cout << "ret -1" << std::endl;
 				condition.insert(condition.begin()+(i + 1), 1);
 				condition.erase(condition.begin() + (i - 2), condition.begin()+ (i + 1) );
-				cout << "INININNININstr   scondition.size()  : " << condition.size() << std::endl;
 				if (condition.size() > 1)
 					i = 0;
 			}
-			// else if (i < (condition.size() - 2) && ret == -3 && condition[i] == '|' && condition[i + 1] == '|')
-			// 	tmpResult.push_back(false); //quand on trouve une condition ok il faut enlever les 0.. pienso
-			// else if (i < (condition.size() - 2) && ret == -3 && condition[i] == '^' && condition[i + 1] == '^')
-			// 	tmpResult.push_back(false);
-			// else
-			// 	tmpResult.push_back(true);
 		}
 	}
 	cout << "ret al fin de several condition : " << ret << std::endl;
 	return ret; // Normalement soit -1 soit -3 ||  -1 TRUE -3 FALSE
 }
 
-int ExpertSystem::getResult(std::vector<int> condition, std::vector<bool> tmpResult, int i)
+int ExpertSystem::getResult(std::vector<int> condition, int i)
 {
 	int					 	ret = 0;
 	std::set<int>::iterator retA;
@@ -106,46 +115,101 @@ int ExpertSystem::getResult(std::vector<int> condition, std::vector<bool> tmpRes
 	}
 
 	if (condition[i] == '+')
-	{
-		return andCondition2(factA, factB, condition, i);
-	}
-	//else if (condition[i] == '|')
-	//{
-	//	ret = orCondition2(factA, factB, condition);
-	//}
-	//else if (condition[i] == '^')
-	//{
-	//	ret = xorCondition2(factA, factB, condition);
-	//}
+		return andCondition(factA, factB, condition, i);
+	else if (condition[i] == '|')
+		return orCondition(factA, factB, condition, i);
+	else if (condition[i] == '^')
+		return xorCondition(factA, factB, condition, i);
 	return 0;
 }
 
-int ExpertSystem::andCondition2(bool a, bool b, vector<int> condition, int i)
+int	ExpertSystem::xorCondition(bool a, bool b, vector<int> condition, int i)
 {
-		cout << "a " << a << std::endl;
-		cout << "b " << b << std::endl;
-
-	if (a && b)
-	{
-		cout << "AND OK" << std::endl;
+	cout << "XOR a " << a << std::endl;
+	cout << "XOR b " << b << std::endl;
+	cout << "condition[i -2] " << char(condition[i - 2]) << std::endl;
+	cout << "condition[i -1] " << char(condition[i - 1]) << std::endl;
+	if (a != 1 && condition[i - 2] != 0)
+		a = backwardChaining(condition[i - 2]);
+	if (b != 1 && condition[i - 1] != 0)
+		b = backwardChaining(condition[i - 1]);
+	if (a ^ b)
 		return -1;
-	}
-	else if (!a)
-	{
-		cout << "AND 1ere condition missing relance pour : " << char(a) << std::endl;
-		//faire ici un if condition i-2 nest pas 0 alors cherche sinon -2 impossible
-		return condition[i - 2];
-	}
+	else if (a && b)
+		return -2;
 	else
+		return -3;
+}
+
+int ExpertSystem::orCondition(bool a, bool b, vector<int> condition, int i)
+{
+	int ret;
+
+	cout << "OR a " << a << std::endl;
+	cout << "OR b " << b << std::endl;
+	cout << "condition[i -2] " << char(condition[i - 2]) << std::endl;
+	cout << "condition[i -1] " << char(condition[i - 1]) << std::endl;
+	cout << "condition[i -2] " << condition[i - 2] << std::endl;
+	cout << "condition[i -1] " << condition[i - 1] << std::endl;
+
+	if (a || b)
+		return -1;
+	else if (condition[i - 2] != 0)
 	{
-		cout << "AND 2ere condition missing relance pour : " << char(b) << std::endl;
-		//faire ici un if condition i-2 nest pas 0 alors cherche sinon -2 impossible
-		return condition[i - 1];
+		ret = backwardChaining(condition[i - 2]);
+		cout << "OR backwardChaining(v ret " << ret << std::endl;
+
+		if (ret == 0 && condition[i - 1] != 0)
+		{
+			ret = backwardChaining(condition[i - 1]);
+
+			cout << "OR backwardChaining ret b " << ret << std::endl;
+			if (ret == 0)
+				return -3;
+			else
+				return -1; // ok on a trouvé
+		}
+		else if (ret != -1) // si a == 0 et b == 0 on renvoie -3 voir si il y a un autre ou apres sinn on renvera false apres
+			return -1;
 	}
+	else if (condition[i - 1] != 0) // si a etait direct a 0 on cherche b de maniere normale
+		return condition[i - 1];
+	return -3; // on renvoie -3 car on est dans ou
+	// donc si il y a un ou apres on continue sinon en renvera false
+}
+
+int ExpertSystem::andCondition(bool a, bool b, vector<int> condition, int i)
+{
+	int ret;
+	cout << "AND a " << a << std::endl;
+	cout << "AND b " << b << std::endl;
+	cout << "condition[i -2] " << char(condition[i - 2]) << std::endl;
+	cout << "condition[i -1] " << char(condition[i - 1]) << std::endl;
+	if (a && b)
+		return -1;
+	if (a != 1)
+	{
+		if (condition[i -2] == 0)
+			return -3;
+		ret = backwardChaining(condition[i - 2]);
+		cout << "AND bc ret A " << ret << std::endl;
+		if (ret == 0)
+			return -3;
+	}
+	if (b != 1)
+	{
+		if (condition[i - 1] == 0)
+			return -3;
+		ret = backwardChaining(condition[i - 1]);
+		cout << "AND bc ret B " << ret << std::endl;
+		if (ret == 0)
+			return -3;
+	}
+	return -1;
 }
 
 
-int ExpertSystem::oneCondition2(vector<int> condition, vector<int> conclusion)
+int ExpertSystem::oneCondition(vector<int> condition, vector<int> conclusion)
 {
 	int					 i;
 	std::set<int>::iterator fact;
@@ -164,6 +228,23 @@ int ExpertSystem::oneCondition2(vector<int> condition, vector<int> conclusion)
 	return condition[0];
 }
 
+int ExpertSystem::checkNextOperator(std::vector<int> condition, int i)
+{
+	int ret = 0;
+	const char str[] = "+|^";
+	const char *rstr;
+
+	for (i; i < condition.size(); i++)
+	{
+		rstr = strchr(str, condition[i]);
+		if (rstr != NULL)
+		{
+			if (*rstr != '+')
+				ret = 1;
+		}
+	}
+	return ret;
+}
 
 /*
 	for (int i = 0; i < condition.size(); i++)
