@@ -40,6 +40,7 @@ int ExpertSystem::ruleChecking(vector<int> condition, vector<int> conclusion) //
 int ExpertSystem::severalConditions(vector<int> condition)
 {
 	int		 	ret = 0;
+	int			result = 0;
 	const char	str [] = "+|^";
 	const char	*rstr;
 
@@ -56,9 +57,9 @@ int ExpertSystem::severalConditions(vector<int> condition)
 			std::cout << "fin " << std::endl;
 
 			ret = getResult(condition, i);
-			if (isupper(char(ret)))
-				return ret; // On relance la recherche avec une nouvelle querie
-			else if (ret == -2)
+			//if (isupper(char(ret)))
+			//	return ret; // On relance la recherche avec une nouvelle querie
+			if (ret == -2)
 				return -2; // IMPOSSIBLE XOR FALSE AVEC LES 2 CONDITIONS QUI EXISTE..
 			else if (ret == -3)
 			{
@@ -67,20 +68,22 @@ int ExpertSystem::severalConditions(vector<int> condition)
 					return -2;
 				else
 				{
-					condition.insert(condition.begin() + (i + 1), 0);
-					condition.erase(condition.begin() + (i - 2), condition.begin() + (i + 1));
-					if (condition.size() > 1)
-						i = 0;
+					result = 0;
+					// condition.insert(condition.begin() + (i + 1), result);
+					// condition.erase(condition.begin() + (i - 2), condition.begin() + (i + 1));
+					// if (condition.size() > 1)
+					// 	i = 0;
 				}
 			}
 			else if (ret == -1)
 			{
-				cout << "ret -1" << std::endl;
-				condition.insert(condition.begin()+(i + 1), 1);
-				condition.erase(condition.begin() + (i - 2), condition.begin()+ (i + 1) );
-				if (condition.size() > 1)
-					i = 0;
+				result = 1;
 			}
+			cout << "result" << result << std::endl;
+			condition.insert(condition.begin()+(i + 1), result);
+			condition.erase(condition.begin() + (i - 2), condition.begin()+ (i + 1) );
+			if (condition.size() > 1)
+				i = 0;
 		}
 	}
 	cout << "ret al fin de several condition : " << ret << std::endl;

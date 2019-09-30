@@ -21,6 +21,7 @@ int ExpertSystem::backwardChaining(int querie)
 	int							result;
 	int							ret;
 	std::vector<int>::iterator	factInConclusion;
+	std::set<int>::iterator		checkResult;
 
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
@@ -31,6 +32,7 @@ int ExpertSystem::backwardChaining(int querie)
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
 			std::cout << "QUERIE IN CONCLUSON char: " << char(querie) << " in int: " << querie << std::endl;
 			result = ruleChecking(itL->m_condition, itL->m_conclusion);
+			std::cout << "ret result in backward: " << result << std::endl;
 			if (result == -1)
 			{
 				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
@@ -41,10 +43,6 @@ int ExpertSystem::backwardChaining(int querie)
 				//false no solution a cause de xor
 				cout << "querie imposible xor : " << char(querie) << std::endl;
 				return 0;
-			}
-			else if (result == -3)
-			{
-				itL++;  // ca na pas abouti on continue
 			}
 			else
 				itL++;
@@ -66,7 +64,7 @@ int ExpertSystem::backwardChaining(int querie)
 			itL++;
 		}
 	}
-	std::set<int>::iterator checkResult;
+
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	std::cout << "checkResult : " << char(*checkResult) << std::endl;
 	std::cout << "querie : " << char(querie) << std::endl;
@@ -81,9 +79,6 @@ int ExpertSystem::backwardChaining(int querie)
 		std::cout << "QUERIE have NO Solution for : " << char(querie) << std::endl;
 		return 0;
 	}
-
-	// querie fals or undeermineds
-	// si cest jmais passe par une conclusion dire que ya rien qui permet de dire ce quest cette querie
 }
 
 void ExpertSystem::analyseQuerie()
