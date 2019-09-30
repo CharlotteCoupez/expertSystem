@@ -100,14 +100,14 @@ int Rules::notationPolonaise(string rule, int i)
 		m_polonaiseTmp.erase(m_polonaiseTmp.begin()+ (len -1), m_polonaiseTmp.end());
 		len = m_polonaiseTmp.size();
 	}
-	// for (int j = 0; j < m_polonaise.size(); j++)
-	// {
-	// 	std::cout << "-------final m_polonaise : " << m_polonaise[j] << std::endl;
-	// }
-	// for (int j = 0; j < m_polonaiseTmp.size(); j++)
-	// {
-	// 	std::cout << "--------final m_polonaiseTmp : " << m_polonaiseTmp[j] << std::endl;
-	// }
+	for (int j = 0; j < m_polonaise.size(); j++)
+	{
+		std::cout << "-------final m_polonaise : " << m_polonaise[j] << std::endl;
+	}
+	for (int j = 0; j < m_polonaiseTmp.size(); j++)
+	{
+		std::cout << "--------final m_polonaiseTmp : " << m_polonaiseTmp[j] << std::endl;
+	}
 	return i;
 }
 

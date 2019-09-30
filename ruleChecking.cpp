@@ -211,8 +211,9 @@ int ExpertSystem::andCondition(bool a, bool b, vector<int> condition, int i)
 
 int ExpertSystem::oneCondition(vector<int> condition, vector<int> conclusion)
 {
-	int					 i;
-	std::set<int>::iterator fact;
+	int					 	i;
+	int						ret;
+	std::set<int>::iterator	fact;
 
 	i = 0;
 	fact = find(m_trueFacts.begin(), m_trueFacts.end(), condition[0]);
@@ -225,7 +226,10 @@ int ExpertSystem::oneCondition(vector<int> condition, vector<int> conclusion)
 		}
 		return -1;
 	}
-	return condition[0];
+	ret = backwardChaining(condition[0]);
+	if (ret == 0)
+		return -3;
+	return -1;
 }
 
 int ExpertSystem::checkNextOperator(std::vector<int> condition, int i)

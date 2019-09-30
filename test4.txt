@@ -1,13 +1,13 @@
 
 
 
-A => B
-I | D => A
 C ^ J ^ G + L => D
+A => B
 E + F => J
+I | D => A
 H ^ K => G
 
 
-=EHKL
+=EKL
 
 ?B

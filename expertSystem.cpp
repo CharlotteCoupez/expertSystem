@@ -46,22 +46,23 @@ int ExpertSystem::backwardChaining(int querie)
 			{
 				itL++;  // ca na pas abouti on continue
 			}
-			else // notre retour est une nouvelle querie on recursive:)
-			{
-				ret = backwardChaining(result);
-				cout << "sortir backward: " << char(querie) << std::endl;
-				if (ret == -2)
-					return 0; // on sait que la solution est false on cherche pas plus
-				else if (ret == 1)
-					itL = m_listRules.begin(); // on a abouti a un true donc on retourne a notre queri precedente voir si ca la fait avancée
-				else
-					itL++; // ca na pas abouti on regarde si il ny a pas dautres regles qui peuvent nous aider a prouver cette querie
-			}
+			else
+				itL++;
+			// else // notre retour est une nouvelle querie on recursive:)
+			// {
+			// 	ret = backwardChaining(result);
+			// 	cout << "sortir backward: " << char(querie) << std::endl;
+			// 	if (ret == -2)
+			// 		return 0; // on sait que la solution est false on cherche pas plus
+			// 	else if (ret == 1)
+			// 		itL = m_listRules.begin(); // on a abouti a un true donc on retourne a notre queri precedente voir si ca la fait avancée
+			// 	else
+			// 		itL++; // ca na pas abouti on regarde si il ny a pas dautres regles qui peuvent nous aider a prouver cette querie
+			// }
 		}
 		else
 		{
 			std::cout << "on tourne " << char(querie) << std::endl;
-
 			itL++;
 		}
 	}
