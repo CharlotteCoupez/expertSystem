@@ -32,16 +32,16 @@ int ExpertSystem::backwardChaining(int querie)
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
 			std::cout << "QUERIE IN CONCLUSON char: " << char(querie) << " in int: " << querie << std::endl;
 			result = ruleChecking(itL->m_condition, itL->m_conclusion);
-			std::cout << "ret result in backward: " << result << std::endl;
+			//std::cout << "ret result in backward: " << result << std::endl;
 			if (result == -1)
 			{
-				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
+				//cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
 				return 1; //condition remplie on a l'état de notre querie
 			}
 			else if (result == -2)
 			{
 				//false no solution a cause de xor
-				cout << "querie imposible xor : " << char(querie) << std::endl;
+				//cout << "querie imposible xor : " << char(querie) << std::endl;
 				return 0;
 			}
 			else
@@ -60,14 +60,14 @@ int ExpertSystem::backwardChaining(int querie)
 		}
 		else
 		{
-			std::cout << "on tourne " << char(querie) << std::endl;
+			//std::cout << "on tourne " << char(querie) << std::endl;
 			itL++;
 		}
 	}
 
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
-	std::cout << "checkResult : " << char(*checkResult) << std::endl;
-	std::cout << "querie : " << char(querie) << std::endl;
+	//std::cout << "checkResult : " << char(*checkResult) << std::endl;
+	//std::cout << "querie : " << char(querie) << std::endl;
 
 	if (*checkResult == querie)
 	{
@@ -89,9 +89,11 @@ void ExpertSystem::analyseQuerie()
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
 		querie = find(m_trueFacts.begin(), m_trueFacts.end(), *itrQ);
-		cout << "START QUERING"<< std::endl;
 		if (*querie != *itrQ)
+		{
+			std::cout << "START QUERING"<< char(*itrQ) << std::endl;
 			backwardChaining(*itrQ);
+		}
 		else
 		{
 			cout << "querie True :) : " << char(*querie) << std::endl;
@@ -142,8 +144,8 @@ void ExpertSystem::getQueries(string ligne)
 
 ExpertSystem::ExpertSystem(string argv)
 {
-	int		idRule;
-	string	ligne;
+	int					idRule;
+	string				ligne;
 
 	idRule = 1;
 	ifstream monFichier(argv.c_str());
@@ -164,9 +166,9 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
-
-	if (m_queries.size() > 0)
-		analyseQuerie();
+	coherentRule();
+	//if (m_queries.size() > 0)
+	//	analyseQuerie();
 }
 
 void ExpertSystem::printTrueFacts()

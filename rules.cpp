@@ -104,6 +104,8 @@ int Rules::notationPolonaise(string rule, int i)
 	{
 		std::cout << "-------final m_polonaise : " << m_polonaise[j] << std::endl;
 	}
+	std::cout << "--------fin----------- " << std::endl;
+
 	for (int j = 0; j < m_polonaiseTmp.size(); j++)
 	{
 		std::cout << "--------final m_polonaiseTmp : " << m_polonaiseTmp[j] << std::endl;

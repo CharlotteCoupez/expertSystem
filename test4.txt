@@ -9,6 +9,6 @@ I | D => A
 H ^ K => G
 
 
-=EHKL
+=EHL
 
 ?BG

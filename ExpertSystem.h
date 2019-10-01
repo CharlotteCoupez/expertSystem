@@ -32,11 +32,12 @@ class ExpertSystem
 	int oneCondition(std::vector<int> condition, std::vector<int> conclusion);
 	int checkNextOperator(std::vector<int> condition, int i);
 
+	int coherentRule();
+	int checkCoherence(std::vector<int> path, int fact);
 	void printTrueFacts();
 
   private:
-	// Create an empty list of ints
-	// std::vector<Rules> m_listRules; ??
+
 	std::vector<int> m_initialFacts;
 	void createFacts();
 	void createBaseRules(std::string ligne, int ruleId);

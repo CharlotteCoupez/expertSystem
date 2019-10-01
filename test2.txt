@@ -6,20 +6,20 @@
 #?C
 
 
-A => B
-I | D => A
-E | F | H + C + J => D
-R + S => H
-U | V => C
+#A => B
+#I | D => A
+#E | F | H + C + J => D
+#R + S => H
+#U | V => C
 
 #EFHCJ++||
 
 #HCJ++EF||
 
 #HC+EF||
-=GHERU
+#=GHERU
 
-?B
+#?B
 
 #A + B => C
 #D | E | O | F | G + K => A
@@ -36,3 +36,14 @@ GK+F|O|E|D|
 #=DFB
 #
 #?C
+
+
+A + B + C => D
+O => B
+D => O
+
+#C ^ P => C
+
+=
+
+?D

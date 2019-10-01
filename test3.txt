@@ -1,27 +1,37 @@
 #(A+!B) | (C+D)
 
 #S ^ D | P ^ S => A
-#S DP| S^^
-#SD|PS|^
 
-((A | B) ^ C + E) + D => F
+#((A | B) ^ C + E) + D => F
 
-=AED
-?F
+##=AED
+#?F
 
 # A B | C E + ^ D +
 
 #S + !D + P | F
 
-# SDP++F|
-#  S DP+ |F ^
 
 
-#S T F ^ |
+#A | (B + C) => D
+#E => A | B
+#F => C
+#=EF
+#?D
 
-#1 + (5*2) +1
+(A + B) ^ (D | K) => P
+(D | N) ^ Y => T
+P ^ N => Z
+X + (A | K ^ Z) => N
+T + X => G
+=ADF
+?N
 
 
-#A|B|C + D|E|F
 
-#ABCD+E||||
+#APPZZNNZZNNZ 
+#
+#BPPZZNNTTG
+#
+#DPPZZNNTTG
+#KPPZZNNTTG
