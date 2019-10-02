@@ -35,7 +35,7 @@ int ExpertSystem::backwardChaining(int querie)
 			//std::cout << "ret result in backward: " << result << std::endl;
 			if (result == -1)
 			{
-				//cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
+				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
 				return 1; //condition remplie on a l'état de notre querie
 			}
 			else if (result == -2)
@@ -166,9 +166,9 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
-	coherentRule();
-	//if (m_queries.size() > 0)
-	//	analyseQuerie();
+	//coherentRule();
+	if (m_queries.size() > 0)
+		analyseQuerie();
 }
 
 void ExpertSystem::printTrueFacts()

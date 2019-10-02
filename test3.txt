@@ -1,4 +1,30 @@
-#(A+!B) | (C+D)
+#EMPLE NEGATIF 1 CONDITION
+!B => A
+P + !S => C
+
+=D
+?C
+
+#Exemple avec des paprentheses
+#(A+!B) | (C+D) => E
+#=ACD
+#?E
+
+#EXEMPLE rue qui boucle sur queries GNTZ (mais bien protegees)
+
+#(A + B) ^ (D | K) => P
+
+#(D + N) ^ Y => T
+
+#P ^ N => Z
+
+#X + (A | K ^ Z) => N
+
+#T + X => G
+
+#=ADF
+#?GNTZ
+#K
 
 #S ^ D | P ^ S => A
 
@@ -12,26 +38,9 @@
 #S + !D + P | F
 
 
-
+#AUTRE exemple avec ou en conclu,non traite
 #A | (B + C) => D
 #E => A | B
 #F => C
 #=EF
 #?D
-
-(A + B) ^ (D | K) => P
-(D | N) ^ Y => T
-P ^ N => Z
-X + (A | K ^ Z) => N
-T + X => G
-=ADF
-?N
-
-
-
-#APPZZNNZZNNZ 
-#
-#BPPZZNNTTG
-#
-#DPPZZNNTTG
-#KPPZZNNTTG

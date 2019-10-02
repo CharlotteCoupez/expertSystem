@@ -25,12 +25,13 @@ class ExpertSystem
 	int ruleChecking(std::vector<int> condition, std::vector<int> conclusion);
 
 	int severalConditions(std::vector<int> condition);
-	int getResult(std::vector<int> condition, int i);
+	int getNegative(std::vector<int> condition, int i);
+	int getResult(std::vector<int> condition, size_t i);
 	int andCondition(bool a, bool b, std::vector<int> condition, int i);
 	int orCondition(bool a, bool b, std::vector<int> condition, int i);
 	int xorCondition(bool a, bool b, std::vector<int> condition, int i);
 	int oneCondition(std::vector<int> condition, std::vector<int> conclusion);
-	int checkNextOperator(std::vector<int> condition, int i);
+	int checkNextOperator(std::vector<int> condition, size_t i);
 
 	int coherentRule();
 	int checkCoherence(std::vector<int> path, int fact);
