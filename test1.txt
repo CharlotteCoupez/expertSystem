@@ -6,18 +6,18 @@
 
 
 C => E # C implies E
-A + B + D => C
+
 
 C => E 
 A + B + C => D 
-A | B => C 
+D + !A | !B => C 
 A + !B => F 
 C | !G => H 
 V ^ W => X 
 A + B => Y + Z 
 C | D => X | V 
 E + F => !V 
-A + B <=> C 
+!A + !B <=> C 
 A + B <=> !C 
 =ABG # Initial facts : A, B and G are 
 

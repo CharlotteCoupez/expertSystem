@@ -25,11 +25,11 @@ class ExpertSystem
 	int ruleChecking(std::vector<int> condition, std::vector<int> conclusion);
 
 	int severalConditions(std::vector<int> condition);
-	int getNegative(std::vector<int> condition, int i);
+	int getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i);
 	int getResult(std::vector<int> condition, size_t i);
-	int andCondition(bool a, bool b, std::vector<int> condition, int i);
-	int orCondition(bool a, bool b, std::vector<int> condition, int i);
-	int xorCondition(bool a, bool b, std::vector<int> condition, int i);
+	int andCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
+	int orCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
+	int xorCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
 	int oneCondition(std::vector<int> condition, std::vector<int> conclusion);
 	int checkNextOperator(std::vector<int> condition, size_t i);
 
@@ -45,6 +45,7 @@ class ExpertSystem
 	void getInitialeFacts(std::string ligne);
 	void getQueries(std::string ligne);
 	std::fstream fs;
+	int getValue(std::vector<int> condition, std::vector<std::vector<int> > *array, int i);
 };
 
 #endif

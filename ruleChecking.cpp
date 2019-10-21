@@ -68,7 +68,7 @@ int ExpertSystem::severalConditions(vector<int> condition)
 				result = 1;
 			//std::cout << "result" << result << std::endl;
 			condition.insert(condition.begin() + i + 1, result);
-			nb = getNegative(condition,i);
+			// nb = getNegative(condition,i);
 			condition.erase(condition.begin() + i - nb, condition.begin() + i + 1 );
 			if (condition.size() > 1)
 				i = 0;
@@ -78,69 +78,85 @@ int ExpertSystem::severalConditions(vector<int> condition)
 	return ret;
 }
 
-int ExpertSystem::getNegative(std::vector<int> condition, int i)
+int ExpertSystem::getValue(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
 {
-	if (isupper(condition[i - 2]))
-		return 2;
-	else if (condition[i - 2] == '!' && (i < 4 || condition[i - 4] != '!'))
-		return 3; // A negatif
-	else if (isupper(condition[i - 2]) && i >= 3 && condition[i - 3] == '!')
-		return 3; // B negatif
-	else if (condition[i - 2] == '!' && i >= 4 && condition[i - 4] == '!')
-		return 4; // A et B negatif
+	vector<int> tmp;
+	tmp.push_back(condition[i - 1]);
+	for (int i = 0; i < condition.size(); i++)
+	{
+		std::cout << "condition1 : " << char(condition[i]) << std::endl;
+	}
+	if (i - 2 >= 0 && condition[i - 2] == '!') {
+		tmp.push_back(-1);
+	} else {
+		tmp.push_back(1);
+	}
+	(*array).push_back(tmp);
+
+	return (i - 2 >= 0 && condition[i - 2] == '!' ? i - 2 : i - 1);
+}
+
+int ExpertSystem::getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
+{
+	i = getValue(condition, array, i);
+	getValue(condition, array, i);
+	return 0;
 }
 
 int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 {
-
 	int						neg;
 	std::set<int>::iterator retA;
 	std::set<int>::iterator retB;
 	bool					factA = false;
 	bool					factB = false;
+	vector<vector<int> >	array;
 
-	getNegative(condition, i);
-	neg = (condition[i - 2] == '!') ? 3 : 2;
-	if (condition[i - neg] == 1 || condition[i - neg] == 0)
+	getNegative(condition, &array, i);
+	cout << "before segfault" << '\n';
+	for (int i = 0; i < array.size(); i++)
 	{
-		factA = condition[i - neg];
+		if (array[i][0] < 50)
+			std::cout << "array[i][0]: " << array[i][0] << std::endl;
+		else
+			std::cout << "array[i][0]: " << char(array[i][0]) << std::endl;
+		std::cout << "array[i][1]: " << array[i][1] << std::endl;
 	}
-	else if (condition[i - neg] != 1 || condition[i - neg] != 0)
+	if (isupper(array[1][0]))
 	{
-        retA = find(m_trueFacts.begin(), m_trueFacts.end(), condition[i - neg]);
-		factA = *retA == condition[i - neg];
+        retA = find(m_trueFacts.begin(), m_trueFacts.end(), array[1][0]);
+		factA = *retA == array[1][0];
 	}
-	if (condition[i - 1] == 1 || condition[i - 1] == 0)
+	else
+		factA = array[1][0];
+	if (isupper(array[0][0]))
 	{
-		factB = condition[i - 1];
+        retB = find(m_trueFacts.begin(), m_trueFacts.end(), array[0][0]);
+		factB = *retB == array[0][0];
 	}
-	else if (condition[i - 1] != 1 || condition[i - 1] != 0)
-	{
-		retB = find(m_trueFacts.begin(), m_trueFacts.end(), condition[i - 1]);
-		factB = *retB == condition[i - 1];
-	}
+	else
+		factB = array[0][0];
+
 
 	if (condition[i] == '+')
-		return andCondition(factA, factB, condition, i);
+		return andCondition(factA, factB, array, i);
 	else if (condition[i] == '|')
-		return orCondition(factA, factB, condition, i);
+		return orCondition(factA, factB, array, i);
 	else if (condition[i] == '^')
-		return xorCondition(factA, factB, condition, i);
+		return xorCondition(factA, factB, array, i);
 	return 0;
 }
 
-int	ExpertSystem::xorCondition(bool a, bool b, vector<int> condition, int i)
+int	ExpertSystem::xorCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
 {
-	int	neg;
-	neg = (condition[i - 2] == '!') ? 3 : 2;
 	//std::cout << "XOR a " << a << std::endl;
 	//std::cout << "XOR b " << b << std::endl;
 	//std::cout << "condition[i - neg] " << char(condition[i - 2]) << std::endl;
 	//std::cout << "condition[i -1] " << char(condition[i - 1]) << std::endl;
-	if (a != 1 && condition[i - neg] != 0)
-		a = backwardChaining(condition[i - neg]);
-	if (b != 1 && condition[i - 1] != 0)
-		b = backwardChaining(condition[i - 1]);
+	if (a != 1 && array[1][0] != 0)
+		a = backwardChaining(array[1][0]);
+	if (b != 1 && array[0][0] != 0)
+		b = backwardChaining(array[0][0]);
 	if (a ^ b)
 		return -1;
 	else if (a && b)
@@ -149,11 +165,9 @@ int	ExpertSystem::xorCondition(bool a, bool b, vector<int> condition, int i)
 		return -3;
 }
 
-int ExpertSystem::orCondition(bool a, bool b, vector<int> condition, int i)
+int ExpertSystem::orCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
 {
 	int ret;
-	int	neg;
-	neg = (condition[i - 2] == '!') ? 3 : 2;
 	//std::cout << "OR a " << a << std::endl;
 	//std::cout << "OR b " << b << std::endl;
 	//std::cout << "condition[i -2] " << char(condition[i - neg]) << std::endl;
@@ -162,14 +176,14 @@ int ExpertSystem::orCondition(bool a, bool b, vector<int> condition, int i)
 	//std::cout << "condition[i -1] " << condition[i - 1] << std::endl;
 	if (a || b)
 		return -1;
-	else if (condition[i - neg] != 0)
+	else if (array[1][0] != 0)
 	{
-		ret = backwardChaining(condition[i - neg]);  // NEGATIF A FAIRE
+		ret = backwardChaining(array[1][0]);  // NEGATIF A FAIRE
 		//std::cout << "OR backwardChaining(v ret " << ret << std::endl;
-		if (ret == 0)
-		if (ret == 0 && condition[i - 1] != 0)
+		// if (ret == 0)
+		if (ret == 0 && array[0][0] != 0)
 		{
-			ret = backwardChaining(condition[i - 1]);  // NEGATIF A FAIRE
+			ret = backwardChaining(array[0][0]);  // NEGATIF A FAIRE
  
 			//std::cout << "OR backwardChaining ret b " << ret << std::endl;
 			if (ret == 0) //Querie false
@@ -179,46 +193,46 @@ int ExpertSystem::orCondition(bool a, bool b, vector<int> condition, int i)
 		else if (ret == 1) // si a == 0 et b == 0 on renvoie -3 voir si il y a un autre ou apres sinn on renvera false apres
 			return -1;
 	}
-	else if (condition[i - 1] != 0)
+	else if (array[0][0] != 0)
 	{
-		ret = backwardChaining(condition[i - 1]);
-		if (ret == 1 && condition[i - 2] != '!')
+		ret = backwardChaining(array[0][0]);
+		if (ret == 1 && array[0][0] != '!')
 			return -1;
 	}
 	return -3; // on renvoie -3 car on est dans ou
 	// donc si il y a un ou apres on continue sinon en renvera false
 }
 
-int ExpertSystem::andCondition(bool a, bool b, vector<int> condition, int i)
+int ExpertSystem::andCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
 {
 	int ret;
 	int	neg;
 
-	neg = (condition[i - 2] == '!') ? 3 : 2;
+	neg = (array[1][0] == '!') ? 3 : 2;
 	std::cout << "AND a " << a << std::endl;
 	std::cout << "AND b " << b << std::endl;
-	std::cout << "condition[i -2] " << char(condition[i - neg]) << std::endl;
-	std::cout << "condition[i -1] " << char(condition[i - 1]) << std::endl;
+	std::cout << "condition[i -2] " << char(array[1][0]) << std::endl;
+	std::cout << "condition[i -1] " << char(array[0][0]) << std::endl;
 
 	if (a && b)
 		return -1;
 	if (a != 1)
 	{
-		if (condition[i - neg] == 0)
+		if (array[1][0] == 0)
 			return -3;
-		ret = backwardChaining(condition[i - neg]);
+		ret = backwardChaining(array[1][0]);
 		//std::cout << "AND bc ret A " << ret << std::endl;
-		if (ret == 0 && condition[i - neg - 1] != '!')
-			return -3;
+		// if (ret == 0 && condition[i - neg - 1] != '!')
+		// 	return -3;
 	}
 	if (b != 1)
 	{
-		if (condition[i - 1] == 0)
+		if (array[0][0] == 0)
 			return -3;
-		ret = backwardChaining(condition[i - 1]);
+		ret = backwardChaining(array[0][0]);
 		//std::cout << "AND bc ret B " << ret << std::endl;
-		if (ret == 0 && condition[i - 2] != '!')
-			return -3;
+		// if (ret == 0 && condition[i - 2] != '!')
+		// 	return -3;
 	}
 	return -1;
 }
