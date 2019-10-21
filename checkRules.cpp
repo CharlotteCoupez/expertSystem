@@ -23,7 +23,6 @@ int ExpertSystem::coherentRule()
     //        {
 //
     //        }
-//
     //        // itL->m_condition[i]
     //    }
     //    
