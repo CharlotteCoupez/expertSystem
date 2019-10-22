@@ -18,10 +18,7 @@ int ExpertSystem::coherentRule()
 		std::cout << "facts : " << char(*fact) << std::endl;
 	    path.erase( path.begin(), path.end() );
         if (checkCoherence(path, *fact) == 0)
-        {
-            // ret = 0;
             return 0;
-        }
 		std::cout << "ret = checkCoherence : " << ret << std::endl;
 	}
         return ret;
@@ -31,62 +28,47 @@ int ExpertSystem::checkCoherence(std::vector<int> path, int fact)
 {
     std::list<Rules>::iterator	itL;
     std::vector<int>::iterator	factInConclusion;
-    std::vector<int>::iterator	factInPath;
-
-    if (path.size() > 0)
+    
+    std::cout << "1fact " << char(fact) << std::endl;
+    for (size_t m = 0; m < path.size(); m++)
     {
-            for (size_t j = 0; j < path.size(); j++)
-    {
-            std::cout << "path[i] : " << char(path[j]) << std::endl;
-        }
-        factInPath = find(path.begin(), path.end(), fact);
-        std::cout << "fact " << char(fact) << std::endl;
-        std::cout << "factInPath " << char(*factInPath) << std::endl;
-        if (*factInPath == fact)
-        {
-            std::cout << "BOUCLAGE FOR RULE with id : " << std::endl;
-        *factInPath = 0;
-
+        if (path[m] == fact)
             return 0;
-        }
-        *factInPath = 0;
+        std::cout << "first path[i] : " << char(path[m]) << std::endl;
     }
     path.push_back(fact);
-    for (size_t j = 0; j < path.size(); j++)
-    {
-        std::cout << "path[i] : " << char(path[j]) << std::endl;
-    }
+    // for (size_t j = 0; j < path.size(); j++)
+    // {
+    //     std::cout << "path[i] : " << char(path[j]) << std::endl;
+    // }
     for (itL = m_listRules.begin(); itL != m_listRules.end();)
     {
-        factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), fact);
+        factInConclusion = std::find(itL->m_conclusion.begin(), itL->m_conclusion.end(), fact);
         if (*factInConclusion == fact)
         {
             
             for (size_t i = 0; i < itL->m_condition.size(); )
             {
-		        std::cout << "in checkCoherence : " << char(itL->m_condition[i]) << std::endl;
-		        std::cout << "in checkCoherence id : " << itL->id << std::endl;
-		        std::cout << "i: " << i << std::endl;
-                int ret = checkCoherence(path, itL->m_condition[i]);
-                if (isupper(itL->m_condition[i]) && ret == 0)
+		        // std::cout << "in checkCoherence : " << char(itL->m_condition[i]) << std::endl;
+		        // std::cout << "in checkCoherence id : " << itL->id << std::endl;
+		        // std::cout << "i: " << i << std::endl;
+                if (isupper(itL->m_condition[i]) && checkCoherence(path, itL->m_condition[i]) == 0)
                 {
 		            std::cout << "2 BOUCLAGE FOR RULE with id : " << itL->id << std::endl;
                     return 0;
                 }
-                // else if (path.size() > 0)
-                // {
-                // 	path.erase( path.end() - 1, path.end() );
-                // }
-                
-		        std::cout << "in checkCoherence2 : " << char(itL->m_condition[i]) << std::endl;
-		        std::cout << "in checkCoherence2 id : " << itL->id << std::endl;
-		        std::cout << "i : " << i << std::endl;
+		        // std::cout << "in checkCoherence2 : " << char(itL->m_condition[i]) << std::endl;
+		        // std::cout << "in checkCoherence2 id : " << itL->id << std::endl;
+		        // std::cout << "i : " << i << std::endl;
                 i++;
-
             }
         }
         itL++;
     }
+    // for (size_t l = 0; l < path.size(); l++)
+    // {
+    //     std::cout << "last path[i] : " << char(path[l]) << std::endl;
+    // }
 	path.erase( path.end() - 1, path.end() );
     return 1; //tout est passé ok
 }

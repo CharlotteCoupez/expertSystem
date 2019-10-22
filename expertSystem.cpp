@@ -39,12 +39,12 @@ int ExpertSystem::backwardChaining(int querie)
 				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
 				return 1; //condition remplie on a l'état de notre querie
 			}
-			else if (result == -2)
-			{
-				//false no solution a cause de xor
-				cout << "querie imposible xor : " << char(querie) << std::endl;
-				return 0;
-			}
+			// else if (result == -2)
+			// {
+			// 	//false no solution a cause de xor
+			// 	cout << "querie imposible xor : " << char(querie) << std::endl;
+			// 	return 0;
+			// }
 			else
 				itL++;
 		}
@@ -61,6 +61,9 @@ int ExpertSystem::backwardChaining(int querie)
 	}
 	else
 	{
+		std::vector<int> test;
+		test.push_back(querie);
+		fillList(false, test);
 		std::cout << "QUERIE have NO Solution for : " << char(querie) << std::endl;
 		return 0;
 	}
@@ -162,6 +165,9 @@ void ExpertSystem::printTrueFacts()
 {
 	std::set<int>::iterator	truef;
 	std::set<int>::iterator	falsef;
+		
+	std::cout << "m_trueFacts.sizeof() : " << m_trueFacts.size() << std::endl;
+	std::cout << "m_falseFacts.sizeof() : " << m_falseFacts.size() << std::endl;
 
 	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
 	{

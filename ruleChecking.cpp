@@ -14,15 +14,27 @@ void ExpertSystem::fillList(bool type, std::vector<int> conclusion)
 {
 	int				i;
 	std::set<int>	fillList;
-
-	if (type == 1)
-		fillList = m_trueFacts;
-	else
-		fillList = m_falseFacts;
+	for (int i = 0; i < conclusion.size(); i++)
+	{
+		if (conclusion[i] < 50)
+			std::cout << "conclusion1 : " << conclusion[i] << std::endl;
+		else
+			std::cout << "conclu1 : " << char(conclusion[i]) << std::endl;
+	}
 	i = 0;
+	if (type == 1)
+	{
+		while (i < conclusion.size() )
+		{
+			if (isupper(conclusion[i]))
+				m_trueFacts.insert(conclusion[i]);
+			i++;
+		}
+		return;
+	}
 	while (isupper(conclusion[i]))
 	{
-		m_trueFacts.insert(conclusion[i]);
+		m_falseFacts.insert(conclusion[i]);
 		i++;
 	}
 }
@@ -39,11 +51,6 @@ int ExpertSystem::ruleChecking(vector<int> condition, vector<int> conclusion) //
 	{
 		std::cout << "conclusion[i] - 1 TRUE: " << char(conclusion[0]) << std::endl;
 		fillList(true, conclusion);
-	}
-	else if (ret == -2)
-	{
-		fillList(false, conclusion);
-		std::cout << "conclusion[i] - 2 FALSE: " << char(conclusion[0]) << std::endl;
 	}
 	std::cout << "----------------------ret diff de - 1: " << ret << std::endl;
 	return ret;
@@ -95,18 +102,16 @@ int ExpertSystem::severalConditions(vector<int> condition)
 	return ret;
 }
 
-int ExpertSystem::getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
+bool	condition(bool a, int neg)
 {
-	// for (int i = 0; i < condition.size(); i++)
-	// {
-	// 	if (condition[i] < 50)
-	// 		std::cout << "condition1 : " << condition[i] << std::endl;
-	// 	else
-	// 		std::cout << "condition1 : " << char(condition[i]) << std::endl;
-	// }
-	// std::cout << "getNegative i avant : " << i << std::endl;
-	i = getConditionValue(condition, array, i);
-	getConditionValue(condition, array, i);
+	if (a == 1 && neg == 1)
+		return 1;
+	if (a == 1 && neg == -1)
+		return 0;
+	if (a == 0 && neg == 1)
+		return 0;
+	if (a == 0 && neg == -1)
+		return 1;
 	return 0;
 }
 
@@ -124,15 +129,27 @@ int ExpertSystem::getConditionValue(std::vector<int> condition, std::vector<std:
 	return (i - 2 >= 0 && condition[i - 2] == '!' ? i - 2 : i - 1);
 }
 
+int ExpertSystem::getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
+{
+	// for (int i = 0; i < condition.size(); i++)
+	// {
+	// 	if (condition[i] < 50)
+	// 		std::cout << "condition1 : " << condition[i] << std::endl;
+	// 	else
+	// 		std::cout << "condition1 : " << char(condition[i]) << std::endl;
+	// }
+	// std::cout << "getNegative i avant : " << i << std::endl;
+	i = getConditionValue(condition, array, i);
+	getConditionValue(condition, array, i);
+	return 0;
+}
+
 bool	ExpertSystem::getFact(int array_value)
 {
 	std::set<int>::iterator ret;
 	if (isupper(char(array_value)))
 	{
         ret = find(m_trueFacts.begin(), m_trueFacts.end(), array_value);
-		// if (*ret == array_value)
-		// 	return 1;
-		// return 0;
 		return *ret == array_value;
 	}
 	else
@@ -150,18 +167,18 @@ int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 	vector<vector<int> >	array;
 
 	getNegative(condition, &array, i);
-	for (int i = 0; i < array.size(); i++)
-	{
-		if (array[i][0] < 50)
-			std::cout << "array[i][0]: " << array[i][0] << std::endl;
-		else
-			std::cout << "char(array[i][0]: " << char(array[i][0]) << std::endl;
-		std::cout << "array[i][1]: " << array[i][1] << std::endl;
-	}
+	// for (int i = 0; i < array.size(); i++)
+	// {
+	// 	if (array[i][0] < 50)
+	// 		std::cout << "array[i][0]: " << array[i][0] << std::endl;
+	// 	else
+	// 		std::cout << "char(array[i][0]: " << char(array[i][0]) << std::endl;
+	// 	std::cout << "array[i][1]: " << array[i][1] << std::endl;
+	// }
 	factA = getFact(array[1][0]);
-	std::cout << "factA: " << factA << std::endl;
+	// std::cout << "factA: " << factA << std::endl;
 	factB = getFact(array[0][0]);
-	std::cout << "factB: " << factB << std::endl;
+	// std::cout << "factB: " << factB << std::endl;
 
 	if (condition[i] == '+')
 		return andCondition(factA, factB, array, i);
@@ -172,18 +189,7 @@ int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 	return 0;
 }
 
-bool	condition(bool a, int neg)
-{
-	if (a == 1 && neg == 1)
-		return 1;
-	if (a == 1 && neg == -1)
-		return 0;
-	if (a == 0 && neg == 1)
-		return 0;
-	if (a == 0 && neg == -1)
-		return 1;
-	return 0;
-}
+
 
 int	ExpertSystem::xorCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
 {
@@ -260,7 +266,6 @@ int ExpertSystem::andCondition(bool a, bool b, std::vector<std::vector<int> > ar
 	return -1;
 }
 
-
 int ExpertSystem::oneCondition(vector<int> condition, vector<int> conclusion)
 {
 	size_t				 	i;
@@ -271,19 +276,21 @@ int ExpertSystem::oneCondition(vector<int> condition, vector<int> conclusion)
 	fact = find(m_trueFacts.begin(), m_trueFacts.end(), condition[condition.size() - 1]);
 	if (*fact == condition[condition.size() - 1] || condition[condition.size() - 1] == 1)
 	{
-		while (isupper(conclusion[i]))
-		{
-			m_trueFacts.insert(conclusion[i]);
-			i++;
-		}
 		if (condition[0] == '!')
+		{
+			// fillList(false, conclusion);
 			return -3;
+		}
+		fillList(true, conclusion);
 		return -1;
 	}
 	ret = backwardChaining(condition[condition.size() - 1]);
 	if (ret == 0 && condition[0] != '!')
+	{
+		// fillList(false, conclusion);
 		return -3;
-	m_trueFacts.insert(conclusion[i]);
+	}
+	fillList(true, conclusion);
 	return -1;
 }
 

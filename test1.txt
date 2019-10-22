@@ -1,6 +1,10 @@
-C           => E 
-A + B + D   => C  
-A + !B      => F 
+
+
+
+C           => E + P
+A + B + D   => C 
+F           => C
+#A + !B      => F 
 V ^ W       => X 
 A + B       => Y
 C | D       => X
