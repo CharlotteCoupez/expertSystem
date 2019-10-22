@@ -1,9 +1,9 @@
 #EMPLE NEGATIF 1 CONDITION
-!B => A
-P + !S => C
-
-=D
-?C
+#!B => A
+#P + !S => C
+#
+#=D
+#?C
 
 #Exemple avec des paprentheses
 #(A+!B) | (C+D) => E
@@ -39,8 +39,8 @@ P + !S => C
 
 
 #AUTRE exemple avec ou en conclu,non traite
-#A | (B + C) => D
-#E => A | B
-#F => C
-#=EF
-#?D]]]]]]]]]
+A | (B + C) => D
+E => A
+F => C
+=EF
+?D

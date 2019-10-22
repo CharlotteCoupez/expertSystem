@@ -166,9 +166,11 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
-	//coherentRule();
-	if (m_queries.size() > 0)
-		analyseQuerie();
+	if (coherentRule() == 1)
+	{
+		if (m_queries.size() > 0)
+			analyseQuerie();
+	}
 }
 
 void ExpertSystem::printTrueFacts()
