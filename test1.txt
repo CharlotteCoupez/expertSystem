@@ -1,15 +1,10 @@
-# this is a comment
-# all the required rules and symbols, along with the bonus ones, will be
-# shown here. spacing is not important
-
-C => E 
-A + B + D => C  
-A + !B => F 
-#C | !G => H 
-V ^ W => X 
-A + B => Y + Z 
-C | D => X | V 
-E + F => !V 
+C           => E 
+A + B + D   => C  
+A + !B      => F 
+V ^ W       => X 
+A + B       => Y
+C | D       => X
+E + F       => V 
 
 =AB
 ?E
@@ -20,7 +15,12 @@ E + F => !V
 
 #? #GVX # Queries : What are G, V and X ?
 
-
+#-------final m_polonaise : V
+#-------final m_polonaise : W
+#-------final m_polonaise : ^
+#--------fin-----------
+#get imporif:
+#-------final m_polonaise : X
 
 # EXEMPLE DE TEST
 #A | (B + C) => D
@@ -28,3 +28,73 @@ E + F => !V
 #F => C
 #=EF
 #?D #should be true
+
+#in checkCoherence2 : +
+#in checkCoherence2 id : 3
+#i : 3
+#ret = checkCoherence : 1
+#facts : V
+#path[i] : V
+#in checkCoherence : C
+#in checkCoherence id : 6
+#i: 0
+#fact C
+#factInPath
+#path[i] : V
+#path[i] : C
+#in checkCoherence : A
+#in checkCoherence id : 2
+#i: 0
+#fact A
+#factInPath
+#path[i] : V
+#path[i] : C
+#path[i] : A
+#in checkCoherence2 : A
+#in checkCoherence2 id : 2
+#i : 0
+#in checkCoherence : B
+#in checkCoherence id : 2
+#i: 1
+#fact B
+#factInPath A
+#path[i] : V
+#path[i] : C
+#path[i] : B
+#in checkCoherence2 : B
+#in checkCoherence2 id : 2
+#i : 1
+#in checkCoherence : D
+#in checkCoherence id : 2
+#i: 2
+#fact D
+#factInPath B
+#path[i] : V
+#path[i] : C
+#path[i] : D
+#in checkCoherence2 : D
+#in checkCoherence2 id : 2
+#i : 2
+#in checkCoherence : +
+#in checkCoherence id : 2
+#i: 3
+#in checkCoherence2 : +
+#in checkCoherence2 id : 2
+#i : 3
+#in checkCoherence : +
+#in checkCoherence id : 2
+#i: 4
+#in checkCoherence2 : +
+#in checkCoherence2 id : 2
+#i : 4
+#in checkCoherence2 : C
+#in checkCoherence2 id : 6
+#i : 0
+#in checkCoherence : D
+#in checkCoherence id : 6
+#i: 1
+#fact D
+#factInPath D
+#BOUCLAGE FOR RULE with id :
+#2 BOUCLAGE FOR RULE with id : 6
+#annalyser starting

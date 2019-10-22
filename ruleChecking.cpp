@@ -10,6 +10,23 @@ ret -3  On continue de chercher
 
 ret fact on renvoie une nouvelle querie pour le backwardChainning   */
 
+void ExpertSystem::fillList(bool type, std::vector<int> conclusion)
+{
+	int				i;
+	std::set<int>	fillList;
+
+	if (type == 1)
+		fillList = m_trueFacts;
+	else
+		fillList = m_falseFacts;
+	i = 0;
+	while (isupper(conclusion[i]))
+	{
+		m_trueFacts.insert(conclusion[i]);
+		i++;
+	}
+}
+
 int ExpertSystem::ruleChecking(vector<int> condition, vector<int> conclusion) // type cest pour if and only if donc est ce quon checher les conclu ou les conditions
 {
 	int i;
@@ -20,26 +37,15 @@ int ExpertSystem::ruleChecking(vector<int> condition, vector<int> conclusion) //
 	ret = severalConditions(condition);
 	if (ret == -1)
 	{
-		std::cout << "conclusion[i] - 1: " << char(conclusion[i]) << std::endl;
-		i  = 0;
-		while (isupper(conclusion[i]))
-		{
-			m_trueFacts.insert(conclusion[i]);
-			i++;
-		}
+		std::cout << "conclusion[i] - 1 TRUE: " << char(conclusion[0]) << std::endl;
+		fillList(true, conclusion);
 	}
-	if (ret == -2)
+	else if (ret == -2)
 	{
-		std::cout << "conclusion[i] - 2: " << char(conclusion[0]) << std::endl;
-		i  = 0;
-		while (isupper(conclusion[i]))
-		{
-			m_falseFacts.insert(conclusion[i]);
-			i++;
-		}
+		fillList(false, conclusion);
+		std::cout << "conclusion[i] - 2 FALSE: " << char(conclusion[0]) << std::endl;
 	}
 	std::cout << "----------------------ret diff de - 1: " << ret << std::endl;
-
 	return ret;
 }
 

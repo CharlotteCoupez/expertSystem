@@ -48,6 +48,7 @@ class ExpertSystem
 	void	getQueries(std::string ligne);
 	int		getConditionValue(std::vector<int> condition, std::vector<std::vector<int> > *array, int i);
 	bool	getFact(int array_value);
+	void	fillList(bool type, std::vector<int> conclusion);
 };
 
 #endif

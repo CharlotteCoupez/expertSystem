@@ -32,7 +32,8 @@ int ExpertSystem::backwardChaining(int querie)
 			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
 			std::cout << "QUERIE IN CONCLUSON char: " << char(querie) << " in int: " << querie << std::endl;
 			result = ruleChecking(itL->m_condition, itL->m_conclusion);
-			//std::cout << "ret result in backward: " << result << std::endl;
+			std::cout << "ret result in backward: " << result << std::endl;
+			std::cout << "querie in backward: " << querie << std::endl;
 			if (result == -1)
 			{
 				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
@@ -41,34 +42,18 @@ int ExpertSystem::backwardChaining(int querie)
 			else if (result == -2)
 			{
 				//false no solution a cause de xor
-				//cout << "querie imposible xor : " << char(querie) << std::endl;
+				cout << "querie imposible xor : " << char(querie) << std::endl;
 				return 0;
 			}
 			else
 				itL++;
-			// else // notre retour est une nouvelle querie on recursive:)
-			// {
-			// 	ret = backwardChaining(result);
-			// 	cout << "sortir backward: " << char(querie) << std::endl;
-			// 	if (ret == -2)
-			// 		return 0; // on sait que la solution est false on cherche pas plus
-			// 	else if (ret == 1)
-			// 		itL = m_listRules.begin(); // on a abouti a un true donc on retourne a notre queri precedente voir si ca la fait avancée
-			// 	else
-			// 		itL++; // ca na pas abouti on regarde si il ny a pas dautres regles qui peuvent nous aider a prouver cette querie
-			// }
 		}
 		else
-		{
-			//std::cout << "on tourne " << char(querie) << std::endl;
 			itL++;
-		}
+	
 	}
 
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
-	//std::cout << "checkResult : " << char(*checkResult) << std::endl;
-	//std::cout << "querie : " << char(querie) << std::endl;
-
 	if (*checkResult == querie)
 	{
 		std::cout << "QUERIE HAVE A Solution : " << char(querie) << std::endl;
@@ -176,9 +161,14 @@ ExpertSystem::ExpertSystem(string argv)
 void ExpertSystem::printTrueFacts()
 {
 	std::set<int>::iterator	truef;
+	std::set<int>::iterator	falsef;
 
 	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
 	{
 		std::cout << "m_trueFacts[i] : " << char(*truef) << std::endl;
+	}
+	for (falsef = m_falseFacts.begin(); falsef != m_falseFacts.end(); falsef++)
+	{
+		std::cout << "m_falseFacts[i] : " << char(*falsef) << std::endl;
 	}
 }
