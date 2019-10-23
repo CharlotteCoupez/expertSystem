@@ -1,25 +1,42 @@
-#include <iostream>
-#include "ExpertSystem.h"
-#include <stdlib.h>
-#include <ctype.h>
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   expertSystem.cpp                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/23 16:36:27 by ccoupez           #+#    #+#             */
+/*   Updated: 2019/10/23 16:36:27 by ccoupez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-#include <algorithm>
+#include "ExpertSystem.h"
 
 using namespace std;
-#include <typeinfo>
 
-/*
-A FAIRE
-If there is an error in the input, for example a contradiction in the facts, or a syntax
-error, the program must inform the user of the problem.
-*/
+void	ExpertSystem::fillList(bool type, std::vector<int> conclusion)
+{
+	if (type == 1)
+	{
+		for (int i = 0;i < conclusion.size(); i++)
+		{
+			if (isupper(conclusion[i]))
+				m_trueFacts.insert(conclusion[i]);
+		}
+		return;
+	}
+	for (int i = 0;i < conclusion.size(); i++)
+	{
+		if (isupper(conclusion[i]))
+			m_falseFacts.insert(conclusion[i]);
+	}
+}
 
-int ExpertSystem::backwardChaining(int querie)
+bool	ExpertSystem::backwardChaining(int querie)
 {
 	std::cout << "backwardChaining querie : " << char(querie) << std::endl;
-	std::list<Rules>::iterator	itL;
 	int							result;
-	int							ret;
+	std::list<Rules>::iterator	itL;
 	std::vector<int>::iterator	factInConclusion;
 	std::set<int>::iterator		checkResult;
 
@@ -29,35 +46,27 @@ int ExpertSystem::backwardChaining(int querie)
 
 		if (*factInConclusion == querie)
 		{
-			// Si la conclusion de la regle et la query on regarde si les conditions sont remplis (si oui on donne la réponse si non on regarde pourquoi)
 			std::cout << "QUERIE IN CONCLUSON char: " << char(querie) << " in int: " << querie << std::endl;
-			result = ruleChecking(itL->m_condition, itL->m_conclusion);
+			result = ruleChecking(itL->m_condition);
 			std::cout << "ret result in backward: " << result << std::endl;
 			std::cout << "querie in backward: " << querie << std::endl;
-			if (result == -1)
+			if (result == PROVEN)
 			{
 				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
-				return 1; //condition remplie on a l'état de notre querie
+				fillList(true, itL->m_conclusion);
+				return true;
 			}
-			// else if (result == -2)
-			// {
-			// 	//false no solution a cause de xor
-			// 	cout << "querie imposible xor : " << char(querie) << std::endl;
-			// 	return 0;
-			// }
 			else
 				itL++;
 		}
 		else
 			itL++;
-	
 	}
-
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*checkResult == querie)
 	{
 		std::cout << "QUERIE HAVE A Solution : " << char(querie) << std::endl;
-		return 1;
+		return true;
 	}
 	else
 	{
@@ -65,7 +74,7 @@ int ExpertSystem::backwardChaining(int querie)
 		test.push_back(querie);
 		fillList(false, test);
 		std::cout << "QUERIE have NO Solution for : " << char(querie) << std::endl;
-		return 0;
+		return false;
 	}
 }
 
@@ -80,7 +89,11 @@ void ExpertSystem::analyseQuerie()
 		if (*querie != *itrQ)
 		{
 			std::cout << "START QUERING"<< char(*itrQ) << std::endl;
-			backwardChaining(*itrQ);
+			querie = find(m_falseFacts.begin(), m_falseFacts.end(), *itrQ);
+			if (*querie == *itrQ)
+				cout << "querie False :'( : " << char(*querie) << std::endl;
+			else
+				backwardChaining(*itrQ);
 		}
 		else
 		{
@@ -94,14 +107,17 @@ void ExpertSystem::analyseQuerie()
 void ExpertSystem::createBaseRules(string ligne, int ruleId)
 {
 	Rules	rule(ligne);
+
 	if (rule.status == 1)
 	{
 		for (int i = 0; i < rule.m_facts.size(); i++)
 		{
+			cout << "rule.m_facts[i]: " << char(rule.m_facts[i]) << std::endl;
 			m_allFacts.insert(rule.m_facts[i]);
 		}
 		rule.id = ruleId;
 		m_listRules.push_back(rule);
+		rule.printValues();
 	}
 	else
 		cout << "Rule number: " << ruleId << " is not correct." << std::endl;
@@ -157,27 +173,6 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
-	// if (coherentRule() == 1)
-	// {
-	// 	if (m_queries.size() > 0)
-	// 		analyseQuerie();
-	// }
-}
-
-void ExpertSystem::printTrueFacts()
-{
-	std::set<int>::iterator	truef;
-	std::set<int>::iterator	falsef;
-		
-	std::cout << "m_trueFacts.sizeof() : " << m_trueFacts.size() << std::endl;
-	std::cout << "m_falseFacts.sizeof() : " << m_falseFacts.size() << std::endl;
-
-	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
-	{
-		std::cout << "m_trueFacts[i] : " << char(*truef) << std::endl;
-	}
-	for (falsef = m_falseFacts.begin(); falsef != m_falseFacts.end(); falsef++)
-	{
-		std::cout << "m_falseFacts[i] : " << char(*falsef) << std::endl;
-	}
+	if (coherentRule() == true && m_queries.size() > 0)
+		analyseQuerie();
 }

@@ -1,5 +1,18 @@
 A + B => C
-D | E => C
-C ^ F => G
-E | (D + A + B) => !F
-!(G+(!C|F))A + B ^ (A + F) => Z
+D | R => A
+(C ^ F) => G
+E | (D + I ^ H) + A | !Y => F
+
+||
+EDI+H^A+!Y||
+E + D + !I + H + Y => J
+P => E
+
+
+=DIHYP
+?JP
+
+#ABCDRACFGEDIHAAYFEDIHYJPE
+
+
+#!(G+(!C|F) + B ^ (A + F) => Z

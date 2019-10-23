@@ -1,13 +1,10 @@
 #ifndef DEF_EXPERTSYSTEM
 #define DEF_EXPERTSYSTEM
 
-#include <string>
-#include <vector>
-#include <fstream>
 #include "Rules.h"
-#include <list>
-#include <set>
 
+# define PROVEN -1
+# define NOT_PROVEN -3
 class ExpertSystem
 {
   public:
@@ -18,12 +15,12 @@ class ExpertSystem
 	std::set<int> m_trueFacts;
 	std::set<int> m_falseFacts;
 	std::vector<int> m_queries;
-	int		backwardChaining(int querie);
+	bool	backwardChaining(int querie);
 	void	analyseQuerie();
 
 	int		severalConditions(std::vector<int> m_condition, std::vector<char> m_conditionType);
 	int		checkTheCondition(int a, int b, bool boolA, bool boolB, char condition);
-	int		ruleChecking(std::vector<int> condition, std::vector<int> conclusion);
+	int		ruleChecking(std::vector<int> condition);
 
 	int		severalConditions(std::vector<int> condition);
 	int		getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i);
@@ -31,11 +28,11 @@ class ExpertSystem
 	int		andCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
 	int		orCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
 	int		xorCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
-	int		oneCondition(std::vector<int> condition, std::vector<int> conclusion);
+	int		oneCondition(std::vector<int> condition);
 	int		checkNextOperator(std::vector<int> condition, size_t i);
 
-	int		coherentRule();
-	int		checkCoherence(std::vector<int> path, int fact);
+	bool	coherentRule();
+	bool	checkCoherence(std::vector<int> path, int fact);
 	void	printTrueFacts();
 
   private:
@@ -49,6 +46,8 @@ class ExpertSystem
 	int		getConditionValue(std::vector<int> condition, std::vector<std::vector<int> > *array, int i);
 	bool	getFact(int array_value);
 	void	fillList(bool type, std::vector<int> conclusion);
+	bool	condition(bool a, int neg);
+	int		nbToErase(std::vector<int> condition, int i);
 };
 
 #endif

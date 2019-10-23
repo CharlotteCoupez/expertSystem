@@ -1,74 +1,60 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   checkRules.cpp                                     :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2019/10/23 16:28:43 by ccoupez           #+#    #+#             */
+/*   Updated: 2019/10/23 17:20:42 by ccoupez          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ExpertSystem.h"
-#include <iostream>
 
 using namespace std;
 
-int ExpertSystem::coherentRule()
+bool    ExpertSystem::coherentRule()
 {
     std::set<int>::iterator	fact;
     std::vector<int>	    path;
-    int                     ret;
-    ret = 1;
-    for (fact = m_allFacts.begin(); fact != m_allFacts.end(); fact++)
-	{
-		std::cout << "list facts : " << char(*fact) << std::endl;
-	}
+ 
 	for (fact = m_allFacts.begin(); fact != m_allFacts.end(); fact++)
 	{
-		std::cout << "facts : " << char(*fact) << std::endl;
 	    path.erase( path.begin(), path.end() );
-        if (checkCoherence(path, *fact) == 0)
-            return 0;
-		std::cout << "ret = checkCoherence : " << ret << std::endl;
+        if (checkCoherence(path, *fact) == false)
+            return false;
 	}
-        return ret;
+        return true;
 }
 
-int ExpertSystem::checkCoherence(std::vector<int> path, int fact)
+
+bool    ExpertSystem::checkCoherence(std::vector<int> path, int fact)
 {
     std::list<Rules>::iterator	itL;
     std::vector<int>::iterator	factInConclusion;
     
-    std::cout << "1fact " << char(fact) << std::endl;
     for (size_t m = 0; m < path.size(); m++)
     {
         if (path[m] == fact)
-            return 0;
-        std::cout << "first path[i] : " << char(path[m]) << std::endl;
+            return false;
     }
     path.push_back(fact);
-    // for (size_t j = 0; j < path.size(); j++)
-    // {
-    //     std::cout << "path[i] : " << char(path[j]) << std::endl;
-    // }
     for (itL = m_listRules.begin(); itL != m_listRules.end();)
     {
-        factInConclusion = std::find(itL->m_conclusion.begin(), itL->m_conclusion.end(), fact);
+        factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), fact);
         if (*factInConclusion == fact)
         {
-            
-            for (size_t i = 0; i < itL->m_condition.size(); )
+            for (size_t j = 0; j < itL->m_condition.size();j++)
             {
-		        // std::cout << "in checkCoherence : " << char(itL->m_condition[i]) << std::endl;
-		        // std::cout << "in checkCoherence id : " << itL->id << std::endl;
-		        // std::cout << "i: " << i << std::endl;
-                if (isupper(itL->m_condition[i]) && checkCoherence(path, itL->m_condition[i]) == 0)
+                if (isupper(itL->m_condition[j]) && checkCoherence(path, itL->m_condition[j]) == false)
                 {
-		            std::cout << "2 BOUCLAGE FOR RULE with id : " << itL->id << std::endl;
-                    return 0;
+		            std::cout << "Rule number: " << itL->id << " is not properly linked."  << std::endl;
+                    return false;
                 }
-		        // std::cout << "in checkCoherence2 : " << char(itL->m_condition[i]) << std::endl;
-		        // std::cout << "in checkCoherence2 id : " << itL->id << std::endl;
-		        // std::cout << "i : " << i << std::endl;
-                i++;
             }
         }
         itL++;
     }
-    // for (size_t l = 0; l < path.size(); l++)
-    // {
-    //     std::cout << "last path[i] : " << char(path[l]) << std::endl;
-    // }
-	path.erase( path.end() - 1, path.end() );
-    return 1; //tout est passé ok
+    return true;
 }
