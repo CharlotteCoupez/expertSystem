@@ -1,0 +1,5 @@
+A + B => C
+D | E => C
+C ^ F => G
+E | (D + A + B) => !F
+!(G+(!C|F))A + B ^ (A + F) => Z

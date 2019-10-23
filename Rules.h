@@ -6,7 +6,8 @@
 #include <fstream>
 #include <algorithm>
 // #include "expertSystem.h"
-
+# define RULE_ERROR -1
+# define RULE_OK -2
 class Rules
 {
   public:
@@ -31,6 +32,7 @@ class Rules
 		int					status; // pour savoir i la regle et au norme ou nn
 
   private:
+  		int check_format(std::string rule, int i, int bracket);
 		// resultats: implies, ifAndOnlyIf;
 
 };

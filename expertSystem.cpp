@@ -103,6 +103,9 @@ void ExpertSystem::createBaseRules(string ligne, int ruleId)
 		rule.id = ruleId;
 		m_listRules.push_back(rule);
 	}
+	else
+		cout << "Rule number: " << ruleId << " is not correct." << std::endl;
+	
 }
 
 void ExpertSystem::getInitialeFacts(string ligne)
@@ -154,11 +157,11 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
-	if (coherentRule() == 1)
-	{
-		if (m_queries.size() > 0)
-			analyseQuerie();
-	}
+	// if (coherentRule() == 1)
+	// {
+	// 	if (m_queries.size() > 0)
+	// 		analyseQuerie();
+	// }
 }
 
 void ExpertSystem::printTrueFacts()

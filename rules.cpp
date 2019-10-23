@@ -19,10 +19,8 @@ int Rules::getImpORif(string rule, int i)
 int Rules::notationPolonaise(string rule, int i)
 {
 	int		len;
-	// m_polonaise.erase(m_polonaise.begin(), m_polonaise.end());
 	while (i < rule.size() && rule[i] !='<' && rule[i] != '=' && rule[i] != '#')
 	{
-		// cout << "hello rule[i] :" << rule[i] << std::endl;
 		len = m_polonaiseTmp.size();
 		if (rule[i] == '!')
 			m_polonaise.push_back(rule[i]);
@@ -69,7 +67,6 @@ int Rules::notationPolonaise(string rule, int i)
 				}
 				else if (rule[i] == '^')
 				{
-					// cout << "IIIm_polonaiseTmp[len -1]" << m_polonaiseTmp[len -1] << std::endl;
 					while (m_polonaiseTmp[len -1] == '|' || m_polonaiseTmp[len -1] == '+')
 					{
 						m_polonaise.push_back(m_polonaiseTmp[len - 1]);
@@ -77,18 +74,9 @@ int Rules::notationPolonaise(string rule, int i)
 						len--;
 					}
 					m_polonaiseTmp.push_back(rule[i]);
-
 				}
 			}
 		}
-		// for (int i = 0; i < m_polonaise.size(); i++)
-		// {
-		// 	std::cout << "m_polonaise : " << m_polonaise[i] << std::endl;
-		// }
-		// for (int i = 0; i < m_polonaiseTmp.size(); i++)
-		// {
-		// 	std::cout << "m_polonaiseTmp : " << m_polonaiseTmp[i] << std::endl;
-		// }
 		i++;
 	}
 	while (m_polonaiseTmp.size() > 0)
@@ -100,38 +88,104 @@ int Rules::notationPolonaise(string rule, int i)
 		m_polonaiseTmp.erase(m_polonaiseTmp.begin()+ (len -1), m_polonaiseTmp.end());
 		len = m_polonaiseTmp.size();
 	}
-	for (int j = 0; j < m_polonaise.size(); j++)
-	{
-		std::cout << "-------final m_polonaise : " << m_polonaise[j] << std::endl;
-	}
-	std::cout << "--------fin----------- " << std::endl;
-
-	for (int j = 0; j < m_polonaiseTmp.size(); j++)
-	{
-		std::cout << "--------final m_polonaiseTmp : " << m_polonaiseTmp[j] << std::endl;
-	}
 	return i;
+}
+
+int Rules::check_format(string rule, int i, int bracket)
+{
+	std::cout << "bracket " << bracket << std::endl;
+	std::cout << "checkformat" << std::endl;
+	while (i < rule.size())
+	{
+		std::cout << "i" << i << std::endl;
+		std::cout << "rule[i]" << rule[i] << std::endl;
+		if (rule[i] == ')')
+		{
+			std::cout << "bracket in if" << bracket << std::endl;
+			if (bracket == 1)
+			{
+				std::cout << "rule[i + 1] " << rule[i + 1] << std::endl;
+				if (i + 1 < rule.size() && (rule[i + 1] == '(' || isupper(rule[i + 1])))
+					return RULE_ERROR;
+				return i;
+			}
+			return RULE_ERROR; //error
+		}
+		else if (isupper(rule[i]))
+		{
+			std::cout << "rule[i + 1] " << rule[i + 1] << std::endl;
+
+			if (i + 1 < rule.size() && (rule[i + 1] != '+' && rule[i + 1] != '|' && rule[i + 1] != '^' && rule[i + 1] != ')' && rule[i + 1] != '=' && rule[i + 1] != '<'))
+				{
+					std::cout << "error A" << std::endl;
+					return RULE_ERROR; //error
+				}
+		}
+		else if (rule[i] == '!' || rule[i] == '+' || rule[i] == '|' || rule[i] == '^')
+		{
+			if (i + 1 >= rule.size() && !isupper(rule[i + 1]) && rule[i] != '(')
+			{
+				std::cout << "error B" << std::endl;
+				return RULE_ERROR; //error
+			}
+		}
+		else if (rule[i] == '=' || rule[i] == '<')
+		{
+			i = rule[i] == '=' ? i + 2 : i + 3;
+			if (check_format(rule, i, bracket) != -2)
+			{
+				std::cout << "error C" << std::endl;
+				return RULE_ERROR; //error
+			}
+		}
+		else if (rule[i] == '(')
+		{
+			i = check_format(rule, i + 1, 1);
+			//std::cout << "ret" << ret << std::endl;
+			if (i == RULE_ERROR)
+			{
+				std::cout << "error D" << std::endl;
+				return RULE_ERROR; //error
+			}
+			std::cout << "--avw----------rule[i]" << rule[i] << std::endl;
+			std::cout << "--avw----------i" << i << std::endl;
+			std::cout << "------------rule[i]" << rule[i] << std::endl;
+			std::cout << "------------i" << i << std::endl;
+			std::cout << "-bracket" << bracket << std::endl;
+		}
+		i++;
+		std::cout << "i" << i << std::endl;
+	}
+	if (bracket == 1)
+		return RULE_ERROR;
+	return RULE_OK;
 }
 
 Rules::Rules(string rule)
 {
 	int i;
+	int ret;
 
 	i = 0;
 	impORif = 0;
 	status = 0;
 	rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end());
+	ret = check_format(rule, 0, 0);
+	std::cout << "ret : " << ret << std::endl;
+	if (ret != RULE_OK)
+	{
+		std::cout << "checkformat ret 0" << std::endl;
+		status = 0;
+		return;
+	}
+	std::cout << "checkformat ret 1" << std::endl;
+
 	i = notationPolonaise(rule, i);
 	putInCondition();
 	if ( (i = getImpORif(rule, i)) < 0)
 		return;
-
 	notationPolonaise(rule, i);
 	putInConclusion();
-	for (int i = 0; i < m_polonaise.size(); i++)
-	{
-		std::cout << "m_polonaise : " << m_polonaise[i] << std::endl;
-	}
 	status = 1;
 }
 
