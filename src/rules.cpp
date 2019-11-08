@@ -21,6 +21,7 @@ Rules::Rules(string rule)
 	impORif = 0;
 	status = 0;
 	rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end());
+	rule.erase(std::remove(rule.begin(), rule.end(), '\r'), rule.end());
 	if (check_format(rule, 0, 0) != RULE_OK)
 		return;
 	i = notationPolonaise(rule, 0);
@@ -33,7 +34,7 @@ Rules::Rules(string rule)
 }
 
 
-int		Rules::check_format(string rule, int i, int bracket)
+int		Rules::check_format(string rule, size_t i, int bracket)
 {
 	while (i < rule.size())
 	{
@@ -42,32 +43,42 @@ int		Rules::check_format(string rule, int i, int bracket)
 			if (bracket == 1)
 			{
 				if (i + 1 < rule.size() && !isOperator(rule[i + 1]) && !isRelationOp(rule[i + 1]))
+				{
 					return RULE_ERROR;
+				}
 				return i;
 			}
 			return RULE_ERROR;
 		}
 		else if (isupper(rule[i]))
 		{
-			if (i + 1 < rule.size() && !isOperator(rule[i + 1]) && !isRelationOp(rule[i + 1]) && rule[i + 1] != ')' )
+			if (i + 1 < rule.size() && !isOperator(rule[i + 1]) && !isRelationOp(rule[i + 1]) && rule[i + 1] != ')')
+			{
 				return RULE_ERROR;
+			}
 		}
 		else if (rule[i] == '!' || isOperator(rule[i]))
 		{
 			if (i + 1 < rule.size() && (isOperator(rule[i + 1]) || rule[i + 1] == ')'))
+			{
 				return RULE_ERROR;
+			}
 		}
 		else if (isRelationOp(rule[i]))
 		{
 			i = rule[i] == '=' ? i + 2 : i + 3;
 			if (check_format(rule, i, bracket) != RULE_OK)
+			{
 				return RULE_ERROR;
+			}
 		}
 		else if (rule[i] == '(')
 		{
 			i = check_format(rule, i + 1, 1);
-			if (i == RULE_ERROR)
+			if ((int)i == RULE_ERROR)
+			{
 				return RULE_ERROR;
+			}
 		}
 		i++;
 	}
@@ -76,7 +87,7 @@ int		Rules::check_format(string rule, int i, int bracket)
 	return RULE_OK;
 }
 
-int Rules::notationPolonaise(string rule, int i)
+int Rules::notationPolonaise(string rule, size_t i)
 {
 	int		len;
 	char	op;
@@ -97,7 +108,6 @@ int Rules::notationPolonaise(string rule, int i)
 				len--;
 			}
 			m_polonaiseTmp.erase(m_polonaiseTmp.begin() + (len - 1), m_polonaiseTmp.end());
-
 		}
 		else if(isOperator(rule[i]))
 		{

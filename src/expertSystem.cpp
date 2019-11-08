@@ -18,14 +18,14 @@ void	ExpertSystem::fillList(bool type, std::vector<int> conclusion)
 {
 	if (type == 1)
 	{
-		for (int i = 0;i < conclusion.size(); i++)
+		for (size_t i = 0;i < conclusion.size(); i++)
 		{
 			if (isupper(conclusion[i]))
 				m_trueFacts.insert(conclusion[i]);
 		}
 		return;
 	}
-	for (int i = 0;i < conclusion.size(); i++)
+	for (size_t i = 0;i < conclusion.size(); i++)
 	{
 		if (isupper(conclusion[i]))
 			m_falseFacts.insert(conclusion[i]);
@@ -52,15 +52,12 @@ bool	ExpertSystem::backwardChaining(int querie)
 			std::cout << "querie in backward: " << querie << std::endl;
 			if (result == PROVEN)
 			{
-				cout << "QUERIE HAVE A SSolution : " << char(querie) << std::endl;
+				cout << "QUERIE SSolution 1 : " << char(querie) << std::endl;
 				fillList(true, itL->m_conclusion);
-				return true;
+				// return true;
 			}
-			else
-				itL++;
 		}
-		else
-			itL++;
+		itL++;
 	}
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*checkResult == querie)
@@ -107,12 +104,10 @@ void ExpertSystem::analyseQuerie()
 void ExpertSystem::createBaseRules(string ligne, int ruleId)
 {
 	Rules	rule(ligne);
-
 	if (rule.status == 1)
 	{
-		for (int i = 0; i < rule.m_facts.size(); i++)
+		for (size_t i = 0; i < rule.m_facts.size(); i++)
 		{
-			cout << "rule.m_facts[i]: " << char(rule.m_facts[i]) << std::endl;
 			m_allFacts.insert(rule.m_facts[i]);
 		}
 		rule.id = ruleId;
@@ -153,6 +148,8 @@ ExpertSystem::ExpertSystem(string argv)
 {
 	int					idRule;
 	string				ligne;
+	// std::set<int>		tmpTrueFacts;
+	// std::set<int>		tmpFalseFacts;
 
 	idRule = 1;
 	ifstream monFichier(argv.c_str());
@@ -173,6 +170,15 @@ ExpertSystem::ExpertSystem(string argv)
 	}
 	else
 		std::cout << "No such a file" << std::endl;
+	// tmpTrueFacts = m_trueFacts;
 	if (coherentRule() == true && m_queries.size() > 0)
+	{
+		std::cout << "analyse" << std::endl;
 		analyseQuerie();
+	}
+	else
+	{
+		std::cout << "No analyse" << std::endl;
+	}
+	
 }

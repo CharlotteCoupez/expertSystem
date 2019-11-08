@@ -25,15 +25,17 @@ class ExpertSystem
 	int		severalConditions(std::vector<int> condition);
 	int		getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i);
 	int		getResult(std::vector<int> condition, size_t i);
-	int		andCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
-	int		orCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
-	int		xorCondition(bool a, bool b, std::vector<std::vector<int> > array, int i);
+	int		andCondition(bool a, bool b, std::vector<std::vector<int> > array);
+	int		orCondition(bool a, bool b, std::vector<std::vector<int> > array);
+	int		xorCondition(bool a, bool b, std::vector<std::vector<int> > array);
 	int		oneCondition(std::vector<int> condition);
 	int		checkNextOperator(std::vector<int> condition, size_t i);
 
 	bool	coherentRule();
+	bool	coherence();
 	bool	checkCoherence(std::vector<int> path, int fact);
 	void	printTrueFacts();
+	void	print();
 
   private:
 

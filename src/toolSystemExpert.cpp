@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:57:26 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/07 16:58:51 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/08 16:25:49 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ int		ExpertSystem::getNegative(std::vector<int> condition, std::vector<std::vect
 {
 	i = getConditionValue(condition, array, i);
 	getConditionValue(condition, array, i);
+
+	
 	return 0;
 }
 
@@ -62,9 +64,9 @@ int		ExpertSystem::getConditionValue(std::vector<int> condition, std::vector<std
 }
 
 
-int ExpertSystem::checkNextOperator(std::vector<int> condition, size_t i)
+int ExpertSystem::checkNextOperator(std::vector<int> condition, size_t j)
 {
-	for (int i = 0; i < condition.size(); i++)
+	for (size_t i = j; i < condition.size(); i++)
 	{
 		if (condition[i] == '|' || condition[i] == '^')
 			return 1;

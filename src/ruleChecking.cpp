@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:28:20 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/07 16:58:40 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/08 16:17:33 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,16 +66,16 @@ int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 	factA = getFact(array[1][0]);
 	factB = getFact(array[0][0]);
 	if (condition[i] == '+')
-		return andCondition(factA, factB, array, i);
+		return andCondition(factA, factB, array);
 	else if (condition[i] == '|')
-		return orCondition(factA, factB, array, i);
+		return orCondition(factA, factB, array);
 	else if (condition[i] == '^')
-		return xorCondition(factA, factB, array, i);
+		return xorCondition(factA, factB, array);
 	return 0;
 }
 
 
-int		ExpertSystem::orCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
+int		ExpertSystem::orCondition(bool a, bool b, std::vector<std::vector<int> > array)
 {
 	if (a == false && array[1][0] != 0)
 	{
@@ -95,7 +95,7 @@ int		ExpertSystem::orCondition(bool a, bool b, std::vector<std::vector<int> > ar
 }
 
 
-int		ExpertSystem::xorCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
+int		ExpertSystem::xorCondition(bool a, bool b, std::vector<std::vector<int> > array)
 {
 	if (a == false && array[1][0] != 0)
 	{
@@ -113,7 +113,7 @@ int		ExpertSystem::xorCondition(bool a, bool b, std::vector<std::vector<int> > a
 }
 
 
-int		ExpertSystem::andCondition(bool a, bool b, std::vector<std::vector<int> > array, int i)
+int		ExpertSystem::andCondition(bool a, bool b, std::vector<std::vector<int> > array)
 {
 	if (a == false && array[1][0] != 0)
 	{

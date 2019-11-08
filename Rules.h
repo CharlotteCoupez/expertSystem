@@ -31,7 +31,7 @@ class Rules
 		void				parseRule(std::string rule, std::vector<char> values, std::vector<char> type);
 		void				printValues();
 		void				printFacts();
-		int					getImpORif(std::string rule, int i);
+		int					getImpORif(std::string rule, size_t i);
 
 	private:
 		std::vector<char>	m_conditionType;
@@ -39,10 +39,10 @@ class Rules
 		std::vector<char>	m_polonaise;
 		std::vector<char>	m_polonaiseTmp;
 		char				impORif;
-  		int					check_format(std::string rule, int i, int bracket);
+  		int					check_format(std::string rule, size_t i, int bracket);
 		void				putInCondition();
 		void				putInConclusion();
-		int					notationPolonaise(std::string rule, int type);
+		int					notationPolonaise(std::string rule, size_t i);
 		bool				isOperator(char c);
 		bool				isRelationOp(char c);
 		bool				opPriorities(char c, char op);

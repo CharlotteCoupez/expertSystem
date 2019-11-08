@@ -2,15 +2,12 @@ A + B => C
 D | R => A
 (C ^ F) => G
 E | (D + I ^ H) + A | !Y => F
-
-||
-EDI+H^A+!Y||
 E + D + !I + H + Y => J
 P => E
 
 
-=DIHYP
-?JP
+=DHYP
+?JPC
 
 #ABCDRACFGEDIHAAYFEDIHYJPE
 

@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:46:45 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/07 16:58:48 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/08 16:23:50 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ bool	Rules::opPriorities(char c, char op)
 }
 
 
-int		Rules::getImpORif(string rule, int i)
+int		Rules::getImpORif(string rule, size_t i)
 {
 	impORif = rule[i];
 	if (i < (rule.size() + 1) && rule[i] == '=' && rule[i + 1] == '>')
@@ -52,7 +52,7 @@ int		Rules::getImpORif(string rule, int i)
 
 void	Rules::putInCondition()
 {
-	for (int i = 0; i < m_polonaise.size(); i++)
+	for (size_t i = 0; i < m_polonaise.size(); i++)
 	{
 		m_condition.push_back(m_polonaise[i]);
 		if (isupper(m_polonaise[i]))
@@ -64,7 +64,7 @@ void	Rules::putInCondition()
 
 void	Rules::putInConclusion()
 {
-	for (int i = 0; i < m_polonaise.size(); i++)
+	for (size_t i = 0; i < m_polonaise.size(); i++)
 	{
 		m_conclusion.push_back(m_polonaise[i]);
 		if (isupper(m_polonaise[i]))
@@ -79,22 +79,22 @@ void	Rules::putInConclusion()
 void Rules::printValues()
 {
 	std::cout << "ID : " << id << std::endl;
-	for (int i = 0; i < m_condition.size(); i++)
+	for (size_t i = 0; i < m_condition.size(); i++)
 	{
 		std::cout << "char(m_condition[i] : " << char(m_condition[i]) << std::endl;
 		//std::cout << "m_condition[i] : " << m_condition[i] << std::endl;
 	}
-	for (int i = 0; i < m_conditionType.size(); i++)
+	for (size_t i = 0; i < m_conditionType.size(); i++)
 	{
 		std::cout << "char(m_conditionType[i] : " << char(m_conditionType[i]) << std::endl;
 		//std::cout << "m_conditionType[i] : " << m_conditionType[i] << std::endl;
 	}
-	for (int i = 0; i < m_conclusion.size(); i++)
+	for (size_t i = 0; i < m_conclusion.size(); i++)
 	{
 		std::cout << "char(m_conculsion[i] : " << char(m_conclusion[i]) << std::endl;
 		//std::cout << "m_conculsion[i] : " << m_conclusion[i] << std::endl;
 	}
-	for (int i = 0; i < m_conclusionType.size(); i++)
+	for (size_t i = 0; i < m_conclusionType.size(); i++)
 	{
 		std::cout << "char(m_conclusionType[i] : " << char(m_conclusionType[i]) << std::endl;
 		//std::cout << "m_conclusionType[i] : " << m_conclusionType[i] << std::endl;
@@ -104,7 +104,7 @@ void Rules::printValues()
 
 void Rules::printFacts()
 {
-	for (int i = 0; i < m_facts.size(); i++)
+	for (size_t i = 0; i < m_facts.size(); i++)
 	{
 		std::cout << "m_fact[i] : " << m_facts[i] << std::endl;
 	}

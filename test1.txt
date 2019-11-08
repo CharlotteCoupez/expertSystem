@@ -1,104 +1,22 @@
+A + B => V
+A + B + C => !V
+C => B
 
 
+=ABC
+?V
 
-C           => E + P
-A + B + D   => C 
-F           => C
-#A + !B      => F 
-V ^ W       => X 
-A + B       => Y
-C | D       => X
-E + F       => V 
-
-=AB
-?E
+#C           => E + P
+#A + B + D   => C 
+#F           => C
+##A + !B      => F 
+#V ^ W       => X 
+#A + B       => Y
+#C | D       => X
+#E + F       => V 
 
 
-# If no facts are initially true, then a simple "=" followed
-# by a newline is used
-
-#? #GVX # Queries : What are G, V and X ?
-
-#-------final m_polonaise : V
-#-------final m_polonaise : W
-#-------final m_polonaise : ^
-#--------fin-----------
-#get imporif:
-#-------final m_polonaise : X
-
-# EXEMPLE DE TEST
-#A | (B + C) => D
-#E => A | B
-#F => C
-#=EF
-#?D #should be true
-
-#in checkCoherence2 : +
-#in checkCoherence2 id : 3
-#i : 3
-#ret = checkCoherence : 1
-#facts : V
-#path[i] : V
-#in checkCoherence : C
-#in checkCoherence id : 6
-#i: 0
-#fact C
-#factInPath
-#path[i] : V
-#path[i] : C
-#in checkCoherence : A
-#in checkCoherence id : 2
-#i: 0
-#fact A
-#factInPath
-#path[i] : V
-#path[i] : C
-#path[i] : A
-#in checkCoherence2 : A
-#in checkCoherence2 id : 2
-#i : 0
-#in checkCoherence : B
-#in checkCoherence id : 2
-#i: 1
-#fact B
-#factInPath A
-#path[i] : V
-#path[i] : C
-#path[i] : B
-#in checkCoherence2 : B
-#in checkCoherence2 id : 2
-#i : 1
-#in checkCoherence : D
-#in checkCoherence id : 2
-#i: 2
-#fact D
-#factInPath B
-#path[i] : V
-#path[i] : C
-#path[i] : D
-#in checkCoherence2 : D
-#in checkCoherence2 id : 2
-#i : 2
-#in checkCoherence : +
-#in checkCoherence id : 2
-#i: 3
-#in checkCoherence2 : +
-#in checkCoherence2 id : 2
-#i : 3
-#in checkCoherence : +
-#in checkCoherence id : 2
-#i: 4
-#in checkCoherence2 : +
-#in checkCoherence2 id : 2
-#i : 4
-#in checkCoherence2 : C
-#in checkCoherence2 id : 6
-#i : 0
-#in checkCoherence : D
-#in checkCoherence id : 6
-#i: 1
-#fact D
-#factInPath D
-#BOUCLAGE FOR RULE with id :
-#2 BOUCLAGE FOR RULE with id : 6
-#annalyser starting
+A FAIRE 
+CHANGER TOUT LES ENDROT OU IL Y A UN FND CA NE MARCHE PAS
+FAIRE LES VERIF FALSE LISTE
+CONTINUER CHECK RYLES..
