@@ -16,18 +16,26 @@ using namespace std;
 
 void	ExpertSystem::fillList(bool type, std::vector<int> conclusion)
 {
+	std::vector<int>::iterator	truef;
+
+	for (truef = conclusion.begin(); truef != conclusion.end(); truef++)
+	{
+		std::cout << "-------------conclusion : " << char(*truef) << std::endl;
+	}
+	std::cout << "------------- " << std::endl;
+
 	if (type == 1)
 	{
 		for (size_t i = 0;i < conclusion.size(); i++)
 		{
-			if (isupper(conclusion[i]))
+			if (isupper(char(conclusion[i])))
 				m_trueFacts.insert(conclusion[i]);
 		}
 		return;
 	}
 	for (size_t i = 0;i < conclusion.size(); i++)
 	{
-		if (isupper(conclusion[i]))
+		if (isupper(char(conclusion[i])))
 			m_falseFacts.insert(conclusion[i]);
 	}
 }
@@ -39,6 +47,7 @@ bool	ExpertSystem::backwardChaining(int querie)
 	std::list<Rules>::iterator	itL;
 	std::vector<int>::iterator	factInConclusion;
 	std::set<int>::iterator		checkResult;
+	std::vector<int>			vecTmp;
 
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
@@ -53,10 +62,17 @@ bool	ExpertSystem::backwardChaining(int querie)
 			if (result == PROVEN)
 			{
 				cout << "QUERIE SSolution 1 : " << char(querie) << std::endl;
-				fillList(true, itL->m_conclusion);
-				// return true;
+				//cout << "char(*(factInConclusion--) : " << char(*(--factInConclusion)) << std::endl;
+				if (factInConclusion == itL->m_conclusion.begin()
+					|| (factInConclusion != itL->m_conclusion.begin() && *(--factInConclusion) != '!'))
+					fillList(true, itL->m_conclusion);
+				else
+					fillList(false, itL->m_conclusion);
+				if (!checking)
+					return true;
 			}
 		}
+		factInConclusion = itL->m_conclusion.end();
 		itL++;
 	}
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
@@ -67,9 +83,8 @@ bool	ExpertSystem::backwardChaining(int querie)
 	}
 	else
 	{
-		std::vector<int> test;
-		test.push_back(querie);
-		fillList(false, test);
+		vecTmp.push_back(querie);
+		fillList(false, vecTmp);
 		std::cout << "QUERIE have NO Solution for : " << char(querie) << std::endl;
 		return false;
 	}
@@ -78,25 +93,23 @@ bool	ExpertSystem::backwardChaining(int querie)
 void ExpertSystem::analyseQuerie()
 {
 	std::vector<int>::iterator	itrQ;
-	std::set<int>::iterator		querie;
+	int							querie;
 
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
-		querie = find(m_trueFacts.begin(), m_trueFacts.end(), *itrQ);
-		if (*querie != *itrQ)
-		{
-			std::cout << "START QUERING"<< char(*itrQ) << std::endl;
-			querie = find(m_falseFacts.begin(), m_falseFacts.end(), *itrQ);
-			if (*querie == *itrQ)
-				cout << "querie False :'( : " << char(*querie) << std::endl;
-			else
+		querie = find_in_set(*itrQ, m_trueFacts);
+		if (querie == *itrQ)
+			cout << "querie True :) : " << char(querie) << std::endl;
+		else {
+			querie = find_in_set(*itrQ, m_falseFacts);
+			if (querie == *itrQ)
+				cout << "querie False :'( : " << char(querie) << std::endl;
+			else {
+				std::cout << "START SHEARCHING"<< char(*itrQ) << std::endl;
 				backwardChaining(*itrQ);
+			}
 		}
-		else
-		{
-			cout << "querie True :) : " << char(*querie) << std::endl;
-		}
-
+		querie = 0;
 	}
 	printTrueFacts();
 }
@@ -127,7 +140,7 @@ void ExpertSystem::getInitialeFacts(string ligne)
 	while (isupper(ligne[i]))
 	{
 		m_initialFacts.push_back(ligne[i]);
-		m_trueFacts.insert(ligne[i]);
+		// m_trueFacts.insert(ligne[i]);
 		i++;
 	}
 }
@@ -146,8 +159,9 @@ void ExpertSystem::getQueries(string ligne)
 
 ExpertSystem::ExpertSystem(string argv)
 {
-	int					idRule;
-	string				ligne;
+	int		idRule;
+	string	ligne;
+	// int		fact;
 	// std::set<int>		tmpTrueFacts;
 	// std::set<int>		tmpFalseFacts;
 
@@ -173,8 +187,22 @@ ExpertSystem::ExpertSystem(string argv)
 	// tmpTrueFacts = m_trueFacts;
 	if (coherentRule() == true && m_queries.size() > 0)
 	{
-		std::cout << "analyse" << std::endl;
-		analyseQuerie();
+		checking = true;
+		// if (incoRule())
+		// {
+			// checking = false;
+		// 	std::cout << "analyse" << std::endl;
+			for (size_t i = 0; i < m_initialFacts.size();) {
+				m_trueFacts.insert(m_initialFacts[i]);
+				i++;
+			}
+		// }
+			analyseQuerie();
+		// else
+		// {
+		// 	std::cout << "incoRULe FALSe" << std::endl;
+		// }
+		
 	}
 	else
 	{

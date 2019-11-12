@@ -1,0 +1,19 @@
+#PAS RESOLUT :(
+#A + B => C
+!A + !B => !C
+P => E
+
+
+=AB
+?C
+
+# CA OK JE PEUT VOIR QUE CEST FAUT
+#A + B => C
+#D => !C
+#H + V => T
+#A + B => D
+#P => E
+#
+#
+#=AB
+#?C

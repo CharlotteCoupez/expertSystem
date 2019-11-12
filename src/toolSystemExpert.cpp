@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:57:26 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/08 16:25:49 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/12 18:09:47 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,41 +14,62 @@
 
 using namespace std;
 
+int		ExpertSystem::find_in_set(int to_compare, std::set<int> list)
+{
+	std::set<int>::iterator	ret;
+	// std::cout << " to_compare : : " << char(to_compare) << std::endl;
+
+
+	// for (ret = list.begin(); ret != list.end();ret++)
+	// {
+	// 		std::cout << " ret : : " << char(*ret) << std::endl;
+
+	// }
+	for (ret = list.begin(); ret != list.end();ret++)
+	{
+		if (*ret == to_compare)
+			return to_compare;
+	}
+	// std::cout << " ret fin to_compare : : " << char(to_compare) << std::endl;
+	return -1;
+}
 
 bool	ExpertSystem::condition(bool a, int neg)
 {
 	if (a == true && neg == 1)
-		return 1;
+		return true;
 	if (a == true && neg == -1)
-		return 0;
+		return false;
 	if (a == false && neg == 1)
-		return 0;
+		return false;
 	if (a == false && neg == -1)
-		return 1;
+		return true;
 	return false;
 }
 
-bool	ExpertSystem::getFact(int array_value)
+int		ExpertSystem::getFact(int array_value, int neg)
 {
-	std::set<int>::iterator	ret;
+	int	ret;
+	// std::cout << " array_value : " << char(array_value) << std::endl;
+	// std::cout << " array_value : " << array_value << std::endl;
 
 	if (isupper(char(array_value)))
 	{
-        ret = find(m_trueFacts.begin(), m_trueFacts.end(), array_value);
-		return *ret == array_value;
+        // ret = find(m_trueFacts.begin(), m_trueFacts.end(), array_value);
+        ret = find_in_set(array_value, m_trueFacts);
+		if (ret == array_value && neg == 1)
+			return 1;
+		else if (ret == array_value && neg == -1)
+			return 0;
+        ret = find_in_set(array_value, m_falseFacts);
+		if (ret == array_value && neg == -1)
+			return 1;
+		else if (ret == array_value && neg == 1)
+			return 0;
+		return 2;
 	}
 	return array_value;
 }
-
-int		ExpertSystem::getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
-{
-	i = getConditionValue(condition, array, i);
-	getConditionValue(condition, array, i);
-
-	
-	return 0;
-}
-
 
 int		ExpertSystem::getConditionValue(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
 {
@@ -63,6 +84,12 @@ int		ExpertSystem::getConditionValue(std::vector<int> condition, std::vector<std
 	return (i - 2 >= 0 && condition[i - 2] == '!' ? i - 2 : i - 1);
 }
 
+int		ExpertSystem::getNegative(std::vector<int> condition, std::vector<std::vector<int> > *array, int i)
+{
+	i = getConditionValue(condition, array, i);
+	getConditionValue(condition, array, i);
+	return 0;
+}
 
 int ExpertSystem::checkNextOperator(std::vector<int> condition, size_t j)
 {

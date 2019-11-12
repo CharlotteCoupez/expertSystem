@@ -10,7 +10,8 @@ SRCS_NAME =	checkRules.cpp \
 			ruleChecking.cpp \
 			rules.cpp \
 			toolRules.cpp \
-			toolSystemExpert.cpp
+			toolSystemExpert.cpp \
+			incoRule.cpp
 
 SRCS = $(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
 
@@ -31,11 +32,11 @@ $(NAME): $(OBJS_NAME)
 #	@rm -f $(OBJS_NAME)
 #	@echo "\033[32;2m Malloc - Cleaned successfully!\033[0m"
 #
-#fclean: clean
-#	@rm -f $(NAME)
-#	@echo "\033[32;2m Malloc - Fcleaned successfully!\033[0m"
-#
-#re: fclean all
+fclean:
+	@rm -f $(NAME)
+	@echo "\033[32;2m Malloc - Fcleaned successfully!\033[0m"
+
+re: fclean #≠all
 
 re: all
 

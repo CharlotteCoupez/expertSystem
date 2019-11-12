@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:28:20 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/08 16:17:33 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/12 17:12:48 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,16 +55,21 @@ int		ExpertSystem::severalConditions(vector<int> condition)
 	return ret;
 }
 
-
+/*
+** get fact return 0  1  2
+** 0 it is proven that the condition is false
+** 1 it is proven that the condition is true
+** 2 we dont know, we maybe will need a backwardchaining
+*/
 int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 {
-	bool					factA;
-	bool					factB;
+	int						factA;
+	int						factB;
 	vector<vector<int> >	array;
 
 	getNegative(condition, &array, i);
-	factA = getFact(array[1][0]);
-	factB = getFact(array[0][0]);
+	factA = getFact(array[1][0], array[1][1]);
+	factB = getFact(array[0][0], array[0][1]);
 	if (condition[i] == '+')
 		return andCondition(factA, factB, array);
 	else if (condition[i] == '|')
@@ -75,56 +80,50 @@ int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 }
 
 
-int		ExpertSystem::orCondition(bool a, bool b, std::vector<std::vector<int> > array)
+int		ExpertSystem::orCondition(int a, int b, std::vector<std::vector<int> > array)
 {
-	if (a == false && array[1][0] != 0)
-	{
-		// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (a == 1 || b == 1)
+		return PROVEN;
+	else if (a == 0 && b == 0)
+		return NOT_PROVEN;
+	if (a == 2)
 		a = backwardChaining(array[1][0]);
-	}
 	if (condition(a, array[1][1]))
 		return PROVEN;
-	if (b == false && array[0][0] != 0)
-	{
-		// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (b == 2)
 		b = backwardChaining(array[0][0]);
-	}
 	if (condition(b, array[0][1]))
 		return PROVEN;
 	return NOT_PROVEN;
 }
 
 
-int		ExpertSystem::xorCondition(bool a, bool b, std::vector<std::vector<int> > array)
+int		ExpertSystem::xorCondition(int a, int b, std::vector<std::vector<int> > array)
 {
-	if (a == false && array[1][0] != 0)
-	{
-		// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (a == 1 && b == 1)
+		return NOT_PROVEN;
+	else if (a == 0 && b == 0)
+		return NOT_PROVEN;
+	if (a == 2)
 		a = backwardChaining(array[1][0]);
-	}
-	if (b == false && array[0][0] != 0)
-	{
-		// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (b == 2)
 		b = backwardChaining(array[0][0]);
-	}
 	if (condition(a, array[1][1]) ^ condition(b, array[0][1]))
 		return PROVEN;
 	return NOT_PROVEN;
 }
 
 
-int		ExpertSystem::andCondition(bool a, bool b, std::vector<std::vector<int> > array)
+int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > array)
 {
-	if (a == false && array[1][0] != 0)
-	{
-		// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (a == 1 && b == 1)
+		return PROVEN;
+	else if (a == 0 || b == 0)
+		return NOT_PROVEN;
+	if (a == 2)
 		a = backwardChaining(array[1][0]);
-	}
-	if (b == false && array[0][0] != 0)
-	{
-		// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (b == 2)
 		b = backwardChaining(array[0][0]);
-	}
 	if (condition(a, array[1][1]) && condition(b, array[0][1]))
 		return PROVEN;
 	return NOT_PROVEN;
@@ -133,20 +132,34 @@ int		ExpertSystem::andCondition(bool a, bool b, std::vector<std::vector<int> > a
 
 int		ExpertSystem::oneCondition(vector<int> condition)
 {
-	size_t				 	i;
-	bool					ret;
-	std::set<int>::iterator	fact;
+	bool	ret;
 
-	i = 0;
-	fact = find(m_trueFacts.begin(), m_trueFacts.end(), condition[condition.size() - 1]);
-	if (*fact == condition[condition.size() - 1] || condition[condition.size() - 1] == 1)
+	if (find_in_set(condition[condition.size() - 1], m_trueFacts) != -1)
 	{
 		if (condition[0] != '!')
+		{
 			return PROVEN;
+		}
+		else
+		{
+			return NOT_PROVEN;
+		}
 	}
-	// RECHERCHER DANS FALSE FACT AVANT BACKWARD
+	if (find_in_set(condition[condition.size() - 1], m_falseFacts) != -1)
+	{
+		if (condition[0] == '!')
+		{
+			return PROVEN;
+		}
+		else
+		{
+			return NOT_PROVEN;
+		}
+	}
 	ret = backwardChaining(condition[condition.size() - 1]);
 	if (ret == false && condition[0] != '!')
+	{
 		return NOT_PROVEN;
+	}
 	return PROVEN;
 }

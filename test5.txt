@@ -2,14 +2,10 @@ A + B => C
 D | R => A
 (C ^ F) => G
 E | (D + I ^ H) + A | !Y => F
-E + D + !I + H + Y => J
-P => E
+E + D + !I + H + Y => !J
+P => !E
 
 
-=DHYP
-?JPC
+=DHPY
+?J
 
-#ABCDRACFGEDIHAAYFEDIHYJPE
-
-
-#!(G+(!C|F) + B ^ (A + F) => Z
