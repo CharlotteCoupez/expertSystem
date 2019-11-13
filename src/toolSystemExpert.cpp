@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:57:26 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/13 14:18:10 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/13 17:06:51 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ bool	ExpertSystem::condition(bool a, int neg)
 	return false;
 }
 
-int		ExpertSystem::conditionProvenFalse(bool a, int neg)
+bool	ExpertSystem::conditionProvenFalse(bool a, int neg)
 {
 	if (a == true && neg == -1)
-		return PROVEN_FALSE;
+		return true;
 	if (a == false && neg == 1)
-		return PROVEN_FALSE;
-	return UNDIFINED;
+		return true;
+	return false;
 }
 
 int		ExpertSystem::getFact(int array_value, int neg)

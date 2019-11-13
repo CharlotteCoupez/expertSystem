@@ -57,7 +57,8 @@ class ExpertSystem
 	int		find_in_set(int to_compare, std::set<int> list);
 	bool	incoRule();
 	void	fillTrueFasleFacts(Rules rule);
-	int		conditionProvenFalse(bool a, int neg);
+	bool	conditionProvenFalse(bool a, int neg);
+	bool	checkFacts();
 
 };
 

@@ -50,13 +50,20 @@ bool	ExpertSystem::backwardChaining(int querie)
 	int							factInConc;
 	std::set<int>::iterator		checkResult;
 	std::vector<int>			vecTmp;
-
+	int k = 0;
+	factInConc = 0;
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
+		cout << "REGLE num : " << k << std::endl;
+		// for (size_t i = 0; i < itL->m_condition.size();)
+		// {
+		// 	std::cout << "m_condition[i]: " << char(itL->m_condition[i]) << " in int: " << itL->m_condition[i] << std::endl;
+		// }
+		k++;
 		// factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), querie);
 		for (size_t i = 0; i < itL->m_conclusion.size();)
 		{
-			// std::cout << "itL->m_conclusion[i]: " << char(itL->m_conclusion[i]) << " in int: " << itL->m_conclusion[i] << std::endl;
+			std::cout << "itL->m_conclusion[i]: " << char(itL->m_conclusion[i]) << " in int: " << itL->m_conclusion[i] << std::endl;
 			if (itL->m_conclusion[i] == querie)
 			{
 				factInConc = querie;
@@ -95,7 +102,6 @@ bool	ExpertSystem::backwardChaining(int querie)
 		factInConc = 0;
 		itL++;
 	}
-
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*checkResult == querie)
 	{
@@ -221,7 +227,7 @@ ExpertSystem::ExpertSystem(string argv)
 				m_trueFacts.insert(m_initialFacts[i]);
 				i++;
 			}
-			// analyseQuerie();
+			analyseQuerie();
 		}
 		else
 		{

@@ -1,11 +1,10 @@
 A + B => C
 D | R => A
 (C ^ F) => G
-E | (D + I ^ H) + A | !Y => F
-E + D + !I + H + Y => !J
-P => !E
+(D + I ^ H) + A | !Y => F
+E + D + !I + H + Y => J
+P => E
 
 
-=DHPY
-?J
-
+=DPY
+?F

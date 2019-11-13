@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:28:20 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/13 14:19:15 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/13 17:40:19 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,8 +142,11 @@ int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > arr
 		b = backwardChaining(array[0][0]);
 	if (condition(a, array[1][1]) && condition(b, array[0][1]))
 		return PROVEN;
-	if (conditionProvenFalse(a, array[1][1]) == PROVEN_FALSE && conditionProvenFalse(b, array[0][1]) == PROVEN_FALSE)
-		return PROVEN_FALSE;
+	if (!checking)
+	{
+		if (conditionProvenFalse(a, array[1][1]) && conditionProvenFalse(b, array[0][1]))
+			return PROVEN_FALSE;
+	}
 	return NOT_PROVEN;
 }
 
@@ -160,7 +163,7 @@ int		ExpertSystem::oneCondition(vector<int> condition)
 		}
 		else
 		{
-			return NOT_PROVEN;
+			return PROVEN_FALSE;
 		}
 	}
 	if (find_in_set(condition[condition.size() - 1], m_falseFacts) != -1)
@@ -171,13 +174,13 @@ int		ExpertSystem::oneCondition(vector<int> condition)
 		}
 		else
 		{
-			return NOT_PROVEN;
+			return PROVEN_FALSE;
 		}
 	}
 	ret = backwardChaining(condition[condition.size() - 1]);
 	if (ret == false && condition[0] != '!')
 	{
-		return NOT_PROVEN;
+		return PROVEN_FALSE;
 	}
 	return PROVEN;
 }
