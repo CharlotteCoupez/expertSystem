@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:28:20 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/12 17:12:48 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/13 14:19:15 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,7 +113,23 @@ int		ExpertSystem::xorCondition(int a, int b, std::vector<std::vector<int> > arr
 	return NOT_PROVEN;
 }
 
-
+// int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > array)
+// {
+// 	if (a == 1 && b == 1)
+// 		return PROVEN;
+// 	else if (a == 0 || b == 0)
+// 		return NOT_PROVEN;
+// 	if (a != 2 && b != 2)
+// 	{
+// 		a = backwardChaining(array[1][0]);
+// 		if (a && b == 2)
+// 			b = backwardChaining(array[0][0]);
+// 	// if (b == 2)
+// 		if (condition(a, array[1][1]) && condition(b, array[0][1]))
+// 			return PROVEN;
+// 	}
+// 	return NOT_PROVEN;
+// }
 int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > array)
 {
 	if (a == 1 && b == 1)
@@ -126,6 +142,8 @@ int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > arr
 		b = backwardChaining(array[0][0]);
 	if (condition(a, array[1][1]) && condition(b, array[0][1]))
 		return PROVEN;
+	if (conditionProvenFalse(a, array[1][1]) == PROVEN_FALSE && conditionProvenFalse(b, array[0][1]) == PROVEN_FALSE)
+		return PROVEN_FALSE;
 	return NOT_PROVEN;
 }
 

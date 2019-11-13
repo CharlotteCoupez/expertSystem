@@ -4,6 +4,9 @@
 #include "Rules.h"
 
 # define PROVEN -1
+# define PROVEN_FALSE -2
+# define UNDIFINED -4
+
 # define NOT_PROVEN -3
 class ExpertSystem
 {
@@ -54,6 +57,7 @@ class ExpertSystem
 	int		find_in_set(int to_compare, std::set<int> list);
 	bool	incoRule();
 	void	fillTrueFasleFacts(Rules rule);
+	int		conditionProvenFalse(bool a, int neg);
 
 };
 

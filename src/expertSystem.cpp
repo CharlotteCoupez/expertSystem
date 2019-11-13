@@ -5,10 +5,11 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2019/10/23 16:36:27 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/10/23 16:36:27 by ccoupez          ###   ########.fr       */
+/*   Created: 2019/11/13 11:19:56 by ccoupez           #+#    #+#             */
+/*   Updated: 2019/11/13 11:19:56 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 
 #include "../ExpertSystem.h"
 
@@ -46,15 +47,26 @@ bool	ExpertSystem::backwardChaining(int querie)
 	int							result;
 	std::list<Rules>::iterator	itL;
 	std::vector<int>::iterator	factInConclusion;
+	int							factInConc;
 	std::set<int>::iterator		checkResult;
 	std::vector<int>			vecTmp;
 
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
-		factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), querie);
-
-		if (*factInConclusion == querie)
+		// factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), querie);
+		for (size_t i = 0; i < itL->m_conclusion.size();)
 		{
+			// std::cout << "itL->m_conclusion[i]: " << char(itL->m_conclusion[i]) << " in int: " << itL->m_conclusion[i] << std::endl;
+			if (itL->m_conclusion[i] == querie)
+			{
+				factInConc = querie;
+			}
+			i++;
+		}
+		// if (*factInConclusion == querie)
+		if (factInConc == querie)
+		{
+			std::cout << "*factInConc: " << char(factInConc) << " in int: " << factInConc << std::endl;
 			std::cout << "QUERIE IN CONCLUSON char: " << char(querie) << " in int: " << querie << std::endl;
 			result = ruleChecking(itL->m_condition);
 			std::cout << "ret result in backward: " << result << std::endl;
@@ -62,19 +74,28 @@ bool	ExpertSystem::backwardChaining(int querie)
 			if (result == PROVEN)
 			{
 				cout << "QUERIE SSolution 1 : " << char(querie) << std::endl;
-				//cout << "char(*(factInConclusion--) : " << char(*(--factInConclusion)) << std::endl;
-				if (factInConclusion == itL->m_conclusion.begin()
-					|| (factInConclusion != itL->m_conclusion.begin() && *(--factInConclusion) != '!'))
+				//cout << "char(*(factInConc--) : " << char(*(--factInConc)) << std::endl;
+				// if (factInConc == itL->m_conclusion.begin()
+				// 	|| (factInConc != itL->m_conclusion.begin() && (--factInConc) != '!'))
+				if (factInConc == itL->m_conclusion[0]
+					|| (factInConc != itL->m_conclusion[0] && (--factInConc) != '!'))
 					fillList(true, itL->m_conclusion);
 				else
 					fillList(false, itL->m_conclusion);
 				if (!checking)
 					return true;
 			}
+			if (result == PROVEN_FALSE)
+			{
+				fillList(false, itL->m_conclusion);
+				if (!checking)
+					return false;
+			}
 		}
-		factInConclusion = itL->m_conclusion.end();
+		factInConc = 0;
 		itL++;
 	}
+
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*checkResult == querie)
 	{
@@ -97,18 +118,18 @@ void ExpertSystem::analyseQuerie()
 
 	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
 	{
-		querie = find_in_set(*itrQ, m_trueFacts);
-		if (querie == *itrQ)
-			cout << "querie True :) : " << char(querie) << std::endl;
-		else {
-			querie = find_in_set(*itrQ, m_falseFacts);
-			if (querie == *itrQ)
-				cout << "querie False :'( : " << char(querie) << std::endl;
-			else {
-				std::cout << "START SHEARCHING"<< char(*itrQ) << std::endl;
+		// querie = find_in_set(*itrQ, m_trueFacts);
+		// if (querie == *itrQ)
+		// 	cout << "querie True :) : " << char(querie) << std::endl;
+		// else {
+		// 	querie = find_in_set(*itrQ, m_falseFacts);
+		// 	if (querie == *itrQ)
+		// 		cout << "querie False :'( : " << char(querie) << std::endl;
+		// 	else {
+		// 		std::cout << "START SHEARCHING"<< char(*itrQ) << std::endl;
 				backwardChaining(*itrQ);
-			}
-		}
+			// }
+		// }
 		querie = 0;
 	}
 	printTrueFacts();
@@ -185,23 +206,27 @@ ExpertSystem::ExpertSystem(string argv)
 	else
 		std::cout << "No such a file" << std::endl;
 	// tmpTrueFacts = m_trueFacts;
+	// analyseQuerie();
+
 	if (coherentRule() == true && m_queries.size() > 0)
 	{
+		std::cout << "AAAAAA" << std::endl;
+
 		checking = true;
-		// if (incoRule())
-		// {
-			// checking = false;
-		// 	std::cout << "analyse" << std::endl;
+		if (incoRule())
+		{
+			checking = false;
+			std::cout << "analyse" << std::endl;
 			for (size_t i = 0; i < m_initialFacts.size();) {
 				m_trueFacts.insert(m_initialFacts[i]);
 				i++;
 			}
-		// }
-			analyseQuerie();
-		// else
-		// {
-		// 	std::cout << "incoRULe FALSe" << std::endl;
-		// }
+			// analyseQuerie();
+		}
+		else
+		{
+			std::cout << "incoRULe FALSe" << std::endl;
+		}
 		
 	}
 	else

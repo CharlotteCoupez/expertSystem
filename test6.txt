@@ -1,8 +1,6 @@
 #PAS RESOLUT :(
-#A + B => C
-!A + !B => !C
-P => E
-
+A + B => C
+!A + !B => C
 
 =AB
 ?C

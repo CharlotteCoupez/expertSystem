@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:57:26 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/12 18:09:47 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/13 14:18:10 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,22 @@ bool	ExpertSystem::condition(bool a, int neg)
 	return false;
 }
 
+int		ExpertSystem::conditionProvenFalse(bool a, int neg)
+{
+	if (a == true && neg == -1)
+		return PROVEN_FALSE;
+	if (a == false && neg == 1)
+		return PROVEN_FALSE;
+	return UNDIFINED;
+}
+
 int		ExpertSystem::getFact(int array_value, int neg)
 {
 	int	ret;
 	// std::cout << " array_value : " << char(array_value) << std::endl;
 	// std::cout << " array_value : " << array_value << std::endl;
 
-	if (isupper(char(array_value)))
+	if (!checking && isupper(char(array_value)))
 	{
         // ret = find(m_trueFacts.begin(), m_trueFacts.end(), array_value);
         ret = find_in_set(array_value, m_trueFacts);
