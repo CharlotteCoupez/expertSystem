@@ -10,7 +10,6 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-
 #include "../ExpertSystem.h"
 
 using namespace std;
@@ -19,17 +18,13 @@ void	ExpertSystem::fillList(bool type, std::vector<int> conclusion)
 {
 	std::vector<int>::iterator	truef;
 
-	for (truef = conclusion.begin(); truef != conclusion.end(); truef++)
-	{
-		std::cout << "-------------conclusion : " << char(*truef) << std::endl;
-	}
-	std::cout << "------------- " << std::endl;
-
 	if (type == 1)
 	{
 		for (size_t i = 0;i < conclusion.size(); i++)
 		{
-			if (isupper(char(conclusion[i])))
+			if (char(conclusion[i]) == '!')
+				m_falseFacts.insert(conclusion[++i]);
+			else if (isupper(char(conclusion[i])))
 				m_trueFacts.insert(conclusion[i]);
 		}
 		return;
@@ -41,6 +36,26 @@ void	ExpertSystem::fillList(bool type, std::vector<int> conclusion)
 	}
 }
 
+int		ExpertSystem::matchQuery(std::list<Rules>::iterator itL, int querie)
+{
+	for (size_t i = 0; i < itL->m_conclusion.size();)
+	{
+		if (itL->m_conclusion[i] == querie)
+			return querie;
+		i++;
+	}
+	// if (itL->impORif == '<')
+	// {
+	// 	for (size_t i = 0; i < itL->m_condition.size();)
+	// 	{
+	// 		if (itL->m_condition[i] == querie)
+	// 			return querie;
+	// 		i++;
+	// 	}
+	// }
+	return 0;
+}
+
 bool	ExpertSystem::backwardChaining(int querie)
 {
 	std::cout << "backwardChaining querie : " << char(querie) << std::endl;
@@ -50,27 +65,11 @@ bool	ExpertSystem::backwardChaining(int querie)
 	int							factInConc;
 	std::set<int>::iterator		checkResult;
 	std::vector<int>			vecTmp;
-	int k = 0;
-	factInConc = 0;
+
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
-		cout << "REGLE num : " << k << std::endl;
-		// for (size_t i = 0; i < itL->m_condition.size();)
-		// {
-		// 	std::cout << "m_condition[i]: " << char(itL->m_condition[i]) << " in int: " << itL->m_condition[i] << std::endl;
-		// }
-		k++;
-		// factInConclusion = find(itL->m_conclusion.begin(), itL->m_conclusion.end(), querie);
-		for (size_t i = 0; i < itL->m_conclusion.size();)
-		{
-			std::cout << "itL->m_conclusion[i]: " << char(itL->m_conclusion[i]) << " in int: " << itL->m_conclusion[i] << std::endl;
-			if (itL->m_conclusion[i] == querie)
-			{
-				factInConc = querie;
-			}
-			i++;
-		}
-		// if (*factInConclusion == querie)
+		factInConc = 0;
+		factInConc = matchQuery(itL, querie);
 		if (factInConc == querie)
 		{
 			std::cout << "*factInConc: " << char(factInConc) << " in int: " << factInConc << std::endl;
@@ -80,26 +79,19 @@ bool	ExpertSystem::backwardChaining(int querie)
 			std::cout << "querie in backward: " << querie << std::endl;
 			if (result == PROVEN)
 			{
-				cout << "QUERIE SSolution 1 : " << char(querie) << std::endl;
-				//cout << "char(*(factInConc--) : " << char(*(--factInConc)) << std::endl;
-				// if (factInConc == itL->m_conclusion.begin()
-				// 	|| (factInConc != itL->m_conclusion.begin() && (--factInConc) != '!'))
-				if (factInConc == itL->m_conclusion[0]
-					|| (factInConc != itL->m_conclusion[0] && (--factInConc) != '!'))
-					fillList(true, itL->m_conclusion);
-				else
-					fillList(false, itL->m_conclusion);
-				if (!checking)
+				cout << "PROVEN query : " << char(querie) << std::endl;
+				fillList(true, itL->m_conclusion);
+				if (!m_checking)
 					return true;
 			}
-			if (result == PROVEN_FALSE)
+			else if (result == PROVEN_FALSE)
 			{
+				cout << "PROVEN_FALSE query : " << char(querie) << std::endl;
 				fillList(false, itL->m_conclusion);
-				if (!checking)
+				if (!m_checking)
 					return false;
 			}
 		}
-		factInConc = 0;
 		itL++;
 	}
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
@@ -119,125 +111,27 @@ bool	ExpertSystem::backwardChaining(int querie)
 
 void ExpertSystem::analyseQuerie()
 {
-	std::vector<int>::iterator	itrQ;
-	int							querie;
+	int	querie;
 
-	for (itrQ = m_queries.begin(); itrQ != m_queries.end(); itrQ++)
+	for (size_t i = 0; i< m_queries.size();i++)
 	{
-		// querie = find_in_set(*itrQ, m_trueFacts);
-		// if (querie == *itrQ)
-		// 	cout << "querie True :) : " << char(querie) << std::endl;
-		// else {
-		// 	querie = find_in_set(*itrQ, m_falseFacts);
-		// 	if (querie == *itrQ)
-		// 		cout << "querie False :'( : " << char(querie) << std::endl;
-		// 	else {
-		// 		std::cout << "START SHEARCHING"<< char(*itrQ) << std::endl;
-				backwardChaining(*itrQ);
-			// }
-		// }
 		querie = 0;
+		if (m_checking)
+			backwardChaining(m_queries[i]);
+		else
+		{
+			querie = find_in_set(m_queries[i], m_trueFacts);
+			if (querie == m_queries[i])
+				cout << "querie True :) : " << char(querie) << std::endl;
+			else {
+				querie = find_in_set(m_queries[i], m_falseFacts);
+				if (querie == m_queries[i])
+					cout << "querie False :'( : " << char(querie) << std::endl;
+				else
+					backwardChaining(m_queries[i]);
+			}
+		}
 	}
 	printTrueFacts();
 }
 
-void ExpertSystem::createBaseRules(string ligne, int ruleId)
-{
-	Rules	rule(ligne);
-	if (rule.status == 1)
-	{
-		for (size_t i = 0; i < rule.m_facts.size(); i++)
-		{
-			m_allFacts.insert(rule.m_facts[i]);
-		}
-		rule.id = ruleId;
-		m_listRules.push_back(rule);
-		rule.printValues();
-	}
-	else
-		cout << "Rule number: " << ruleId << " is not correct." << std::endl;
-	
-}
-
-void ExpertSystem::getInitialeFacts(string ligne)
-{
-	int	i;
-
-	i = 1;
-	while (isupper(ligne[i]))
-	{
-		m_initialFacts.push_back(ligne[i]);
-		// m_trueFacts.insert(ligne[i]);
-		i++;
-	}
-}
-
-void ExpertSystem::getQueries(string ligne)
-{
-	int	i;
-
-	i = 1;
-	while (isupper(ligne[i]))
-	{
-		m_queries.push_back(ligne[i]);
-		i++;
-	}
-}
-
-ExpertSystem::ExpertSystem(string argv)
-{
-	int		idRule;
-	string	ligne;
-	// int		fact;
-	// std::set<int>		tmpTrueFacts;
-	// std::set<int>		tmpFalseFacts;
-
-	idRule = 1;
-	ifstream monFichier(argv.c_str());
-	if (monFichier)
-	{
-		while (getline(monFichier,  ligne))
-		{
-			if (ligne[0] == '=')
-				getInitialeFacts(ligne);
-			else if (ligne[0] == '?')
-				getQueries(ligne);
-			else if (isupper(ligne[0]) || ligne[0] == '!' || ligne[0] == '(')
-			{
-				createBaseRules(ligne, idRule);
-				idRule++;
-			}
-		}
-	}
-	else
-		std::cout << "No such a file" << std::endl;
-	// tmpTrueFacts = m_trueFacts;
-	// analyseQuerie();
-
-	if (coherentRule() == true && m_queries.size() > 0)
-	{
-		std::cout << "AAAAAA" << std::endl;
-
-		checking = true;
-		if (incoRule())
-		{
-			checking = false;
-			std::cout << "analyse" << std::endl;
-			for (size_t i = 0; i < m_initialFacts.size();) {
-				m_trueFacts.insert(m_initialFacts[i]);
-				i++;
-			}
-			analyseQuerie();
-		}
-		else
-		{
-			std::cout << "incoRULe FALSe" << std::endl;
-		}
-		
-	}
-	else
-	{
-		std::cout << "No analyse" << std::endl;
-	}
-	
-}

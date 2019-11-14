@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   incoRule.cpp                                       :+:      :+:    :+:   */
+/*   checkIncohentedRule.cpp                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/12 15:01:37 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/13 17:26:31 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/14 13:35:13 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ bool	ExpertSystem::checkFacts()
 	return true;
 }
 
-bool	ExpertSystem::incoRule() 
+bool	ExpertSystem::ruleNotIncoherented() 
 {
 	std::list<Rules>::iterator	itL;
 	int							ret;
@@ -66,21 +66,28 @@ bool	ExpertSystem::incoRule()
 	{
 		cout << "1************************" << std::endl;
 		cout << "*itL->id : " << itL->id << std::endl;
-		cout << "*(itL->m_conclusion.begin()) : " << *(itL->m_conclusion.begin()) << std::endl;
 		fillTrueFasleFacts(*itL);
-		ret = backwardChaining(*(itL->m_conclusion.begin()));
-		if (ret == PROVEN)
+		for (size_t i = 0; i < itL->m_conclusion.size();)
 		{
-			fillList(true, itL->m_conclusion);
+			cout << "*(itL->m_conclusion.begin()) : " << itL->m_conclusion[i] << std::endl;
+			if (isupper(itL->m_conclusion[i]))
+			{
+				ret = backwardChaining(itL->m_conclusion[i]);
+				if (ret == PROVEN)
+				{
+					fillList(true, itL->m_conclusion);
+				}
+				if (ret == NOT_PROVEN)
+				{
+					fillList(false, itL->m_conclusion);
+				}
+				printTrueFacts();
+				if (!checkFacts())
+					return false;
+				cout << "2************************" << std::endl;
+			}
+			i++;
 		}
-		if (ret == NOT_PROVEN)
-		{
-			fillList(false, itL->m_conclusion);
-		}
-		printTrueFacts();
-		if (!checkFacts())
-			return false;
-		cout << "2************************" << std::endl;
 		itL++;
 	}
 	m_falseFacts.erase( m_falseFacts.begin(), m_falseFacts.end() );

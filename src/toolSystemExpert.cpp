@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:57:26 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/13 17:06:51 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/14 12:01:08 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ int		ExpertSystem::getFact(int array_value, int neg)
 	// std::cout << " array_value : " << char(array_value) << std::endl;
 	// std::cout << " array_value : " << array_value << std::endl;
 
-	if (!checking && isupper(char(array_value)))
+	if (!m_checking && isupper(char(array_value)))
 	{
         // ret = find(m_trueFacts.begin(), m_trueFacts.end(), array_value);
         ret = find_in_set(array_value, m_trueFacts);

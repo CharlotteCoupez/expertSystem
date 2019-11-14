@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 18:46:45 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/08 16:23:50 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/14 14:55:43 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,9 +66,13 @@ void	Rules::putInConclusion()
 {
 	for (size_t i = 0; i < m_polonaise.size(); i++)
 	{
+		std::cout << "char(m_polonaise[i] in putconclu : " << char(m_polonaise[i]) << std::endl;
+
 		m_conclusion.push_back(m_polonaise[i]);
 		if (isupper(m_polonaise[i]))
 			m_facts.push_back(m_polonaise[i]);
+		if (m_polonaise[i] == '|' || m_polonaise[i] == '^')
+			return ;
 	}
 	m_polonaise.erase(m_polonaise.begin(), m_polonaise.end());
 }

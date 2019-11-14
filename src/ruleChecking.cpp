@@ -6,7 +6,7 @@
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:28:20 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/13 17:40:19 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/14 13:14:23 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -142,14 +142,13 @@ int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > arr
 		b = backwardChaining(array[0][0]);
 	if (condition(a, array[1][1]) && condition(b, array[0][1]))
 		return PROVEN;
-	if (!checking)
+	if (!m_checking)
 	{
 		if (conditionProvenFalse(a, array[1][1]) && conditionProvenFalse(b, array[0][1]))
 			return PROVEN_FALSE;
 	}
 	return NOT_PROVEN;
 }
-
 
 int		ExpertSystem::oneCondition(vector<int> condition)
 {

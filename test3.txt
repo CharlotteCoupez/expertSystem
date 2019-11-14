@@ -12,7 +12,7 @@
 
 #EXEMPLE rue qui boucle sur queries GNTZ (mais bien protegees)
 
-#(A + B) ^ (D | K) => P
+#(A + B) ^ (D | + K) => P
 
 #(D + N) ^ Y => T
 
@@ -28,7 +28,7 @@
 
 #S ^ D | P ^ S => A
 
-#((A | B) ^ C + E) + D => F
+((a | B) + C ^ E) + D
 
 ##=AED
 #?F

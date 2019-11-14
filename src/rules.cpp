@@ -14,26 +14,6 @@
 
 using namespace std;
 
-Rules::Rules(string rule)
-{
-	int i;
-
-	impORif = 0;
-	status = 0;
-	rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end());
-	rule.erase(std::remove(rule.begin(), rule.end(), '\r'), rule.end());
-	if (check_format(rule, 0, 0) != RULE_OK)
-		return;
-	i = notationPolonaise(rule, 0);
-	putInCondition();
-	if ( (i = getImpORif(rule, i)) < 0)
-		return;
-	notationPolonaise(rule, i);
-	putInConclusion();
-	status = 1;
-}
-
-
 int		Rules::check_format(string rule, size_t i, int bracket)
 {
 	while (i < rule.size())
@@ -44,16 +24,24 @@ int		Rules::check_format(string rule, size_t i, int bracket)
 			{
 				if (i + 1 < rule.size() && !isOperator(rule[i + 1]) && !isRelationOp(rule[i + 1]))
 				{
+						cout << "Rule 8: " << std::endl;
+
 					return RULE_ERROR;
 				}
 				return i;
 			}
+						cout << "Rule 7: " << std::endl;
+
 			return RULE_ERROR;
 		}
 		else if (isupper(rule[i]))
 		{
 			if (i + 1 < rule.size() && !isOperator(rule[i + 1]) && !isRelationOp(rule[i + 1]) && rule[i + 1] != ')')
 			{
+						cout << "i + 1 : " << i + 1  << std::endl;
+						cout << "rule.size(): " << rule.size() << std::endl;
+						cout << "Rule 6: " << std::endl;
+
 				return RULE_ERROR;
 			}
 		}
@@ -61,14 +49,23 @@ int		Rules::check_format(string rule, size_t i, int bracket)
 		{
 			if (i + 1 < rule.size() && (isOperator(rule[i + 1]) || rule[i + 1] == ')'))
 			{
+
+						cout << "Rule 5: " << std::endl;
+				
 				return RULE_ERROR;
 			}
 		}
 		else if (isRelationOp(rule[i]))
 		{
 			i = rule[i] == '=' ? i + 2 : i + 3;
+			if (!isupper(rule[i]) && rule[i] != '!')
+			{
+		cout << "Rule 2: " << std::endl;
+				return RULE_ERROR;
+			}
 			if (check_format(rule, i, bracket) != RULE_OK)
 			{
+						cout << "Rule 4: " << std::endl;
 				return RULE_ERROR;
 			}
 		}
@@ -77,13 +74,19 @@ int		Rules::check_format(string rule, size_t i, int bracket)
 			i = check_format(rule, i + 1, 1);
 			if ((int)i == RULE_ERROR)
 			{
+
+						cout << "Rule 3: " << std::endl;
 				return RULE_ERROR;
 			}
 		}
 		i++;
 	}
 	if (bracket == 1)
+	{
+		cout << "Rule 9: " << std::endl;
+
 		return RULE_ERROR;
+	}
 	return RULE_OK;
 }
 
@@ -130,7 +133,7 @@ int Rules::notationPolonaise(string rule, size_t i)
 		}
 		i++;
 	}
-	while (m_polonaiseTmp.size() > 0)
+	while (len > 0)
 	{
 		if (m_polonaiseTmp[len -1] != '(')
 			m_polonaise.push_back(m_polonaiseTmp[len - 1]);
@@ -138,4 +141,32 @@ int Rules::notationPolonaise(string rule, size_t i)
 		len--;
 	}
 	return i;
+}
+
+Rules::Rules(string rule)
+{
+	int i;
+
+	impORif = 0;
+	status = 0;
+	cout << "11 rule.size(): " << rule.size() << std::endl;
+
+	rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end()); //voir si on peut pas toruver un truc pour tout les type despace psk ou voir sur la table askii
+	// rule.erase(std::remove(rule.begin(), rule.end(), ' '), rule.end());
+	cout << "22 rule.size(): " << rule.size() << std::endl;
+	rule.erase(std::remove(rule.begin(), rule.end(), '\r'), rule.end());
+		cout << "Rule : " << std::endl;
+	cout << "33 rule.size(): " << rule.size() << std::endl;
+
+	if (check_format(rule, 0, 0) != RULE_OK)
+		return ;
+	i = notationPolonaise(rule, 0);
+	putInCondition();
+	if ( (i = getImpORif(rule, i)) < 0)
+		return ;
+	notationPolonaise(rule, i);
+	putInConclusion();
+	if (m_condition.size() < 1 || m_conclusion.size() < 1)
+		return ;
+	status = 1;
 }

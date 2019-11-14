@@ -25,6 +25,7 @@ class Rules
 		Rules(std::string rule);
 		std::vector<int>	m_condition;
 		std::vector<int>	m_conclusion;
+		char				impORif;
 		std::vector<int>	m_facts;
 		int					id;
 		int					status;
@@ -38,7 +39,6 @@ class Rules
 		std::vector<char>	m_conclusionType;
 		std::vector<char>	m_polonaise;
 		std::vector<char>	m_polonaiseTmp;
-		char				impORif;
   		int					check_format(std::string rule, size_t i, int bracket);
 		void				putInCondition();
 		void				putInConclusion();

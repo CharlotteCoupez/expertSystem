@@ -1,33 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   checkRules.cpp                                     :+:      :+:    :+:   */
+/*   checkLinkedRules.cpp                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: ccoupez <ccoupez@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:28:43 by ccoupez           #+#    #+#             */
-/*   Updated: 2019/11/12 14:19:54 by ccoupez          ###   ########.fr       */
+/*   Updated: 2019/11/14 16:17:25 by ccoupez          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../ExpertSystem.h"
 
 using namespace std;
-
-bool    ExpertSystem::coherentRule()
-{
-    std::set<int>::iterator	fact;
-    std::vector<int>	    path;
- 
-	for (fact = m_allFacts.begin(); fact != m_allFacts.end(); fact++)
-	{
-	    path.erase( path.begin(), path.end() );
-        if (checkCoherence(path, *fact) == false)
-            return false;
-	}
-        return true;
-}
-
 
 bool    ExpertSystem::checkCoherence(std::vector<int> path, int fact)
 {
@@ -67,21 +52,34 @@ bool    ExpertSystem::checkCoherence(std::vector<int> path, int fact)
     return true;
 }
 
-
-void    ExpertSystem::print()
+bool    ExpertSystem::ruleNotLinked()
 {
-	std::set<int>::iterator	truef;
-	std::set<int>::iterator	falsef;
-
-	std::cout << "trueFacts.sizeof() : " << m_trueFacts.size() << std::endl;
-	std::cout << "falseFacts.sizeof() : " << m_falseFacts.size() << std::endl;
-
-	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
+    std::set<int>::iterator	fact;
+    std::vector<int>	    path;
+ 
+	for (fact = m_allFacts.begin(); fact != m_allFacts.end(); fact++)
 	{
-		std::cout << "trueFacts[i] : " << char(*truef) << std::endl;
+	    path.erase( path.begin(), path.end() );
+        if (checkCoherence(path, *fact) == false)
+            return false;
 	}
-	for (falsef = m_falseFacts.begin(); falsef != m_falseFacts.end(); falsef++)
-	{
-		std::cout << "falseFacts[i] : " << char(*falsef) << std::endl;
-	}
+        return true;
 }
+
+void ExpertSystem::checkAllCoherence()
+{
+	m_checking = true;
+	if (m_queries.size() > 0 && ruleNotLinked() && ruleNotIncoherented())
+	{
+
+		m_checking = false;
+		for (size_t i = 0; i < m_initialFacts.size();i++) {
+			m_trueFacts.insert(m_initialFacts[i]);
+			
+		}
+		analyseQuerie();
+		return ;
+	}
+	std::cout << "Incoherent rules or no Query" << std::endl;
+}
+

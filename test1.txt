@@ -1,22 +1,8 @@
-A + B => V
-A + B + C => !V
-C => B
+C =>E 
+C => !E 
+ 
 
 
-=ABC
-?V
+=ABG 
 
-#C           => E + P
-#A + B + D   => C 
-#F           => C
-##A + !B      => F 
-#V ^ W       => X 
-#A + B       => Y
-#C | D       => X
-#E + F       => V 
-
-
-A FAIRE 
-CHANGER TOUT LES ENDROT OU IL Y A UN FND CA NE MARCHE PAS
-FAIRE LES VERIF FALSE LISTE
-CONTINUER CHECK RYLES..
+?GVX

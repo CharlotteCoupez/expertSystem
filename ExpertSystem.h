@@ -34,7 +34,7 @@ class ExpertSystem
 	int		oneCondition(std::vector<int> condition);
 	int		checkNextOperator(std::vector<int> condition, size_t i);
 
-	bool	coherentRule();
+	bool	ruleNotLinked();
 	bool	coherence();
 	bool	checkCoherence(std::vector<int> path, int fact);
 	void	printTrueFacts();
@@ -42,7 +42,7 @@ class ExpertSystem
 
   private:
 
-	bool				checking;
+	bool				m_checking;
 	std::vector<int>	m_initialFacts;
 	std::fstream		fs;
 	void	createFacts();
@@ -55,11 +55,12 @@ class ExpertSystem
 	bool	condition(bool a, int neg);
 	int		nbToErase(std::vector<int> condition, int i);
 	int		find_in_set(int to_compare, std::set<int> list);
-	bool	incoRule();
+	bool	ruleNotIncoherented();
 	void	fillTrueFasleFacts(Rules rule);
 	bool	conditionProvenFalse(bool a, int neg);
 	bool	checkFacts();
-
+	void	checkAllCoherence();
+	int		matchQuery(std::list<Rules>::iterator itL, int querie);
 };
 
 #endif

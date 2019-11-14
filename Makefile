@@ -4,14 +4,15 @@ NAME = expertsystem
 
 SRCS_PATH = src
 
-SRCS_NAME =	checkRules.cpp \
-			expertSystem.cpp \
-			main.cpp \
-			ruleChecking.cpp \
+SRCS_NAME =	main.cpp \
+			parsingFile.cpp \
 			rules.cpp \
+			checkLinkedRules.cpp \
+			checkIncohentedRule.cpp \
+			expertSystem.cpp \
+			ruleChecking.cpp \
 			toolRules.cpp \
-			toolSystemExpert.cpp \
-			incoRule.cpp
+			toolSystemExpert.cpp
 
 SRCS = $(addprefix $(SRCS_PATH)/,$(SRCS_NAME))
 
