@@ -1,0 +1,10 @@
+A + B => C
+D | R => A
+(C ^ F) => G
+(D + I ^ H) + A | !Y => F
+E + D + !I + H + Y => J
+P => E
+
+
+=DPY
+?F

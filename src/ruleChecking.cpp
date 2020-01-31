@@ -14,15 +14,14 @@
 
 using namespace std;
 
-int		ExpertSystem::ruleChecking(vector<int> condition)
+int		ExpertSystem::ruleChecking(vector<char> condition)
 {
 	if (condition.size() == 1 || (condition[0] == '!' && condition.size() == 2))
 		return oneCondition(condition);
 	return severalConditions(condition);
 }
 
-
-int		ExpertSystem::severalConditions(vector<int> condition)
+int		ExpertSystem::severalConditions(vector<char> condition)
 {
 	int			nb;
 	int		 	ret = 0;
@@ -36,17 +35,16 @@ int		ExpertSystem::severalConditions(vector<int> condition)
 		if (rstr != NULL && *rstr != 0)
 		{
 			ret = getResult(condition, i);
-			if (ret == NOT_PROVEN)
+			if (ret == NOT_PROVEN || ret == PROVEN_FALSE)
 			{
 				if (checkNextOperator(condition, i + 1) != 1)
-					return NOT_PROVEN;
-				else
-					result = 0;
+					return ret;
+				result = 0;
 			}
 			else
 				result = 1;
 			condition.insert(condition.begin() + i + 1, result);
-			nb = nbToErase(condition,i);
+			nb = nbToErase(condition, i);
 			condition.erase(condition.begin() + i - nb, condition.begin() + i + 1 );
 			if (condition.size() > 1)
 				i = 0;
@@ -61,7 +59,7 @@ int		ExpertSystem::severalConditions(vector<int> condition)
 ** 1 it is proven that the condition is true
 ** 2 we dont know, we maybe will need a backwardchaining
 */
-int ExpertSystem::getResult(std::vector<int> condition, size_t i)
+int ExpertSystem::getResult(std::vector<char> condition, size_t i)
 {
 	int						factA;
 	int						factB;
@@ -78,7 +76,6 @@ int ExpertSystem::getResult(std::vector<int> condition, size_t i)
 		return xorCondition(factA, factB, array);
 	return 0;
 }
-
 
 int		ExpertSystem::orCondition(int a, int b, std::vector<std::vector<int> > array)
 {
@@ -97,13 +94,12 @@ int		ExpertSystem::orCondition(int a, int b, std::vector<std::vector<int> > arra
 	return NOT_PROVEN;
 }
 
-
 int		ExpertSystem::xorCondition(int a, int b, std::vector<std::vector<int> > array)
 {
 	if (a == 1 && b == 1)
-		return NOT_PROVEN;
+		return PROVEN_FALSE;
 	else if (a == 0 && b == 0)
-		return NOT_PROVEN;
+		return PROVEN_FALSE;
 	if (a == 2)
 		a = backwardChaining(array[1][0]);
 	if (b == 2)
@@ -113,23 +109,6 @@ int		ExpertSystem::xorCondition(int a, int b, std::vector<std::vector<int> > arr
 	return NOT_PROVEN;
 }
 
-// int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > array)
-// {
-// 	if (a == 1 && b == 1)
-// 		return PROVEN;
-// 	else if (a == 0 || b == 0)
-// 		return NOT_PROVEN;
-// 	if (a != 2 && b != 2)
-// 	{
-// 		a = backwardChaining(array[1][0]);
-// 		if (a && b == 2)
-// 			b = backwardChaining(array[0][0]);
-// 	// if (b == 2)
-// 		if (condition(a, array[1][1]) && condition(b, array[0][1]))
-// 			return PROVEN;
-// 	}
-// 	return NOT_PROVEN;
-// }
 int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > array)
 {
 	if (a == 1 && b == 1)
@@ -142,44 +121,29 @@ int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > arr
 		b = backwardChaining(array[0][0]);
 	if (condition(a, array[1][1]) && condition(b, array[0][1]))
 		return PROVEN;
-	if (!m_checking)
-	{
-		if (conditionProvenFalse(a, array[1][1]) && conditionProvenFalse(b, array[0][1]))
-			return PROVEN_FALSE;
-	}
 	return NOT_PROVEN;
 }
 
-int		ExpertSystem::oneCondition(vector<int> condition)
+int		ExpertSystem::oneCondition(vector<char> condition)
 {
 	bool	ret;
 
-	if (find_in_set(condition[condition.size() - 1], m_trueFacts) != -1)
+	if (find_in_set(condition[condition.size() - 1], m_trueFacts) != 0)
 	{
 		if (condition[0] != '!')
-		{
 			return PROVEN;
-		}
 		else
-		{
 			return PROVEN_FALSE;
-		}
 	}
-	if (find_in_set(condition[condition.size() - 1], m_falseFacts) != -1)
+	if (find_in_set(condition[condition.size() - 1], m_falseFacts) != 0)
 	{
 		if (condition[0] == '!')
-		{
 			return PROVEN;
-		}
 		else
-		{
 			return PROVEN_FALSE;
-		}
 	}
 	ret = backwardChaining(condition[condition.size() - 1]);
 	if (ret == false && condition[0] != '!')
-	{
 		return PROVEN_FALSE;
-	}
 	return PROVEN;
 }

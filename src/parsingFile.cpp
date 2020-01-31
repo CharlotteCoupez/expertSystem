@@ -19,8 +19,6 @@ void ExpertSystem::createBaseRules(string ligne, int ruleId)
 	Rules	rule(ligne);
 	if (rule.status == 1)
 	{
-	std::cout << "IAAAAAAAAAy" << std::endl;
-
 		for (size_t i = 0; i < rule.m_facts.size(); i++)
 		{
 			m_allFacts.insert(rule.m_facts[i]);
@@ -31,7 +29,7 @@ void ExpertSystem::createBaseRules(string ligne, int ruleId)
 	}
 	else
 		cout << "Rule number: " << ruleId << " is not correct." << std::endl;
-	
+
 }
 
 void ExpertSystem::getInitialeFacts(string ligne)
@@ -52,17 +50,35 @@ void ExpertSystem::getQueries(string ligne)
 		m_queries.push_back(ligne[i++]);
 }
 
+bool ExpertSystem::checkAllCoherence()
+{
+	m_checking = true;
+	if (ruleNotLinked() && ruleNotIncoherented())
+	{
+		m_checking = false;
+		m_trueFacts.erase(m_trueFacts.begin(), m_trueFacts.end());
+		m_falseFacts.erase(m_falseFacts.begin(), m_falseFacts.end());
+		for (size_t i = 0; i < m_initialFacts.size(); i++) {
+			m_trueFacts.insert(m_initialFacts[i]);
+		}
+		return true;
+	}
+	std::cout << "Incoherent rules or no Query" << std::endl;
+	return false;
+}
+
 ExpertSystem::ExpertSystem(string argv)
 {
 	int		idRule;
 	string	ligne;
-	idRule = 1;
+
 	ifstream monFichier(argv.c_str());
 	if (!monFichier)
 	{
-		std::cout << "No file" << std::endl;
+		std::cout << "wrong name file" << std::endl;
 		return ;
 	}
+	idRule = 1;
 	while (getline(monFichier,  ligne))
 	{
 		if (ligne[0] == '=')
@@ -75,23 +91,10 @@ ExpertSystem::ExpertSystem(string argv)
 			idRule++;
 		}
 	}
-	checkAllCoherence();
-}
-
-void    ExpertSystem::print()
-{
-	std::set<int>::iterator	truef;
-	std::set<int>::iterator	falsef;
-
-	std::cout << "trueFacts.sizeof() : " << m_trueFacts.size() << std::endl;
-	std::cout << "falseFacts.sizeof() : " << m_falseFacts.size() << std::endl;
-
-	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
+	if (m_queries.size() > 0 && checkAllCoherence())
 	{
-		std::cout << "trueFacts[i] : " << char(*truef) << std::endl;
-	}
-	for (falsef = m_falseFacts.begin(); falsef != m_falseFacts.end(); falsef++)
-	{
-		std::cout << "falseFacts[i] : " << char(*falsef) << std::endl;
+		std::cout << "\n--- Checking finish -> analysis begins ---\n" << std::endl;
+		// printTrueFacts();
+		analyseQuerie();
 	}
 }

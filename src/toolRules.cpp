@@ -21,14 +21,12 @@ bool	Rules::isOperator(char c)
 	return false;
 }
 
-
 bool	Rules::isRelationOp(char c)
 {
 	if (c == '=' || c == '<')
 		return true;
 	return false;
 }
-
 
 bool	Rules::opPriorities(char c, char op)
 {
@@ -38,7 +36,6 @@ bool	Rules::opPriorities(char c, char op)
 		return true;
 	return false;
 }
-
 
 int		Rules::getImpORif(string rule, size_t i)
 {
@@ -61,13 +58,10 @@ void	Rules::putInCondition()
 	m_polonaise.erase(m_polonaise.begin(), m_polonaise.end());
 }
 
-
 void	Rules::putInConclusion()
 {
 	for (size_t i = 0; i < m_polonaise.size(); i++)
 	{
-		std::cout << "char(m_polonaise[i] in putconclu : " << char(m_polonaise[i]) << std::endl;
-
 		m_conclusion.push_back(m_polonaise[i]);
 		if (isupper(m_polonaise[i]))
 			m_facts.push_back(m_polonaise[i]);
@@ -77,33 +71,18 @@ void	Rules::putInConclusion()
 	m_polonaise.erase(m_polonaise.begin(), m_polonaise.end());
 }
 
-
-
-
 void Rules::printValues()
 {
 	std::cout << "ID : " << id << std::endl;
 	for (size_t i = 0; i < m_condition.size(); i++)
 	{
-		std::cout << "char(m_condition[i] : " << char(m_condition[i]) << std::endl;
-		//std::cout << "m_condition[i] : " << m_condition[i] << std::endl;
-	}
-	for (size_t i = 0; i < m_conditionType.size(); i++)
-	{
-		std::cout << "char(m_conditionType[i] : " << char(m_conditionType[i]) << std::endl;
-		//std::cout << "m_conditionType[i] : " << m_conditionType[i] << std::endl;
+		std::cout << "condition " << i << " : " << m_condition[i] << std::endl;
 	}
 	for (size_t i = 0; i < m_conclusion.size(); i++)
 	{
-		std::cout << "char(m_conculsion[i] : " << char(m_conclusion[i]) << std::endl;
-		//std::cout << "m_conculsion[i] : " << m_conclusion[i] << std::endl;
+		std::cout << "conculsion " << i << " : " << char(m_conclusion[i]) << std::endl;
 	}
-	for (size_t i = 0; i < m_conclusionType.size(); i++)
-	{
-		std::cout << "char(m_conclusionType[i] : " << char(m_conclusionType[i]) << std::endl;
-		//std::cout << "m_conclusionType[i] : " << m_conclusionType[i] << std::endl;
-	}
-	std::cout << "impORif : " << impORif << std::endl;
+	std::cout << "impORif : " << impORif << "\n" << std::endl;
 }
 
 void Rules::printFacts()
@@ -112,5 +91,5 @@ void Rules::printFacts()
 	{
 		std::cout << "m_fact[i] : " << m_facts[i] << std::endl;
 	}
-	std::cout << "    " << std::endl;
+	std::cout << "" << std::endl;
 }

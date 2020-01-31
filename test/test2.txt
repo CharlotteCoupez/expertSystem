@@ -1,0 +1,32 @@
+
+A | (!B + C) => !D
+O => B
+E + F => G
+
+=O
+?DG
+
+
+#A => B
+#I | D => A
+#E | F | H + C + J => D
+#R + S => H
+#U | V => C
+
+#=GHERU
+
+#?B
+
+#A + B => C
+#D | E | O | F | G + K => A
+
+#=BDKP
+#?C
+
+#A + B => C
+#D + F => A
+#G + H + I + J => D
+
+#=DFB
+
+#?C

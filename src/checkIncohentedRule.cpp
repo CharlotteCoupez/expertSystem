@@ -14,40 +14,29 @@
 
 using namespace std;
 
-
 void	ExpertSystem::fillTrueFasleFacts(Rules rule)
 {
     m_falseFacts.erase( m_falseFacts.begin(), m_falseFacts.end() );
     m_trueFacts.erase( m_trueFacts.begin(), m_trueFacts.end() );
-
-	for (size_t i = 0; i < rule.m_condition.size();) {
-
-		if (char(rule.m_condition[i]) == '!') {
-			cout << "----i" << i << std::endl;
-			cout << "----m_initialFacts[i" << char(rule.m_condition[i]) << std::endl;
-			cout << "----m_initialFacts[i + 1" << char(rule.m_condition[i + 1]) << std::endl;
-
-			m_falseFacts.insert(rule.m_condition[i + 1]);
-			i++;
-		}
+	for (size_t i = 0; i < rule.m_condition.size();)
+	{
+		if (char(rule.m_condition[i]) == '!')
+			m_falseFacts.insert(rule.m_condition[++i]);
 		else if (isupper(char(rule.m_condition[i])))
-		{
 			m_trueFacts.insert(rule.m_condition[i]);
-		}
 		i++;
 	}
 }
 
 bool	ExpertSystem::checkFacts()
 {
-	std::set<int>::iterator	trueFact;
-	std::set<int>::iterator	falseFact;
+	std::set<char>::iterator	trueFact;
+	std::set<char>::iterator	falseFact;
 
 	for (trueFact = m_trueFacts.begin(); trueFact != m_trueFacts.end();)
 	{
 		for (falseFact = m_falseFacts.begin(); falseFact != m_falseFacts.end();)
 		{
-			// if (*trueFact && *falseFact && *trueFact == *falseFact)
 			if (*trueFact == *falseFact)
 				return false;
 			falseFact++;
@@ -57,34 +46,25 @@ bool	ExpertSystem::checkFacts()
 	return true;
 }
 
-bool	ExpertSystem::ruleNotIncoherented() 
+bool	ExpertSystem::ruleNotIncoherented()
 {
-	std::list<Rules>::iterator	itL;
 	int							ret;
+	std::list<Rules>::iterator	itL;
 
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
-		cout << "1************************" << std::endl;
-		cout << "*itL->id : " << itL->id << std::endl;
 		fillTrueFasleFacts(*itL);
 		for (size_t i = 0; i < itL->m_conclusion.size();)
 		{
-			cout << "*(itL->m_conclusion.begin()) : " << itL->m_conclusion[i] << std::endl;
 			if (isupper(itL->m_conclusion[i]))
 			{
 				ret = backwardChaining(itL->m_conclusion[i]);
 				if (ret == PROVEN)
-				{
 					fillList(true, itL->m_conclusion);
-				}
 				if (ret == NOT_PROVEN)
-				{
 					fillList(false, itL->m_conclusion);
-				}
-				printTrueFacts();
 				if (!checkFacts())
 					return false;
-				cout << "2************************" << std::endl;
 			}
 			i++;
 		}

@@ -14,11 +14,11 @@
 
 using namespace std;
 
-bool    ExpertSystem::checkCoherence(std::vector<int> path, int fact)
+bool    ExpertSystem::checkCoherence(std::vector<char> path, char fact)
 {
 	int	tmp;
     std::list<Rules>::iterator	itL;
-    std::vector<int>::iterator	factInCls;
+    std::vector<char>::iterator	factInCls;
 
     tmp = -1;
     for (size_t m = 0; m < path.size(); m++)
@@ -44,7 +44,7 @@ bool    ExpertSystem::checkCoherence(std::vector<int> path, int fact)
                     return false;
                 }
             }
-            tmp = 0;    
+            tmp = 0;
         }
         itL++;
     }
@@ -54,32 +54,14 @@ bool    ExpertSystem::checkCoherence(std::vector<int> path, int fact)
 
 bool    ExpertSystem::ruleNotLinked()
 {
-    std::set<int>::iterator	fact;
-    std::vector<int>	    path;
- 
+    std::set<char>::iterator	fact;
+    std::vector<char>	        path;
+
 	for (fact = m_allFacts.begin(); fact != m_allFacts.end(); fact++)
 	{
 	    path.erase( path.begin(), path.end() );
-        if (checkCoherence(path, *fact) == false)
+        if (!checkCoherence(path, *fact))
             return false;
 	}
-        return true;
+    return true;
 }
-
-void ExpertSystem::checkAllCoherence()
-{
-	m_checking = true;
-	if (m_queries.size() > 0 && ruleNotLinked() && ruleNotIncoherented())
-	{
-
-		m_checking = false;
-		for (size_t i = 0; i < m_initialFacts.size();i++) {
-			m_trueFacts.insert(m_initialFacts[i]);
-			
-		}
-		analyseQuerie();
-		return ;
-	}
-	std::cout << "Incoherent rules or no Query" << std::endl;
-}
-
