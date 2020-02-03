@@ -106,14 +106,14 @@ void ExpertSystem::printTrueFacts()
 	std::set<char>::iterator	truef;
 	std::set<char>::iterator	falsef;
 
-	std::cout << "\n\nlen tab TRUE : " << m_trueFacts.size() << std::endl;
+	std::cout << "\n\nTrue fact(s) know: " << m_trueFacts.size() << std::endl;
 	for (truef = m_trueFacts.begin(); truef != m_trueFacts.end(); truef++)
 	{
-		std::cout << "true Facts: " << *truef << std::endl;
+		std::cout << "true: " << *truef << std::endl;
 	}
-	std::cout << "\nlen tab FALSE: " << m_falseFacts.size() << std::endl;
+	std::cout << "\nFalse fact(s) know: " << m_falseFacts.size() << std::endl;
 	for (falsef = m_falseFacts.begin(); falsef != m_falseFacts.end(); falsef++)
 	{
-		std::cout << "false Facts: " << *falsef << std::endl;
+		std::cout << "false: " << *falsef << std::endl;
 	}
 }

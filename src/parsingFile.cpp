@@ -14,6 +14,24 @@
 
 using namespace std;
 
+bool ExpertSystem::checkAllCoherence()
+{
+	m_checking = true;
+	if (ruleNotLinked() && ruleNotIncoherented())
+	{
+		m_checking = false;
+		m_trueFacts.erase(m_trueFacts.begin(), m_trueFacts.end());
+		m_falseFacts.erase(m_falseFacts.begin(), m_falseFacts.end());
+		for (size_t i = 0; i < m_initialFacts.size(); i++)
+		{
+			m_trueFacts.insert(m_initialFacts[i]);
+		}
+		return true;
+	}
+	std::cout << "Incoherent rules or no Query" << std::endl;
+	return false;
+}
+
 void ExpertSystem::createBaseRules(string ligne, int ruleId)
 {
 	Rules	rule(ligne);
@@ -25,7 +43,7 @@ void ExpertSystem::createBaseRules(string ligne, int ruleId)
 		}
 		rule.id = ruleId;
 		m_listRules.push_back(rule);
-		rule.printValues();
+		// rule.printValues();
 	}
 	else
 		cout << "Rule number: " << ruleId << " is not correct." << std::endl;
@@ -50,29 +68,31 @@ void ExpertSystem::getQueries(string ligne)
 		m_queries.push_back(ligne[i++]);
 }
 
-bool ExpertSystem::checkAllCoherence()
+void ExpertSystem::get_argv(int nb, char ** argv)
 {
-	m_checking = true;
-	if (ruleNotLinked() && ruleNotIncoherented())
+	std::string tmp;
+
+	m_opt_visu = false;
+	m_output = false;
+	for (int i = 1; i < nb; i++)
 	{
-		m_checking = false;
-		m_trueFacts.erase(m_trueFacts.begin(), m_trueFacts.end());
-		m_falseFacts.erase(m_falseFacts.begin(), m_falseFacts.end());
-		for (size_t i = 0; i < m_initialFacts.size(); i++) {
-			m_trueFacts.insert(m_initialFacts[i]);
-		}
-		return true;
+		tmp = argv[i];
+		if (tmp == "-v")
+			m_opt_visu = true;
+		else if (tmp == "-o")
+			m_output = true;
+		else if (tmp.find(".txt"))
+			m_name_file = tmp;
 	}
-	std::cout << "Incoherent rules or no Query" << std::endl;
-	return false;
 }
 
-ExpertSystem::ExpertSystem(string argv)
+ExpertSystem::ExpertSystem(int nb, char ** argv)
 {
 	int		idRule;
 	string	ligne;
 
-	ifstream monFichier(argv.c_str());
+	get_argv(nb, argv);
+	ifstream monFichier(m_name_file.c_str());
 	if (!monFichier)
 	{
 		std::cout << "wrong name file" << std::endl;
@@ -94,7 +114,6 @@ ExpertSystem::ExpertSystem(string argv)
 	if (m_queries.size() > 0 && checkAllCoherence())
 	{
 		std::cout << "\n--- Checking finish -> analysis begins ---\n" << std::endl;
-		// printTrueFacts();
 		analyseQuerie();
 	}
 }

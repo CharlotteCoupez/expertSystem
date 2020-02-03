@@ -1,10 +1,12 @@
 
 A | (!B + C) => !D
 O => B
-E + F => G
+E + F | J => G
+H => E
+I => F
 
-=O
-?DG
+=OIJ
+?DGAEB
 
 
 #A => B

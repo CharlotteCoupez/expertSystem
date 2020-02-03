@@ -62,12 +62,14 @@ bool	ExpertSystem::lastChecking(char querie)
 	checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*checkResult == querie)
 	{
-		std::cout << "This querie is TRUE: " << querie << std::endl;
+		if (m_opt_visu && !m_checking)
+			std::cout << "This fact is TRUE: " << querie << std::endl;
 		return true;
 	}
 	vecTmp.push_back(querie);
 	fillList(false, vecTmp);
-	std::cout << "This querie is FALSE : " << querie << std::endl;
+	if (m_opt_visu && !m_checking)
+		std::cout << "This fact is FALSE : " << querie << std::endl;
 	return false;
 }
 
@@ -85,14 +87,16 @@ bool	ExpertSystem::backwardChaining(char querie)
 			result = ruleChecking(itL->m_condition);
 			if (result == PROVEN)
 			{
-				std::cout << "This querie is TRUE: " << querie << std::endl;
+				if (m_opt_visu && !m_checking)
+					std::cout << "This fact is TRUE: " << querie << std::endl;
 				fillList(true, itL->m_conclusion);
 				if (!m_checking)
 					return true;
 			}
 			else if (result == PROVEN_FALSE)
 			{
-				std::cout << "This querie is FALSE: " << querie << std::endl;
+				if (m_opt_visu && !m_checking)
+					std::cout << "This fact is FALSE: " << querie << std::endl;
 				fillList(false, itL->m_conclusion);
 				if (!m_checking)
 					return false;
@@ -110,13 +114,13 @@ bool ExpertSystem::checkKnowFacts(char querie)
 
 	cmp = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*cmp == querie)
-		cout << "\nThe querie " << querie << " is true\n" << std::endl;
+		cout << "\n-- The querie " << querie << " is true --\n" << std::endl;
 	else
 	{
 		cmp2 = find(m_falseFacts.begin(), m_falseFacts.end(), querie);
 		if (*cmp2 != querie)
 			return false;
-		cout << "\nThe querie " << querie << " is false\n" << std::endl;
+		cout << "\n-- The querie " << querie << " is false --\n" << std::endl;
 	}
 	return true;
 }
@@ -136,10 +140,12 @@ void ExpertSystem::analyseQuerie()
 				backwardChaining(m_queries[i]);
 				checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), m_queries[i]);
 				if (*checkResult == m_queries[i])
-					cout << "\nThe querie " << m_queries[i] << " is true\n" << std::endl;
+					cout << "\n-- The querie " << m_queries[i] << " is true --\n" << std::endl;
+				else
+					cout << "\n-- The querie " << m_queries[i] << " is false --\n" << std::endl;
 			}
-			cout << "\nThe querie " << m_queries[i] << " is false\n" << std::endl;
 		}
 	}
-	printTrueFacts();
+	if (m_output && !m_checking)
+		printTrueFacts();
 }

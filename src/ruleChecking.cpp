@@ -115,8 +115,8 @@ int		ExpertSystem::andCondition(int a, int b, std::vector<std::vector<int> > arr
 		return PROVEN;
 	else if (a == 0 || b == 0)
 		return NOT_PROVEN;
-	if (a == 2)
-		a = backwardChaining(array[1][0]);
+	if (a == 2 && (a = backwardChaining(array[1][0])) == 0)
+		return NOT_PROVEN;
 	if (b == 2)
 		b = backwardChaining(array[0][0]);
 	if (condition(a, array[1][1]) && condition(b, array[0][1]))

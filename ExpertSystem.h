@@ -12,7 +12,7 @@ class ExpertSystem
 {
   public:
 	ExpertSystem();
-	ExpertSystem(std::string argv);
+	ExpertSystem(int nb, char **argv);
 
 	void	printTrueFacts();
 
@@ -26,7 +26,11 @@ class ExpertSystem
 	bool				m_checking;
 	std::vector<char>	m_initialFacts;
 	std::fstream		fs;
+	std::string			m_name_file;
+	bool				m_opt_visu;
+	bool				m_output;
 
+	void	get_argv(int nb, char ** argv);
 	void	createFacts();
 	void	createBaseRules(std::string ligne, int ruleId);
 	void	getInitialeFacts(std::string ligne);

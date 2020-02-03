@@ -1,4 +1,4 @@
-# expertSystem 
+# expertSystem
 
 # The project
 coding a expert system for propositional calculus in C++.
@@ -10,7 +10,7 @@ for more details look at the [Subject](https://cdn.intra.42.fr/pdf/pdf/2029/expe
 # Running the tests
 ```
 make
-./expersystem [-v] test/test_file_name.txt
+./expersystem [-v] [-o] test/test_file_name.txt
 ```
 
 # Input file format
@@ -32,7 +32,8 @@ E + F => !V # E and F implies not V
 # by a newline is used
 ?GVX # Queries : What are G, V and X ?
 ```
-# Options 
+# Options
 ```
- -v, --verbose         displays investigation steps of the inference engine
+ -v, --verbose		displays investigation steps of the inference engine
+ -o, --output		displays the state of all facts
 ```
