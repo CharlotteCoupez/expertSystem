@@ -8,9 +8,10 @@ Implementation: backward-chaining inference engine.
 for more details look at the [Subject](https://cdn.intra.42.fr/pdf/pdf/2029/expert-system.en.pdf)
 
 # Running the tests
+```
 make
-
-./expersystem test/test_file_name.txt
+./expersystem [-v] test/test_file_name.txt
+```
 
 # Input file format
 ```console
@@ -30,4 +31,8 @@ E + F => !V # E and F implies not V
 # If no facts are initially true, then a simple "=" followed
 # by a newline is used
 ?GVX # Queries : What are G, V and X ?
+```
+# Options 
+```
+ -v, --verbose         displays investigation steps of the inference engine
 ```
