@@ -79,6 +79,8 @@ bool	ExpertSystem::backwardChaining(char querie)
 	int							factInConc;
 	std::list<Rules>::iterator	itL;
 
+	if (checkKnowFacts(querie))
+		return true;
 	for (itL = m_listRules.begin(); itL != m_listRules.end();)
 	{
 		factInConc = matchQuery(itL, querie);
@@ -114,15 +116,20 @@ bool ExpertSystem::checkKnowFacts(char querie)
 
 	cmp = find(m_trueFacts.begin(), m_trueFacts.end(), querie);
 	if (*cmp == querie)
+	{
 		cout << "\n-- The querie " << querie << " is true --\n" << std::endl;
+		return true;
+	}
 	else
 	{
 		cmp2 = find(m_falseFacts.begin(), m_falseFacts.end(), querie);
-		if (*cmp2 != querie)
-			return false;
-		cout << "\n-- The querie " << querie << " is false --\n" << std::endl;
+		if (*cmp2 == querie)
+		{
+			cout << "\n-- The querie " << querie << " is false --\n" << std::endl;
+			return true;
+		}
 	}
-	return true;
+	return false;
 }
 
 void ExpertSystem::analyseQuerie()
@@ -135,15 +142,12 @@ void ExpertSystem::analyseQuerie()
 			backwardChaining(m_queries[i]);
 		else
 		{
-			if (!checkKnowFacts(m_queries[i]))
-			{
-				backwardChaining(m_queries[i]);
-				checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), m_queries[i]);
-				if (*checkResult == m_queries[i])
-					cout << "\n-- The querie " << m_queries[i] << " is true --\n" << std::endl;
-				else
-					cout << "\n-- The querie " << m_queries[i] << " is false --\n" << std::endl;
-			}
+			backwardChaining(m_queries[i]);
+			checkResult = find(m_trueFacts.begin(), m_trueFacts.end(), m_queries[i]);
+			if (*checkResult == m_queries[i])
+				cout << "\n-- The querie " << m_queries[i] << " is true --\n" << std::endl;
+			else
+				cout << "\n-- The querie " << m_queries[i] << " is false --\n" << std::endl;
 		}
 	}
 	if (m_output && !m_checking)

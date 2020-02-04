@@ -3,10 +3,10 @@ A | (!B + C) => !D
 O => B
 E + F | J => G
 H => E
-I => F
+I + K => F
 
-=OIJ
-?DGAEB
+=OIJHK
+?G
 
 
 #A => B
